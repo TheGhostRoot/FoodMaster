@@ -1,0 +1,72 @@
+name: FoodMaster
+version: '${project.version}'
+main: me.thegoldenmine.foodmaster.FoodMaster
+api-version: 1.14
+authors: [ TheGoldenMine ]
+description: This is a kind of kit pvp, but differend foods have differend powers.
+website: https://www.spigotmc.org/members/thegoldenmine.1437483/
+commands:
+  foodmaster:
+    description: You can play Food Master
+    permission: foodm.commands
+    permission-message: You don't have foodm.commands permission to do this.
+    usage: /fm
+    aliases: [fm, foodm]
+permissions:
+  foodm.pvp.freeforall:
+    description: You can play Free For All
+    default: op
+  foodm.pvp.teamdeathmatch:
+    default: op
+    description: You can play Team Deathmatch
+  foodm.pvp.foodgame:
+    default: op
+    description: You can play Food Game
+  foodm.pvp:
+    default: op
+    description: You can play PvP mode
+  foodm.pve:
+    default: op
+    description: You can play PvE mode
+  foodm.gui:
+    description: You can open the gui menu
+    default: op
+  foodm.stats:
+    description: The player can see the players' stats with /fm stats <name of the player> command
+    default: op
+  foodm.end:
+    default: op
+    description: This allows the player to end the game
+  foodm.staff:
+    description: This permission is only for the server staff members!
+    default: op
+  foodm.rejoin:
+    default: op
+    description: This gives you the ability to rejoin lobbys or games where you are kicked from
+  foodm.reset:
+    description: It will reset the plugin
+    default: op
+  foodm.commands:
+    default: op
+    description: You can play Food Master
+  foodm.help:
+    default: op
+    description: This will allow the player to see the help command.
+  foodm.set:
+    default: op
+    description: This permission will allow the player to set the locations and timers.
+  foodm.default:
+    default: op
+    description: This permission will allow the player to reset the config to the default seting. All locations will be deleted!
+  foodm.start:
+    default: op
+    description: This permission will allow the player to start the game.
+  foodm.kick:
+    description: This permission will allow the player to kick players from the game or the waiting lobby.
+    default: op
+  foodm.group.help:
+    description: You can see the group help menu
+    default: op
+  foodm.group:
+    default: op
+    description: You can use the group system to play Food Master
