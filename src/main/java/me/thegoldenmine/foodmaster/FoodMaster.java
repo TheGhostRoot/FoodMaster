@@ -225,10 +225,10 @@ public class FoodMaster extends JavaPlugin {
     private FoodMaster foodMaster;
 
     //todo BUG FIX:
+    //TODO the random team pick is working, but it doesn't show the players
 
     //todo UPDATE:
     //TODO: Add teams in PvE
-    //TODO: Food cooldown on action bar
     //TODO: Add Open/close Group: Others can join your group.
     //TODO: Add potions on the map and when the player gets the potion. It will give the player effects
     //TODO: Make cooldowns custom
@@ -241,12 +241,6 @@ public class FoodMaster extends JavaPlugin {
 
 
     //todo Changes:
-    // made enderman teleport to players in the config
-    // made slime minions
-    // added skeleton rapid fire in the pve config
-    // made you can ride the bosses and players
-    // added Beef
-    // added riding to pve config and lobby config
 
     @Override
     public void onEnable() {

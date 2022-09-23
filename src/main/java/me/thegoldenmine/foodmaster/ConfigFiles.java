@@ -283,8 +283,8 @@ public class ConfigFiles {
         setBooleanGame("show_timer_above_inventory", false);
         setBooleanGame("show_timer_boss_bar", true);
         setIntGame("lives", 5);
-        setBooleanWaitLobby("ride_players", true);
-        setBooleanPvE("ride_pve_bosses", true);
+        setBooleanWaitLobby("ride_players", false);
+        setBooleanPvE("ride_pve_bosses", false);
         setStrGame("game_timer_color", "§b");
         setStrGame("message_on_death", "write the word 'empty' to not send custom message on respawn/death");
         setIntGame("damage", 6);

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -48,6 +49,16 @@ public class StartTheGame {
         plugin.ReadyPlayers.remove(uuid);
         plugin.playersInFreeForAll.remove(uuid);
         plugin.playersChoiceFreeForAll.remove(uuid);
+        plugin.playersChoicePvESpider.remove(uuid);
+        plugin.playersChoicePvESkeleton.remove(uuid);
+        plugin.playersChoicePvEZombie.remove(uuid);
+        plugin.playersChoicePvEEnderman.remove(uuid);
+        plugin.playersChoicePvESlime.remove(uuid);
+        plugin.playersPlayingPvESkeleton.remove(uuid);
+        plugin.playersPlayingPvESpider.remove(uuid);
+        plugin.playersPlayingPvEEnderman.remove(uuid);
+        plugin.playersPlayingPvEZombie.remove(uuid);
+        plugin.playersPlayingPvESlime.remove(uuid);
     }
 
     public String findFreeGame() {
@@ -147,6 +158,34 @@ public class StartTheGame {
                                 Player groupPlayer = Bukkit.getPlayer(uuid);
                                 if (groupPlayer != null) {
                                     UUID uniqueId = groupPlayer.getUniqueId();
+                                    if (!groupPlayer.getPassengers().isEmpty()) {
+                                        for (Entity player1 : groupPlayer.getPassengers()) {
+                                            if (player1 instanceof Player) {
+                                                Player player2 = (Player) player1;
+                                                if (plugin.tpPlayersInGameNameLoc.containsValue(null)) {
+                                                    int max = namesOfGameLoc.size() - 1;
+                                                    int theIndex = new Random().nextInt(max + 1);
+                                                    List<String> list1 = new ArrayList<>(namesOfGameLoc);
+                                                    String theNameOfLoc = list1.get(theIndex);
+                                                    if (plugin.tpPlayersInGameNameLoc.containsValue(theNameOfLoc)) {
+                                                        while (plugin.tpPlayersInGameNameLoc.containsValue(theNameOfLoc)) {
+                                                            int theIndex2 = new Random().nextInt(max + 1);
+                                                            theNameOfLoc = list1.get(theIndex2);
+                                                        }
+                                                    }
+                                                    if (plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId) && !plugin.kickedPlayers.contains(groupPlayer.getUniqueId())) {
+                                                        Location theLocation = plugin.mainConfig.getLocationGame(GameName + "->" + theNameOfLoc + "-spawn-point");
+                                                        player2.getInventory().clear();
+                                                        player2.setGameMode(GameMode.SURVIVAL);
+                                                        player2.teleport(theLocation);
+                                                        plugin.tpPlayersInGameNameLoc.put(uniqueId, theNameOfLoc);
+                                                        plugin.gameSpawnCoolDown.addPlayerToCoolMap(uniqueId, 5);
+                                                        player2.sendMessage(NORMAL + "You are teleported to the " + gold + "" + italic + "" + GameName + "" + green + "" + italic + " game on the " + gold + "" + italic + "" + theNameOfLoc + "" + green + "" + italic + " location.");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                     if (plugin.tpPlayersInGameNameLoc.containsValue(null)) {
                                         int max = namesOfGameLoc.size() - 1;
                                         int theIndex = new Random().nextInt(max + 1);

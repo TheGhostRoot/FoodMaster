@@ -839,7 +839,6 @@ public class EndTheGame {
             Set<UUID> groupPlayersInRedTeam = plugin.getGroupPlayersInRedTeam(player);
             Set<UUID> groupPlayersInBlueTeam = plugin.getGroupPlayersInBlueTeam(player);
             Set<UUID> groupPlayersInCyanTeam = plugin.getGroupPlayersInCyanTeam(player);
-            //Set<UUID> groupPlayersInGreenTeam = plugin.getGroupPlayersInGreenTeam(player);
             Set<UUID> groupPlayersInYellowTeam = plugin.getGroupPlayersInYellowTeam(player);
             if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty() && groupPlayersInRedTeam.contains(uniqueId)) {
                 player.sendMessage(playerStats);
