@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Commands.GroupCmd;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ public class GroupAccept {
     }
 
     public void acceptGroupInvite(Player invited, String[] args) {
-        // the invited is the sender
+        // the invited player is the sender of the command/invitation
         ChatColor darkGray = ChatColor.DARK_GRAY;
         ChatColor strikethrough = ChatColor.STRIKETHROUGH;
         ChatColor gold = ChatColor.GOLD;
@@ -28,23 +28,27 @@ public class GroupAccept {
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (args.length > 2) {
             Player inviter = Bukkit.getPlayer(args[2]);
             if (!invited.equals(inviter)) {
                 if (inviter != null) {
                     UUID uuid = invited.getUniqueId();
                     if (!inviter.isOnline()) {
-                        invited.sendMessage(ERROR+""+gold+""+italic+""+ inviter.getName()+""+red+""+italic+" is not online.");
+                        invited.sendMessage(ERROR + "" + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + " is not online.");
+                        return;
+                    }
+                    if (!invited.isOnline()) {
+                        inviter.sendMessage(ERROR + "" + gold + "" + italic + "" + invited.getName() + "" + red + "" + italic + " is not online.");
                         return;
                     }
                     if (plugin.game.isPlayerInGame(inviter)) {
@@ -67,12 +71,12 @@ public class GroupAccept {
                     if (plugin.invites.get(uuid) == null) {
                         return;
                     }
-                    String s2 = "You are already in ";
+                    String AlreadyInMessage = "You are already in ";
                     if (plugin.playerGroup.isPlayerInGroup(inviter) && plugin.playerGroup.isPlayerInGroup(invited)) {
                         // THEY BOTH ARE IN GROUP
                         // invited will join
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(invited).contains(inviter.getUniqueId())) {
-                            invited.sendMessage(INFO + s2 + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + s1);
+                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + s1);
                         } else {
                             plugin.playerGroup.PlayerLeaveFromGroup(invited);
                             // key - invited
@@ -94,11 +98,10 @@ public class GroupAccept {
                             }
                         }
                     } else if (plugin.playerGroup.isPlayerInGroup(invited) && !plugin.playerGroup.isPlayerInGroup(inviter)) {
-                        // The invited have grouped
+                        // The invited have a group
                         // The inviter is alone
-                        // invited go to inviter
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(invited).contains(inviter.getUniqueId())) {
-                            invited.sendMessage(INFO + s2 + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
+                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
                         } else {
                             Set<UUID> Group = new HashSet<>();
                             plugin.playerGroup.PlayerLeaveFromGroup(invited);
@@ -123,11 +126,11 @@ public class GroupAccept {
                             invited.sendTitle(gold + "" + italic + "You've joined a group with", aqua + "" + italic + "" + plugin.playerGroup.getPlayerNamesFromGroupString(inviter).replace("\"\"", "").replace("[", "").replace("]", ""), 2, 80, 2);
                         }
                     } else if (plugin.playerGroup.isPlayerInGroup(inviter) && !plugin.playerGroup.isPlayerInGroup(invited)) {
-                        // THIS IS THE ONE
-                        // inviter have group
-                        // invited joins / alone
+                        // the inviter have a group
+                        // the invited is alone
+                        // invited joins the inviter's group
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).contains(uuid)) {
-                            invited.sendMessage(INFO + s2 + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
+                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
                         } else {
                             if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
                                 inviter.sendMessage(WARN + "Your group has reached the player limit.");
@@ -155,7 +158,8 @@ public class GroupAccept {
                             }
                         }
                     } else {
-                        // NEW GROUP
+                        // CREATE NEW GROUP
+                        // they are not in any group so create one
                         Set<UUID> group2 = new HashSet<>();
                         group2.add(uuid);
                         group2.add(inviter.getUniqueId());
@@ -182,7 +186,7 @@ public class GroupAccept {
                         inviter.sendTitle(gold + "" + italic + "You are now in a group with", aqua + "" + italic + "" + invited.getName(), 1, 80, 1);
                         invited.sendTitle(gold + "" + italic + "You are now in a group with", aqua + "" + italic + "" + inviter.getName(), 1, 80, 1);
                     }
-                    // invited joins the inviter's group
+                    // invited players joins the inviter's group
                     Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(invited));
                     for (UUID uuid1 : playersInGroupOfPlayer) {
                         if (uuid1 != null && plugin.playAgain.containsKey(uuid1)) {

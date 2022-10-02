@@ -27,7 +27,7 @@ public class ResetPlayer {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -131,7 +131,7 @@ public class ResetPlayer {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }

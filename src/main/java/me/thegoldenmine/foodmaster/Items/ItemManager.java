@@ -1,14 +1,11 @@
 package me.thegoldenmine.foodmaster.Items;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,6 +212,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         PvESlime = item;
     }
+
     private static void setPvEEnderman() {
         ItemStack item = new ItemStack(Material.ENDER_PEARL, 1);
         ItemMeta meta = item.getItemMeta();
@@ -225,6 +223,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         PvEEnderman = item;
     }
+
     private static void setPvEZombie() {
         ItemStack item = new ItemStack(Material.ROTTEN_FLESH, 1);
         ItemMeta meta = item.getItemMeta();
@@ -235,6 +234,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         PvEZombie = item;
     }
+
     private static void setPvESkeleton() {
         ItemStack item = new ItemStack(Material.BONE, 1);
         ItemMeta meta = item.getItemMeta();
@@ -245,6 +245,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         PvESkeleton = item;
     }
+
     private static void setPvESpider() {
         ItemStack item = new ItemStack(Material.SPIDER_EYE, 1);
         ItemMeta meta = item.getItemMeta();
@@ -261,7 +262,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.DIAMOND_AXE, 1);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.GOLD+""+ChatColor.ITALIC+"5 Teams");
+        meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.ITALIC + "5 Teams");
         meta.setUnbreakable(true);
         List<String> lore = new ArrayList<>();
         lore.add("§6§lClick§7§o to play §6Team Deathmatch§7§o with 5 teams.");
@@ -275,7 +276,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.IRON_AXE, 1);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.GOLD+""+ChatColor.ITALIC+"4 Teams");
+        meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.ITALIC + "4 Teams");
         meta.setUnbreakable(true);
         List<String> lore = new ArrayList<>();
         lore.add("§6§lClick§7§o to play §6Team Deathmatch§7§o with 4 teams.");
@@ -289,7 +290,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.STONE_AXE, 1);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.GOLD+""+ChatColor.ITALIC+"3 Teams");
+        meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.ITALIC + "3 Teams");
         meta.setUnbreakable(true);
         List<String> lore = new ArrayList<>();
         lore.add("§6§lClick§7§o to play §6Team Deathmatch§7§o with 3 teams.");
@@ -303,7 +304,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.WOODEN_AXE, 1);
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.GOLD+""+ChatColor.ITALIC+"2 Teams");
+        meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.ITALIC + "2 Teams");
         meta.setUnbreakable(true);
         List<String> lore = new ArrayList<>();
         lore.add("§6§lClick§7§o to play §6Team Deathmatch§7§o with 2 teams.");
@@ -370,6 +371,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         rejoinGUI = item;
     }
+
     private static void setHelpGUI() {
         ItemStack item = new ItemStack(Material.BOOK, 1);
         ItemMeta meta = item.getItemMeta();
@@ -383,6 +385,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         helpGUI = item;
     }
+
     private static void setBack() {
         ItemStack item = new ItemStack(Material.ARROW, 1);
         ItemMeta meta = item.getItemMeta();
@@ -396,6 +399,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         back = item;
     }
+
     private static void setPvPGUI() {
         ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
         ItemMeta meta = item.getItemMeta();
@@ -409,6 +413,7 @@ public class ItemManager {
         item.setItemMeta(meta);
         pvpGUI = item;
     }
+
     private static void setPvEGUI() {
         ItemStack item = new ItemStack(Material.WITHER_SKELETON_SKULL, 1);
         ItemMeta meta = item.getItemMeta();

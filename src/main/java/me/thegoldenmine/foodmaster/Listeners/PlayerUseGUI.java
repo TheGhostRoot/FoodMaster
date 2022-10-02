@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class PlayerUseGUI implements Listener {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -146,14 +146,14 @@ public class PlayerUseGUI implements Listener {
                         String[] command = {"start", "food-game"};
                         plugin.startCommand.mainStart(player, command);
                     } else {
-                        player.sendMessage(ERROR+"You have to be in group in order to start a game.");
+                        player.sendMessage(ERROR + "You have to be in group in order to start a game.");
                     }
                     break;
                 case STONE_SWORD:
                     if (plugin.playerGroup.isPlayerInGroup(player)) {
                         player.openInventory(plugin.createGUI.createTeamGUI());
                     } else {
-                        player.sendMessage(ERROR+"You have to be in group in order to start a game.");
+                        player.sendMessage(ERROR + "You have to be in group in order to start a game.");
                     }
                     break;
                 case GOLDEN_SWORD:
@@ -161,7 +161,7 @@ public class PlayerUseGUI implements Listener {
                         String[] command = {"start", "free-for-all"};
                         plugin.startCommand.mainStart(player, command);
                     } else {
-                        player.sendMessage(ERROR+"You have to be in group in order to start a game.");
+                        player.sendMessage(ERROR + "You have to be in group in order to start a game.");
                     }
                     break;
                 case BARRIER:
@@ -193,7 +193,7 @@ public class PlayerUseGUI implements Listener {
                     if (player.hasPermission("foodm.pve")) {
                         player.openInventory(plugin.createGUI.createPvE());
                     } else {
-                        player.sendMessage(ERROR+"You don't have "+gold+""+italic+"foodm.pve"+red+""+italic+" permission to play PvE");
+                        player.sendMessage(ERROR + "You don't have " + gold + "" + italic + "foodm.pve" + red + "" + italic + " permission to play PvE");
                     }
                     break;
                 case BARRIER:
@@ -211,7 +211,7 @@ public class PlayerUseGUI implements Listener {
                 case COOKED_BEEF:
                     player.closeInventory();
                     if (plugin.playersInBeefKit.contains(uuid)) {
-                        player.sendMessage(INFO + "You have already chosen "+gold+""+italic+"Beef"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + "You have already chosen " + gold + "" + italic + "Beef" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInFishKit.remove(uuid);
                         plugin.playersInMelonKit.remove(uuid);
@@ -220,13 +220,13 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersRandomKit.remove(uuid);
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose "+gold+""+italic+"Beef Kit.");
+                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Beef Kit.");
                     }
                     break;
                 case TROPICAL_FISH:
                     player.closeInventory();
                     if (plugin.playersInFishKit.contains(uuid)) {
-                        player.sendMessage(INFO + "You have already chosen "+gold+""+italic+"Fish"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + "You have already chosen " + gold + "" + italic + "Fish" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInMelonKit.remove(uuid);
                         plugin.playersInCookieKit.remove(uuid);
@@ -235,13 +235,13 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersInFishKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose "+gold+""+italic+"Fish Kit.");
+                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Fish Kit.");
                     }
                     break;
                 case COOKIE:
                     player.closeInventory();
                     if (plugin.playersInCookieKit.contains(uuid)) {
-                        player.sendMessage(INFO + "You have already chosen "+gold+""+italic+"Cookie"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + "You have already chosen " + gold + "" + italic + "Cookie" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInMelonKit.remove(uuid);
                         plugin.playersInFishKit.remove(uuid);
@@ -250,13 +250,13 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersInCookieKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose "+gold+""+italic+"Cookie"+green+""+italic+" Kit.");
+                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Cookie" + green + "" + italic + " Kit.");
                     }
                     break;
                 case MELON_SLICE:
                     player.closeInventory();
                     if (plugin.playersInMelonKit.contains(uuid)) {
-                        player.sendMessage(INFO + "You have already chosen "+gold+""+italic+"Melon"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + "You have already chosen " + gold + "" + italic + "Melon" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInCookieKit.remove(uuid);
                         plugin.playersInFishKit.remove(uuid);
@@ -265,13 +265,13 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersRandomKit.remove(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersInMelonKit.add(uuid);
-                        player.sendMessage(NORMAL + "You choose "+gold+""+italic+"Melon"+green+""+italic+" Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Melon" + green + "" + italic + " Kit.");
                     }
                     break;
                 case BREAD:
                     player.closeInventory();
                     if (plugin.playersInBreadKit.contains(uuid)) {
-                        player.sendMessage(INFO + " You have already chosen "+gold+""+italic+"Bread"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + " You have already chosen " + gold + "" + italic + "Bread" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInCookieKit.remove(uuid);
                         plugin.playersInFishKit.remove(uuid);
@@ -280,13 +280,13 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInBreadKit.add(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersRandomKit.remove(uuid);
-                        player.sendMessage(NORMAL + "You choose "+gold+""+italic+"Bread"+green+""+italic+" Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Bread" + green + "" + italic + " Kit.");
                     }
                     break;
                 case POTATO:
                     player.closeInventory();
                     if (plugin.playersInPotatoKit.contains(uuid)) {
-                        player.sendMessage(INFO + "You have already chosen "+gold+""+italic+"Potato"+aqua+""+italic+" Kit.");
+                        player.sendMessage(INFO + "You have already chosen " + gold + "" + italic + "Potato" + aqua + "" + italic + " Kit.");
                     } else {
                         plugin.playersInCookieKit.remove(uuid);
                         plugin.playersInFishKit.remove(uuid);
@@ -295,7 +295,7 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersRandomKit.remove(uuid);
                         plugin.playersInPotatoKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose "+gold+""+italic+"Potato"+green+""+italic+" Kit.");
+                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Potato" + green + "" + italic + " Kit.");
                     }
                     break;
                 case BARRIER:

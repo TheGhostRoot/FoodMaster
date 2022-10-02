@@ -3,7 +3,6 @@ package me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers;
 import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class TeamWithTheMostKills {
             }
             List<Integer> redKills = new ArrayList<>();
             int redMaxKills = 0;
-            Set<UUID> groupPlayersInRedTeam =plugin.deathmatch.getGroupPlayersInRedTeam(player);
+            Set<UUID> groupPlayersInRedTeam = plugin.deathmatch.getGroupPlayersInRedTeam(player);
             if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
                 for (UUID uuid : groupPlayersInRedTeam) {
                     if (uuid != null) {
@@ -399,30 +398,30 @@ public class TeamWithTheMostKills {
                 }
             }
             if (winner == yellowMaxKills && groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty()) {
-                    // yellowNotEmpty team is the winner
-                    player.sendMessage(gameStats);
-                    player.sendMessage(green + "" + italic + "  Winner team: " + yellow + "" + italic + "Yellow");
-                    player.sendMessage("");
-                    // give them the win
-                    plugin.yellowTeam.Wins(player);
+                // yellowNotEmpty team is the winner
+                player.sendMessage(gameStats);
+                player.sendMessage(green + "" + italic + "  Winner team: " + yellow + "" + italic + "Yellow");
+                player.sendMessage("");
+                // give them the win
+                plugin.yellowTeam.Wins(player);
             } else if (winner == blueMaxKills && groupPlayersInBlueTeam != null && !groupPlayersInBlueTeam.isEmpty()) {
-                    // blue team is the winner
-                    player.sendMessage(gameStats);
-                    player.sendMessage(green + "" + italic + "  Winner team: " + ChatColor.BLUE + "" + italic + "Blue");
-                    player.sendMessage("");
-                    plugin.blueTeam.Wins(player);
+                // blue team is the winner
+                player.sendMessage(gameStats);
+                player.sendMessage(green + "" + italic + "  Winner team: " + ChatColor.BLUE + "" + italic + "Blue");
+                player.sendMessage("");
+                plugin.blueTeam.Wins(player);
             } else if (winner == cyanMaxKills && groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty()) {
-                    // cyanNotEmpty team is the winner
-                    player.sendMessage(gameStats);
-                    player.sendMessage(green + "" + italic + "  Winner team: " + aqua + "" + italic + "Cyan");
-                    player.sendMessage("");
-                    plugin.cyanTeam.Wins(player);
+                // cyanNotEmpty team is the winner
+                player.sendMessage(gameStats);
+                player.sendMessage(green + "" + italic + "  Winner team: " + aqua + "" + italic + "Cyan");
+                player.sendMessage("");
+                plugin.cyanTeam.Wins(player);
             } else if (winner == redMaxKills && groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
-                    // redNotEmpty team is the winner
-                    player.sendMessage(gameStats);
-                    player.sendMessage(green + "" + italic + "  Winner team: " + red + "" + italic + "Red");
-                    player.sendMessage("");
-                    plugin.redTeam.Wins(player);
+                // redNotEmpty team is the winner
+                player.sendMessage(gameStats);
+                player.sendMessage(green + "" + italic + "  Winner team: " + red + "" + italic + "Red");
+                player.sendMessage("");
+                plugin.redTeam.Wins(player);
             } else if (winner == greenMaxKills && groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty()) {
                 // greenNotEmpty team is the winner
                 player.sendMessage(gameStats);

@@ -28,7 +28,7 @@ public class UseTeamGUI {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -263,7 +263,7 @@ public class UseTeamGUI {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -498,7 +498,7 @@ public class UseTeamGUI {
         ChatColor yellow = ChatColor.YELLOW;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -604,7 +604,7 @@ public class UseTeamGUI {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -810,7 +810,7 @@ public class UseTeamGUI {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }

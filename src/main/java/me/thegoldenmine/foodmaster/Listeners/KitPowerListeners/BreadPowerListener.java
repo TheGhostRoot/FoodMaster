@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,7 +76,7 @@ public class BreadPowerListener implements Listener {
         ChatColor aqua = ChatColor.AQUA;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -122,7 +122,7 @@ public class BreadPowerListener implements Listener {
                                 }
                             }
                         }
-                        player.sendMessage(INFO+"You healed yourself");
+                        player.sendMessage(INFO + "You healed yourself");
                     } else if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
                         if (plugin.playerGroup.isPlayerInGroup(player)) {
                             for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
@@ -137,8 +137,8 @@ public class BreadPowerListener implements Listener {
                                             }
                                         }
                                     }
-                                    playerNear.sendMessage(INFO+""+gold+""+player.getName()+""+aqua+""+italic+" healed you.");
-                                    player.sendMessage(INFO+""+gold+""+playerNear.getName()+""+aqua+""+italic+" is healed "+ChatColor.RED+""+String.valueOf(((int)playerNear.getHealth()) * 2) +" hearts");
+                                    playerNear.sendMessage(INFO + "" + gold + "" + player.getName() + "" + aqua + "" + italic + " healed you.");
+                                    player.sendMessage(INFO + "" + gold + "" + playerNear.getName() + "" + aqua + "" + italic + " is healed " + ChatColor.RED + "" + ((int) playerNear.getHealth()) * 2 + " hearts");
                                 }
                             }
                         }
@@ -173,7 +173,7 @@ public class BreadPowerListener implements Listener {
                                 }
                             }
                         }
-                        player.sendMessage(INFO+"You healed yourself");
+                        player.sendMessage(INFO + "You healed yourself");
                     } else if (plugin.deathmatch.isPlayerPlayingFoodWars(player)) {
                         for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
                             if (entity instanceof Player) {
@@ -188,7 +188,7 @@ public class BreadPowerListener implements Listener {
                                             }
                                         }
                                     }
-                                    player.sendMessage(INFO+""+gold+""+playerNear.getName()+""+aqua+""+italic+" is healed "+ChatColor.RED+""+String.valueOf(((int)playerNear.getHealth()) * 2) +" hearts");
+                                    player.sendMessage(INFO + "" + gold + "" + playerNear.getName() + "" + aqua + "" + italic + " is healed " + ChatColor.RED + "" + ((int) playerNear.getHealth()) * 2 + " hearts");
                                 }
                             }
                         }
@@ -215,7 +215,7 @@ public class BreadPowerListener implements Listener {
                                 }
                             }
                         }
-                        player.sendMessage(INFO+"You healed yourself");
+                        player.sendMessage(INFO + "You healed yourself");
                     }
                 }
             } else if (action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {

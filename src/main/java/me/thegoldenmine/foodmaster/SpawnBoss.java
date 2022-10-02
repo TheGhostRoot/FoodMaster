@@ -44,7 +44,7 @@ public class SpawnBoss {
             PersistentDataContainer data = zombieBoss.getPersistentDataContainer();
             data.set(name, PersistentDataType.STRING, "BOSS");
             data.set(namePlayer, PersistentDataType.STRING, playerName);
-            zombieBoss.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD+ "" + String.valueOf((int) zombieBoss.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Zombie_Health")) + "" + ChatColor.GRAY + ">");
+            zombieBoss.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) zombieBoss.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Zombie_Health") + "" + ChatColor.GRAY + ">");
             if (plugin.mainConfig.getBooleanPvE("Zombie_Spawn_Minions")) {
                 for (int i = 0; i < plugin.mainConfig.getIntPvE("Zombie_Minions"); i++) {
                     Zombie zombieMinion = zombieBoss.getWorld().spawn(zombieBoss.getLocation(), Zombie.class);
@@ -63,7 +63,7 @@ public class SpawnBoss {
                     attributeDAMAGEm.setBaseValue(plugin.mainConfig.getIntPvE("Zombie_Minion_Damage"));
                     attributeInstanceM.setBaseValue(plugin.mainConfig.getIntPvE("Zombie_Minion_Health"));
                     zombieMinion.setHealth(plugin.mainConfig.getIntPvE("Zombie_Minion_Health"));
-                    zombieMinion.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf((int) zombieMinion.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Zombie_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                    zombieMinion.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) zombieMinion.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Zombie_Minion_Health") + "" + ChatColor.GRAY + ">");
                     zombieMinion.setBaby(false);
                     PersistentDataContainer dataMini = zombieMinion.getPersistentDataContainer();
                     dataMini.set(name, PersistentDataType.STRING, "MINI");
@@ -73,6 +73,7 @@ public class SpawnBoss {
             }
         }
     }
+
     public void SkeletonBoss(Location loc, String playerName) {
         if (loc.getWorld() != null) {
             Skeleton skeleton = loc.getWorld().spawn(loc, Skeleton.class);
@@ -91,7 +92,7 @@ public class SpawnBoss {
             attributeInstance.setBaseValue(plugin.mainConfig.getIntPvE("Skeleton_Health"));
             skeleton.setHealth(plugin.mainConfig.getIntPvE("Skeleton_Health"));
             skeleton.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 99999999, 2));
-            skeleton.setCustomName(plugin.mainConfig.getStrPvE("Skeleton_Name")+" "+ChatColor.GRAY+"<"+ChatColor.GOLD+""+String.valueOf((int) skeleton.getHealth())+""+ChatColor.GRAY+"/"+ChatColor.GREEN+""+String.valueOf(plugin.mainConfig.getIntPvE("Skeleton_Health"))+""+ChatColor.GRAY+">");
+            skeleton.setCustomName(plugin.mainConfig.getStrPvE("Skeleton_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) skeleton.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Skeleton_Health") + "" + ChatColor.GRAY + ">");
             skeleton.setCustomNameVisible(true);
             NamespacedKey name = new NamespacedKey(plugin, "boss");
             NamespacedKey namePlayer = new NamespacedKey(plugin, "player");
@@ -101,6 +102,7 @@ public class SpawnBoss {
             skeleton.getWorld().strikeLightningEffect(skeleton.getLocation());
         }
     }
+
     public void SpiderBoss(Location loc, String playerName) {
         if (loc.getWorld() != null) {
             Spider spider = loc.getWorld().spawn(loc, Spider.class);
@@ -122,7 +124,7 @@ public class SpawnBoss {
             PersistentDataContainer data = spider.getPersistentDataContainer();
             data.set(name, PersistentDataType.STRING, "BOSS");
             data.set(namePlayer, PersistentDataType.STRING, playerName);
-            spider.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD+ "" + String.valueOf((int) spider.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Spider_Health")) + "" + ChatColor.GRAY + ">");
+            spider.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) spider.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Spider_Health") + "" + ChatColor.GRAY + ">");
             if (plugin.mainConfig.getBooleanPvE("Spider_Spawn_Minions")) {
                 for (int i = 0; i < plugin.mainConfig.getIntPvE("Spider_Minions"); i++) {
                     Spider spiderMinion = spider.getWorld().spawn(spider.getLocation(), Spider.class);
@@ -137,7 +139,7 @@ public class SpawnBoss {
                     attributeDAMAGEm.setBaseValue(plugin.mainConfig.getIntPvE("Spider_Minion_Damage"));
                     attributeInstanceM.setBaseValue(plugin.mainConfig.getIntPvE("Spider_Minion_Health"));
                     spiderMinion.setHealth(plugin.mainConfig.getIntPvE("Spider_Minion_Health"));
-                    spiderMinion.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf((int) spiderMinion.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Spider_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                    spiderMinion.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) spiderMinion.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Spider_Minion_Health") + "" + ChatColor.GRAY + ">");
                     PersistentDataContainer dataMini = spiderMinion.getPersistentDataContainer();
                     dataMini.set(name, PersistentDataType.STRING, "MINI");
                     dataMini.set(namePlayer, PersistentDataType.STRING, playerName);
@@ -146,6 +148,7 @@ public class SpawnBoss {
             }
         }
     }
+
     public void EndermanBoss(Location location, String playerName) {
         if (location.getWorld() != null) {
             Enderman enderman = location.getWorld().spawn(location, Enderman.class);
@@ -166,7 +169,7 @@ public class SpawnBoss {
             data.set(namePlayer, PersistentDataType.STRING, playerName);
             enderman.setMaximumNoDamageTicks(35);
             enderman.setNoDamageTicks(35);
-            enderman.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD+ "" + String.valueOf((int) enderman.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Enderman_Health")) + "" + ChatColor.GRAY + ">");
+            enderman.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) enderman.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Enderman_Health") + "" + ChatColor.GRAY + ">");
             if (plugin.mainConfig.getBooleanPvE("Enderman_Spawn_Minions")) {
                 for (int i = 0; i < plugin.mainConfig.getIntPvE("Enderman_Minions"); i++) {
                     Enderman endermanMinion = enderman.getWorld().spawn(enderman.getLocation(), Enderman.class);
@@ -181,7 +184,7 @@ public class SpawnBoss {
                     endermanMinion.setHealth(plugin.mainConfig.getIntPvE("Enderman_Minion_Health"));
                     endermanMinion.setMaximumNoDamageTicks(35);
                     endermanMinion.setNoDamageTicks(35);
-                    endermanMinion.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf((int) endermanMinion.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Enderman_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                    endermanMinion.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) endermanMinion.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Enderman_Minion_Health") + "" + ChatColor.GRAY + ">");
                     PersistentDataContainer dataMini = endermanMinion.getPersistentDataContainer();
                     dataMini.set(name, PersistentDataType.STRING, "MINI");
                     dataMini.set(namePlayer, PersistentDataType.STRING, playerName);
@@ -189,6 +192,7 @@ public class SpawnBoss {
             }
         }
     }
+
     public void SlimeBoss(Location location, String playerName) {
         if (location.getWorld() != null) {
             Slime slime = location.getWorld().spawn(location, Slime.class);
@@ -205,7 +209,7 @@ public class SpawnBoss {
             attributeDAMAGE.setBaseValue(plugin.mainConfig.getIntPvE("Slime_Damage"));
             attributeInstance.setBaseValue(plugin.mainConfig.getIntPvE("Slime_Health"));
             slime.setHealth(plugin.mainConfig.getIntPvE("Slime_Health"));
-            slime.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD+ "" + String.valueOf((int) slime.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Slime_Health")) + "" + ChatColor.GRAY + ">");
+            slime.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) slime.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Slime_Health") + "" + ChatColor.GRAY + ">");
             slime.setCustomNameVisible(true);
             slime.setSilent(true);
             slime.setMaximumNoDamageTicks(35);
@@ -227,7 +231,7 @@ public class SpawnBoss {
                     endermanMinion.setHealth(plugin.mainConfig.getIntPvE("Enderman_Minion_Health"));
                     endermanMinion.setMaximumNoDamageTicks(35);
                     endermanMinion.setNoDamageTicks(35);
-                    endermanMinion.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf((int) endermanMinion.getHealth()) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Slime_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                    endermanMinion.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + (int) endermanMinion.getHealth() + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Slime_Minion_Health") + "" + ChatColor.GRAY + ">");
                     PersistentDataContainer dataMini = endermanMinion.getPersistentDataContainer();
                     dataMini.set(name, PersistentDataType.STRING, "MINI");
                     dataMini.set(namePlayer, PersistentDataType.STRING, playerName);

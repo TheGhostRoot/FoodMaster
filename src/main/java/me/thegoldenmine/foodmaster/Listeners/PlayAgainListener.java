@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,7 +33,7 @@ public class PlayAgainListener implements Listener {
         ChatColor aqua = ChatColor.AQUA;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }

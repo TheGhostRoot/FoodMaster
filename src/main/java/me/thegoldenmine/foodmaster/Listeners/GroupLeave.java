@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +38,7 @@ public class GroupLeave implements Listener {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }

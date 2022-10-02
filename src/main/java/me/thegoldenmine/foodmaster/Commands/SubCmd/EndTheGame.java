@@ -10,7 +10,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.UUID;
 
 public class EndTheGame {
     private final FoodMaster plugin;
@@ -167,10 +167,7 @@ public class EndTheGame {
         ChatColor strikethrough = ChatColor.STRIKETHROUGH;
         ChatColor gold = ChatColor.GOLD;
         ChatColor bold = ChatColor.BOLD;
-        //ChatColor yellow = ChatColor.YELLOW;
-        //ChatColor green = ChatColor.GREEN;
         ChatColor italic = ChatColor.ITALIC;
-        //ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
         String ERROR;
         if (plugin.mainConfig.getStrMain("name") != null) {
@@ -178,8 +175,6 @@ public class EndTheGame {
         } else {
             ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + " FoodMaster " + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         }
-        //String playerStats = aqua + "" + italic + "<--=={ " + gold + "" + gold + "Player stats" + aqua + "" + italic + " }==-->";
-        //String gameStats = aqua + "" + italic + "<--=={ " + gold + "" + gold + "Game stats" + aqua + "" + italic + " }==-->";
         UUID uuid = player.getUniqueId();
         Location endLoc = plugin.mainConfig.getLocationMain("end_location");
         if (endLoc == null) {

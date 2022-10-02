@@ -90,107 +90,107 @@ public class BlueTeam {
             Set<UUID> groupPlayersInYellowTeam = plugin.deathmatch.getGroupPlayersInYellowTeam(player);
             // show the winners
             Players(player);
-            String s = "Enemy Team: ";
-            String s1 = "Your Team: ";
+            String EnemyTeam = "Enemy Team: ";
+            String YourTeam = "Your Team: ";
             if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty() && groupPlayersInRedTeam.contains(uniqueId)) {
                 player.sendMessage(playerStats);
-                player.sendMessage(green + "" + italic + s1 + red + "" + italic + "Red");
+                player.sendMessage(green + "" + italic + YourTeam + red + "" + italic + "Red");
                 player.sendMessage("");
                 plugin.redTeam.Players(player);
                 if (groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_GREEN + "" + italic + "Green");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_GREEN + "" + italic + "Green");
                     player.sendMessage("");
                     plugin.greenTeam.Players(player);
                 }
                 if (groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + aqua + "" + italic + "Cyan");
+                    player.sendMessage(red + "" + italic + EnemyTeam + aqua + "" + italic + "Cyan");
                     player.sendMessage("");
                     plugin.cyanTeam.Players(player);
                 }
                 if (groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + yellow + "" + italic + "Yellow");
+                    player.sendMessage(red + "" + italic + EnemyTeam + yellow + "" + italic + "Yellow");
                     player.sendMessage("");
                     plugin.yellowTeam.Players(player);
                 }
             } else if (groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty() && groupPlayersInGreenTeam.contains(uniqueId)) {
                 player.sendMessage(playerStats);
-                player.sendMessage(green + "" + italic + s1 + ChatColor.DARK_GREEN + "" + italic + "Green");
+                player.sendMessage(green + "" + italic + YourTeam + ChatColor.DARK_GREEN + "" + italic + "Green");
                 player.sendMessage("");
                 plugin.greenTeam.Players(player);
                 if (groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + yellow + "" + italic + "Yellow");
+                    player.sendMessage(red + "" + italic + EnemyTeam + yellow + "" + italic + "Yellow");
                     player.sendMessage("");
                     plugin.yellowTeam.Players(player);
                 }
                 if (groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + aqua + "" + italic + "Cyan");
+                    player.sendMessage(red + "" + italic + EnemyTeam + aqua + "" + italic + "Cyan");
                     player.sendMessage("");
                     plugin.cyanTeam.Players(player);
                 }
                 if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_RED + "" + italic + "Red");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_RED + "" + italic + "Red");
                     player.sendMessage("");
                     plugin.redTeam.Players(player);
                 }
             } else if (groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty() && groupPlayersInCyanTeam.contains(uniqueId)) {
                 player.sendMessage(playerStats);
-                player.sendMessage(green + "" + italic + s1 + aqua + "" + italic + "Cyan");
+                player.sendMessage(green + "" + italic + YourTeam + aqua + "" + italic + "Cyan");
                 player.sendMessage("");
                 plugin.cyanTeam.Players(player);
                 if (groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_GREEN + "" + italic + "Green");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_GREEN + "" + italic + "Green");
                     player.sendMessage("");
                     plugin.greenTeam.Players(player);
                 }
                 if (groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + yellow + "" + italic + "Yellow");
+                    player.sendMessage(red + "" + italic + EnemyTeam + yellow + "" + italic + "Yellow");
                     player.sendMessage("");
                     plugin.yellowTeam.Players(player);
                 }
                 if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_RED + "" + italic + "Red");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_RED + "" + italic + "Red");
                     player.sendMessage("");
                     plugin.redTeam.Players(player);
                 }
             } else if (groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty() && groupPlayersInYellowTeam.contains(uniqueId)) {
                 player.sendMessage(playerStats);
-                player.sendMessage(green + "" + italic + s1 + yellow + "" + italic + "Yellow");
+                player.sendMessage(green + "" + italic + YourTeam + yellow + "" + italic + "Yellow");
                 player.sendMessage("");
                 plugin.yellowTeam.Players(player);
                 if (groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_GREEN + "" + italic + "Green");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_GREEN + "" + italic + "Green");
                     player.sendMessage("");
                     plugin.greenTeam.Players(player);
                 }
                 if (groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + aqua + "" + italic + "Cyan");
+                    player.sendMessage(red + "" + italic + EnemyTeam + aqua + "" + italic + "Cyan");
                     player.sendMessage("");
                     plugin.cyanTeam.Players(player);
                 }
                 if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_RED + "" + italic + "Red");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_RED + "" + italic + "Red");
                     player.sendMessage("");
                     plugin.redTeam.Players(player);
                 }
             } else {
                 player.sendMessage(playerStats);
                 if (groupPlayersInGreenTeam != null && !groupPlayersInGreenTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_GREEN + "" + italic + "Green");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_GREEN + "" + italic + "Green");
                     player.sendMessage("");
                     plugin.greenTeam.Players(player);
                 }
                 if (groupPlayersInCyanTeam != null && !groupPlayersInCyanTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + aqua + "" + italic + "Cyan");
+                    player.sendMessage(red + "" + italic + EnemyTeam + aqua + "" + italic + "Cyan");
                     player.sendMessage("");
                     plugin.cyanTeam.Players(player);
                 }
                 if (groupPlayersInRedTeam != null && !groupPlayersInRedTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + ChatColor.DARK_RED + "" + italic + "Red");
+                    player.sendMessage(red + "" + italic + EnemyTeam + ChatColor.DARK_RED + "" + italic + "Red");
                     player.sendMessage("");
                     plugin.redTeam.Players(player);
                 }
                 if (groupPlayersInYellowTeam != null && !groupPlayersInYellowTeam.isEmpty()) {
-                    player.sendMessage(red + "" + italic + s + yellow + "" + italic + "Yellow");
+                    player.sendMessage(red + "" + italic + EnemyTeam + yellow + "" + italic + "Yellow");
                     player.sendMessage("");
                     plugin.yellowTeam.Players(player);
                 }

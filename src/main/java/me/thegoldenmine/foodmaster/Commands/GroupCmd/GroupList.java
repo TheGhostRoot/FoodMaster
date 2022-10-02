@@ -23,15 +23,15 @@ public class GroupList {
         ChatColor green = ChatColor.GREEN;
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
         if (plugin.playerGroup.isPlayerInGroup(player)) {
             final Set<UUID> playerGroup = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             if (playerGroup.size() <= 1) {

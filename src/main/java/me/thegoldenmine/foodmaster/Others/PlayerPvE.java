@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class PlayerPvE {
-    private  final FoodMaster plugin;
+    private final FoodMaster plugin;
 
     public PlayerPvE(FoodMaster main) {
         plugin = main;

@@ -25,7 +25,7 @@ public class OnLeave implements Listener {
         if (plugin.playerGroup.isPlayerInGroup(player)) {
             Set<UUID> players = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
             boolean isPlayerStartedAgame = plugin.game.isPlayerInGame(player) || plugin.waitingLobby.isPlayerInWaitingLobby(player);
-            boolean b = players.size() - 1 == 1 || players.size() - 1 == 0 ;
+            boolean b = players.size() - 1 == 1 || players.size() - 1 == 0;
             if (!players.isEmpty() && b && isPlayerStartedAgame) {
                 if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
                     plugin.endTheGame.endThePvE(player);

@@ -89,7 +89,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -297,7 +297,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s7;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s7 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s7 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s7 = " FoodMaster ";
         }
@@ -340,7 +340,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s4;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s4 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s4 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s4 = " FoodMaster ";
         }
@@ -379,7 +379,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s6;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s6 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s6 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s6 = " FoodMaster ";
         }
@@ -418,7 +418,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -457,7 +457,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -496,7 +496,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -535,7 +535,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -579,12 +579,12 @@ public class StartTheGame {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
-                                groupPlayer.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at "+gold +""+italic+""+player.getName()+""+red+""+italic+"  location.");
+                                groupPlayer.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at " + gold + "" + italic + "" + player.getName() + "" + red + "" + italic + "  location.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at your location.");
+                    player.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at your location.");
                 }
                 plugin.spawnBoss.ZombieBoss(player.getLocation(), player.getName());
             }
@@ -600,7 +600,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -644,12 +644,12 @@ public class StartTheGame {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
-                                groupPlayer.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at "+gold +""+italic+""+player.getName()+""+red+""+italic+"  location.");
+                                groupPlayer.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at " + gold + "" + italic + "" + player.getName() + "" + red + "" + italic + "  location.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at your location.");
+                    player.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at your location.");
                 }
                 plugin.spawnBoss.SkeletonBoss(player.getLocation(), player.getName());
             }
@@ -665,7 +665,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -709,12 +709,12 @@ public class StartTheGame {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
-                                groupPlayer.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at "+gold +""+italic+""+player.getName()+""+red+""+italic+"  location.");
+                                groupPlayer.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at " + gold + "" + italic + "" + player.getName() + "" + red + "" + italic + "  location.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at your location.");
+                    player.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at your location.");
                 }
                 plugin.spawnBoss.SpiderBoss(player.getLocation(), player.getName());
             }
@@ -730,7 +730,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -774,12 +774,12 @@ public class StartTheGame {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
-                                groupPlayer.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at "+gold +""+italic+""+player.getName()+""+red+""+italic+"  location.");
+                                groupPlayer.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at " + gold + "" + italic + "" + player.getName() + "" + red + "" + italic + "  location.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at your location.");
+                    player.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at your location.");
                 }
                 plugin.spawnBoss.EndermanBoss(player.getLocation(), player.getName());
             }
@@ -795,7 +795,7 @@ public class StartTheGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -839,12 +839,12 @@ public class StartTheGame {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
-                                groupPlayer.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at "+gold +""+italic+""+player.getName()+""+red+""+italic+"  location.");
+                                groupPlayer.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at " + gold + "" + italic + "" + player.getName() + "" + red + "" + italic + "  location.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(ERROR+"The PvE boss spawn location is not set so the boss will spawn at your location.");
+                    player.sendMessage(ERROR + "The PvE boss spawn location is not set so the boss will spawn at your location.");
                 }
                 plugin.spawnBoss.SlimeBoss(player.getLocation(), player.getName());
             }

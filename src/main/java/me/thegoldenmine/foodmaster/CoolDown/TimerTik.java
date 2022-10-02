@@ -32,7 +32,7 @@ public class TimerTik {
                 ChatColor italic = ChatColor.ITALIC;
                 String s;
                 if (plugin.mainConfig.getStrMain("name") != null) {
-                    s = " "+plugin.mainConfig.getStrMain("name")+" ";
+                    s = " " + plugin.mainConfig.getStrMain("name") + " ";
                 } else {
                     s = " FoodMaster ";
                 }

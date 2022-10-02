@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,13 +48,13 @@ public class DamageListener implements Listener {
         ChatColor bold = ChatColor.BOLD;
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
         Entity defender = event.getEntity();
         if (defender instanceof Player) {
             Player player = (Player) defender;
@@ -194,33 +194,33 @@ public class DamageListener implements Listener {
                     }
                     if (living instanceof Zombie) {
                         if (data.get(name, PersistentDataType.STRING).equals("BOSS")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Zombie_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Zombie_Health") + "" + ChatColor.GRAY + ">");
                         }
                         if (data.get(name, PersistentDataType.STRING).equals("MINI")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Zombie_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Zombie_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Zombie_Minion_Health") + "" + ChatColor.GRAY + ">");
                         }
                     } else if (living instanceof Spider) {
                         if (data.get(name, PersistentDataType.STRING).equals("BOSS")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Spider_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Spider_Health") + "" + ChatColor.GRAY + ">");
                         }
                         if (data.get(name, PersistentDataType.STRING).equals("MINI")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Spider_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Spider_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Spider_Minion_Health") + "" + ChatColor.GRAY + ">");
                         }
                     } else if (living instanceof Skeleton && data.get(name, PersistentDataType.STRING).equals("BOSS")) {
-                        living.setCustomName(plugin.mainConfig.getStrPvE("Skeleton_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Skeleton_Health")) + "" + ChatColor.GRAY + ">");
+                        living.setCustomName(plugin.mainConfig.getStrPvE("Skeleton_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Skeleton_Health") + "" + ChatColor.GRAY + ">");
                     } else if (living instanceof Slime) {
                         if (data.get(name, PersistentDataType.STRING).equals("BOSS")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Slime_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Slime_Health") + "" + ChatColor.GRAY + ">");
                         }
                         if (data.get(name, PersistentDataType.STRING).equals("MINI")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Slime_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Slime_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Slime_Minion_Health") + "" + ChatColor.GRAY + ">");
                         }
                     } else if (living instanceof Enderman) {
                         if (data.get(name, PersistentDataType.STRING).equals("BOSS")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Enderman_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + " " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Enderman_Health") + "" + ChatColor.GRAY + ">");
                         }
                         if (data.get(name, PersistentDataType.STRING).equals("MINI")) {
-                            living.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + String.valueOf(healthNew) + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + String.valueOf(plugin.mainConfig.getIntPvE("Enderman_Minion_Health")) + "" + ChatColor.GRAY + ">");
+                            living.setCustomName(plugin.mainConfig.getStrPvE("Enderman_Name") + "" + ChatColor.BLUE + "" + ChatColor.ITALIC + "'s Minion " + ChatColor.GRAY + "<" + ChatColor.GOLD + "" + healthNew + "" + ChatColor.GRAY + "/" + ChatColor.GREEN + "" + plugin.mainConfig.getIntPvE("Enderman_Minion_Health") + "" + ChatColor.GRAY + ">");
                         }
                     }
                 }
@@ -237,14 +237,14 @@ public class DamageListener implements Listener {
         ChatColor yellow = ChatColor.YELLOW;
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
         final int damage = plugin.mainConfig.getIntGame("damage");

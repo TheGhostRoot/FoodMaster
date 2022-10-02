@@ -32,7 +32,7 @@ public class KickPlayerFromGame {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -58,7 +58,7 @@ public class KickPlayerFromGame {
             }
             if (playerKick != null) {
                 if (!playerKick.isOnline()) {
-                    player.sendMessage(ERROR+""+gold+""+italic+""+playerKick.getName()+""+red+""+italic+" is not Online!");
+                    player.sendMessage(ERROR + "" + gold + "" + italic + "" + playerKick.getName() + "" + red + "" + italic + " is not Online!");
                     return;
                 }
                 if (player.equals(playerKick)) {

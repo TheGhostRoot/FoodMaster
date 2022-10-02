@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class HelpMenu extends BooleanUtils {
     private final FoodMaster plugin;
 
-    public HelpMenu(FoodMaster main){
+    public HelpMenu(FoodMaster main) {
         plugin = main;
     }
 
@@ -36,11 +36,11 @@ public class HelpMenu extends BooleanUtils {
         bookMeta.addPage(blue + "" + bold + "\n SET >" + ChatColor.DARK_PURPLE + "" + italic + "\n /fm set wait-spawn-point " + gold + "" + italic + "[waiting lobby name] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set unlimited locations as waiting lobby locations and you can call them whatever you want.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set game-time " + gold + "" + italic + "[time in seconds] " + red + "" + bold + ">- " + darkGray + "" + italic + "This will set the timer for the game.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set hungry " + gold + "" + italic + "[while-waiting/during-game/in-group] [on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can decide if the players will be hungry.");
-        bookMeta.addPage(ChatColor.DARK_PURPLE+""+italic+"/fm set game-timer-color "+gold+""+italic+"[color]" +red+""+bold+" >- "+darkGray+""+italic+"Sets the color of the timer.");
+        bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set game-timer-color " + gold + "" + italic + "[color]" + red + "" + bold + " >- " + darkGray + "" + italic + "Sets the color of the timer.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set game-spawn-point " + gold + "" + italic + "[game name] [location name] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set unlimited spawn points for players to be teleported when the game starts or on respawn.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set max-players-in-group " + gold + "" + italic + "[number] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set the max number of players allowed in one group.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set fall-damage " + gold + "" + italic + "[game/waiting-lobby/group] [on/off]" + red + "" + bold + ">- " + darkGray + "" + italic + "Removes the fall game.");
-        bookMeta.addPage(ChatColor.DARK_PURPLE+""+italic+"/fm pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
+        bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set max-players-in-waiting-lobby " + gold + "" + italic + "[amount] " + red + "" + bold + ">- " + darkGray + "" + italic + "Sets the max players in a waiting lobby.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set end " + red + "" + bold + ">- " + darkGray + "" + italic + "This will set the location where players will be teleported when the game is ended or when players are kicked.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set friendly-fire " + gold + "" + italic + "[on or off] " + red + "" + bold + ">- " + darkGray + "" + italic + "If you want to take damage from your team then set it to ON or set it to OFF if you don't want to take damage.");
@@ -50,7 +50,7 @@ public class HelpMenu extends BooleanUtils {
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set friendly-damage " + gold + "" + italic + "[amount] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can change the food's friendly fire damage.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set group-player-break-blocks " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set if the players in a group can break blocks before the game starts.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set group-player-place-blocks " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set if the players in a group can place blocks before the game starts.");
-        bookMeta.addPage(ChatColor.DARK_PURPLE+""+italic+"/fm set group-player-pickup "+gold+""+italic+"[on/off] "+red+""+bold+">- "+darkGray+""+italic+"You can set if the players in a group can pickup before the game starts.");
+        bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set group-player-pickup " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set if the players in a group can pickup before the game starts.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set group-player-hit-teammate " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set if the players in a group can attack their teammates before the game starts.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set group-player-hit-mobs " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can set if the players in a group can attack mobs before the game starts.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm set lives " + gold + "" + italic + "[amount] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can change the amount of lives for any player.");
@@ -65,7 +65,7 @@ public class HelpMenu extends BooleanUtils {
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm reset " + gold + "" + italic + "[optional: player name] " + red + "" + bold + ">- " + darkGray + "" + italic + "This is for Server Staff Only. This command will reset the player's stats like kills, deaths, wins and losses. It will also remove the player from every game.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm stats " + gold + "" + italic + "[optional: player name] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can see your stats or someone's stats.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm start " + gold + "" + italic + "[team-deathmatch/free-for-all/food-game/pve] [teams/boss] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can start a game with your group.");
-        bookMeta.addPage(ChatColor.DARK_PURPLE+""+italic+"/fm gui "+red+""+bold+">-"+darkGray+""+italic+" Opens the FoodMaster GUI.");
+        bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm gui " + red + "" + bold + ">-" + darkGray + "" + italic + " Opens the FoodMaster GUI.");
         bookMeta.addPage(blue + "" + bold + "\n GROUP >");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm group invite " + gold + "" + italic + "[player name] " + red + "" + bold + ">- " + darkGray + "" + italic + "Invites the player whose name you have entered. The player that you invite will have 5 minutes to accept the invite.");
         bookMeta.addPage(ChatColor.DARK_PURPLE + "" + italic + "/fm group accept " + gold + "" + italic + "[player name] " + red + "" + bold + ">- " + darkGray + "" + italic + "You have to accept the invite of the player that you have specified.");

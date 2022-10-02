@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class PotatoPowerListener implements Listener {
         ChatColor italic = ChatColor.ITALIC;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -48,7 +48,7 @@ public class PotatoPowerListener implements Listener {
                     player.sendMessage(WARN + "You have " + gold + "" + italic + "" + plugin.kitPowerCoolDown.getTime(player) + "" + yellow + "" + italic + " seconds left.");
                 } else {
                     plugin.kitPowerCoolDown.addPlayerToCoolMap(player, 10);
-                  //  /*
+                    //  /*
                     new BukkitRunnable() {
                         int balls = 0;
 
@@ -80,7 +80,7 @@ public class PotatoPowerListener implements Listener {
                     player.sendMessage(WARN + "You have " + gold + "" + italic + "" + plugin.kitsCoolDown.getTime(player) + "" + yellow + "" + italic + " seconds left.");
                 } else {
                     plugin.kitsCoolDown.addPlayerToCoolMap(player, 1);
-                   // /*
+                    // /*
                     new BukkitRunnable() {
                         int balls = 0;
 
@@ -102,7 +102,7 @@ public class PotatoPowerListener implements Listener {
                         }
                     }.runTaskTimer(plugin, 0, 5);
 
-                  //   */
+                    //   */
                 }
             }
         }

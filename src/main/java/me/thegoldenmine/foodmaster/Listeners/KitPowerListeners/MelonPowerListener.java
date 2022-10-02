@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,7 +39,7 @@ public class MelonPowerListener implements Listener {
             ChatColor italic = ChatColor.ITALIC;
             String s;
             if (plugin.mainConfig.getStrMain("name") != null) {
-                s = " "+plugin.mainConfig.getStrMain("name")+" ";
+                s = " " + plugin.mainConfig.getStrMain("name") + " ";
             } else {
                 s = " FoodMaster ";
             }

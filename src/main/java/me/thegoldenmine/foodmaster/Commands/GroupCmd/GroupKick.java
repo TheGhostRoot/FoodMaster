@@ -16,8 +16,8 @@ public class GroupKick {
     }
 
     public void PlayerKickGroup(Player player, String[] args) {
-        // the player is the one that wants to kick
-        // /fw group kick [player name] [reason]
+        // the player is the one that ran the command
+        // /fm group kick [player name] [reason]
         //      0     1      2            3    index
         //      1     2      3            4   num
         ChatColor darkGray = ChatColor.DARK_GRAY;
@@ -29,16 +29,16 @@ public class GroupKick {
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         StringBuilder message = new StringBuilder();
         if (args.length >= 3) {
             String playerName = args[2];
@@ -74,7 +74,7 @@ public class GroupKick {
                         player.sendMessage(ERROR + "" + playerKick.getName() + "" + red + "" + italic + " is not in your group.");
                         return;
                     }
-                    String s1 = " . Reason: ";
+                    String Reas = " . Reason: ";
                     Set<UUID> playersInG = new HashSet<>(playersInGroupOfPlayer);
                     if (playersInG.size() - 1 == 1) {
                         if (plugin.playerPvE.isPlayerPlayingPvE(playerKick)) {
@@ -144,12 +144,12 @@ public class GroupKick {
                     }
                     removeListG.forEach(plugin.allGroups::remove);
                     Location loc = plugin.mainConfig.getLocationMain("end_location");
-                    String s2 = " players by ";
+                    String PlayersBy = " players by ";
                     for (UUID uuid : playersInGroupOfPlayer) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null && !players.equals(playerKick) && !players.equals(player)) {
                             if (reason != null) {
-                                players.sendMessage(NORMAL + "" + gold + "" + italic + "" + playerKick.getName() + "" + green + "" + italic + " has been kicked from the group by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + s1 + yellow + "" + italic + reason);
+                                players.sendMessage(NORMAL + "" + gold + "" + italic + "" + playerKick.getName() + "" + green + "" + italic + " has been kicked from the group by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + Reas + yellow + "" + italic + reason);
                             } else {
                                 players.sendMessage(NORMAL + "" + gold + "" + italic + "" + playerKick.getName() + "" + green + "" + italic + " has been kicked from the group by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " .");
                             }
@@ -197,9 +197,9 @@ public class GroupKick {
                             playerKick.getInventory().clear();
                             playerKick.teleport(loc);
                             if (reason != null) {
-                                playerKick.sendMessage(NORMAL + "You are kick from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + s2 + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + s1 + yellow + "" + italic + "" + reason);
+                                playerKick.sendMessage(NORMAL + "You are kick from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + PlayersBy + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + Reas + yellow + "" + italic + "" + reason);
                             } else {
-                                playerKick.sendMessage(NORMAL + "You are kick from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + s2 + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + " .");
+                                playerKick.sendMessage(NORMAL + "You are kick from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + PlayersBy + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + " .");
                             }
                         } else {
                             if (player.hasPermission("foodm.staff")) {
@@ -222,10 +222,10 @@ public class GroupKick {
                         }
                         if (reason != null) {
                             player.sendMessage(NORMAL + "You have kicked " + gold + "" + italic + "" + playerKick.getName() + "" + green + "" + italic + " from your group. Reason: " + yellow + "" + italic + "" + reason);
-                            playerKick.sendMessage(NORMAL + "You have been kicked from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + s2 + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + s1 + yellow + "" + italic + "" + reason);
+                            playerKick.sendMessage(NORMAL + "You have been kicked from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + PlayersBy + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + "" + Reas + yellow + "" + italic + "" + reason);
                         } else {
                             player.sendMessage(NORMAL + "You have kicked " + gold + "" + italic + "" + playerKick.getName() + "" + green + "" + italic + " from your group.");
-                            playerKick.sendMessage(NORMAL + "You have been kicked from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + s2 + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " .");
+                            playerKick.sendMessage(NORMAL + "You have been kicked from the group of " + gold + "" + italic + "" + playersList + "" + green + "" + italic + PlayersBy + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " .");
                         }
                     }
                     playerKick.sendTitle(gold + "" + italic + "You were kicked from your group by", aqua + "" + italic + "" + player.getName(), 2, 80, 2);

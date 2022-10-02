@@ -31,6 +31,7 @@ public class SkeletonShootListener implements Listener {
             if (data.has(name, PersistentDataType.STRING) && data.has(namePlayer, PersistentDataType.STRING) && plugin.mainConfig.getBooleanPvE("Skeleton_Arrow_Rapid_Fire")) {
                 new BukkitRunnable() {
                     int arrows = 0;
+
                     @Override
                     public void run() {
                         if (arrows <= 5) {

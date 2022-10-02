@@ -94,7 +94,7 @@ public class PlayerDead {
             plugin.playersPlayingPvEZombie.remove(uuid);
             plugin.playersPlayingPvESpider.remove(uuid);
             plugin.playersPlayingPvEEnderman.remove(uuid);
-            plugin. playersPlayingPvESkeleton.remove(uuid);
+            plugin.playersPlayingPvESkeleton.remove(uuid);
             plugin.playersPlayingPvESlime.remove(uuid);
             // others
             plugin.kickedPlayers.remove(uuid);

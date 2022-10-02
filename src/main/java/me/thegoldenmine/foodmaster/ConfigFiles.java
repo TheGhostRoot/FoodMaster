@@ -520,30 +520,37 @@ public class ConfigFiles {
         String strLoc = dataPvE.getString(path);
         return plugin.StringToLocation(strLoc);
     }
+
     public boolean getBooleanPvE(String path) {
         return dataPvE.getBoolean(path);
     }
+
     public int getIntPvE(String path) {
         return dataPvE.getInt(path);
     }
+
     public String getStrPvE(String path) {
         return dataPvE.getString(path);
     }
+
     public void setLocationPvE(String path, Location loc) {
         dataPvE.set(path, plugin.LocationToString(loc));
         savePvE();
         reloadPvE();
     }
+
     public void setBooleanPvE(String path, boolean bolean) {
         dataPvE.set(path, bolean);
         savePvE();
         reloadPvE();
     }
+
     public void setIntPvE(String path, int i) {
         dataPvE.set(path, i);
         savePvE();
         reloadPvE();
     }
+
     public void setStrPvE(String path, String str) {
         dataPvE.set(path, str);
         savePvE();
@@ -621,6 +628,7 @@ public class ConfigFiles {
             throw new RuntimeException("- FoodMaster ERROR - Cannot save losses.yml", e);
         }
     }
+
     public synchronized void savePvE() {
         try {
             dataPvE.save(PvEFile);

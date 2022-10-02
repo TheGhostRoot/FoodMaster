@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,7 +43,7 @@ public class FishPowerListener implements Listener {
             ChatColor aqua = ChatColor.AQUA;
             String s;
             if (plugin.mainConfig.getStrMain("name") != null) {
-                s = " "+plugin.mainConfig.getStrMain("name")+" ";
+                s = " " + plugin.mainConfig.getStrMain("name") + " ";
             } else {
                 s = " FoodMaster ";
             }
@@ -399,9 +399,9 @@ public class FishPowerListener implements Listener {
 
     private void parti(Player players, Location loc) {
         for (double x = loc.getX() - 1.5; x < 1.5 + loc.getX(); x++) {
-            for (int y = loc.getBlockY() - 3; y < 3+ loc.getBlockY(); y++) {
+            for (int y = loc.getBlockY() - 3; y < 3 + loc.getBlockY(); y++) {
                 for (double z = loc.getZ() - 1.5; z < 1.5 + loc.getZ(); z++) {
-                    Location newLoc = new Location(loc.getWorld(), x+0.5, y, z+0.5);
+                    Location newLoc = new Location(loc.getWorld(), x + 0.5, y, z + 0.5);
                     players.spawnParticle(Particle.WATER_BUBBLE, newLoc, 3);
                 }
             }

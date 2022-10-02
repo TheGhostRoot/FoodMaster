@@ -23,18 +23,18 @@ public class GroupChat {
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         StringBuilder message = new StringBuilder();
         // player is the one that sends the message
-        // /fw group chat [message]
+        // /fm group chat [message]
         //      0     1       2      index
         //      1     2       3      num
         if (args.length >= 3) {

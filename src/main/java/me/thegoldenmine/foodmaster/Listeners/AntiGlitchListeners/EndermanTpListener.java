@@ -12,13 +12,13 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class EndermanTpListener implements Listener {
     private final FoodMaster plugin;
-    
+
     public EndermanTpListener(FoodMaster main) {
         plugin = main;
     }
-    
+
     @EventHandler
-    public void EndermanTel(EntityTeleportEvent event){
+    public void EndermanTel(EntityTeleportEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Enderman) {
             Enderman enderman = (Enderman) entity;

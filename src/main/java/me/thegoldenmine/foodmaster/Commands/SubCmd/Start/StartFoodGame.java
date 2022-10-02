@@ -17,11 +17,11 @@ public class StartFoodGame {
     private final FoodMaster plugin;
 
     public StartFoodGame(FoodMaster main) {
-        plugin= main;
+        plugin = main;
     }
 
     public Location findFreeWaitLobby(Player player, String cmdArgs) {
-        // "->wait-location"
+        // waiting lobby location path in config name+"->wait-location"
         boolean isNull = false;
         for (String name : plugin.playersInWaitingLobby.keySet()) {
             // key = name | value = amount of players in that waiting lobby
@@ -71,15 +71,15 @@ public class StartFoodGame {
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         UUID uuid = player.getUniqueId();
         Location loc = findFreeWaitLobby(player, args);
         if (plugin.playerGroup.isPlayerInGroup(player)) {
@@ -89,15 +89,15 @@ public class StartFoodGame {
                 return;
             }
             if (!plugin.playersChoiceFoodGame.isEmpty() && plugin.playersChoiceFoodGame.contains(uuid)) {
-                player.sendMessage(ERROR+"You have already started FoodGame");
+                player.sendMessage(ERROR + "You have already started FoodGame");
                 return;
             }
             if (!plugin.playersChoiceFreeForAll.isEmpty() && plugin.playersChoiceFreeForAll.contains(uuid)) {
-                player.sendMessage(ERROR+"You have already started FreeForAll");
+                player.sendMessage(ERROR + "You have already started FreeForAll");
                 return;
             }
             if (plugin.deathmatch.isPlayerChooseToPlayFoodWars(player)) {
-                player.sendMessage(ERROR+"You have already started TeamDeathmatch");
+                player.sendMessage(ERROR + "You have already started TeamDeathmatch");
                 return;
             }
             if (loc == null) {

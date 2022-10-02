@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -12,10 +12,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
-public class BlockAndExplosionListener implements Listener {
+public class BreakAndExplosionListener implements Listener {
     private final FoodMaster plugin;
 
-    public BlockAndExplosionListener(FoodMaster plugin) {
+    public BreakAndExplosionListener(FoodMaster plugin) {
         this.plugin = plugin;
     }
 

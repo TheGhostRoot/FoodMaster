@@ -28,7 +28,7 @@ public class SetSubCommand {
         ChatColor red = ChatColor.RED;
         String su;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            su = " "+plugin.mainConfig.getStrMain("name")+" ";
+            su = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             su = " FoodMaster ";
         }
@@ -110,23 +110,23 @@ public class SetSubCommand {
                         if (type.equalsIgnoreCase("pve-bosses")) {
                             if (mode.equalsIgnoreCase("on")) {
                                 plugin.mainConfig.setBooleanPvE("ride_pve_bosses", true);
-                                player.sendMessage(NORMAL+"Players can ride the PvE bosses.");
+                                player.sendMessage(NORMAL + "Players can ride the PvE bosses.");
                             } else if (mode.equalsIgnoreCase("off")) {
                                 plugin.mainConfig.setBooleanPvE("ride_pve_bosses", false);
-                                player.sendMessage(NORMAL+"Players can't ride the PvE bosses.");
+                                player.sendMessage(NORMAL + "Players can't ride the PvE bosses.");
                             }
                         } else if (type.equalsIgnoreCase("lobby-players")) {
                             if (mode.equalsIgnoreCase("on")) {
                                 plugin.mainConfig.setBooleanWaitLobby("ride_players", true);
-                                player.sendMessage(NORMAL+"Players can ride other players in the waiting lobby.");
+                                player.sendMessage(NORMAL + "Players can ride other players in the waiting lobby.");
                             } else if (mode.equalsIgnoreCase("off")) {
                                 plugin.mainConfig.setBooleanWaitLobby("ride_players", false);
-                                player.sendMessage(NORMAL+"Players can't ride other players in the waiting lobby.");
+                                player.sendMessage(NORMAL + "Players can't ride other players in the waiting lobby.");
                             }
                         }
                     }
                 } else {
-                    player.sendMessage(INFO+"/fm set riding " + gold + "" + italic + "[pve-bosses/lobby-players] [on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can allow the player to ride the PvE bosses and players in the waiting lobby or not.");
+                    player.sendMessage(INFO + "/fm set riding " + gold + "" + italic + "[pve-bosses/lobby-players] [on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "You can allow the player to ride the PvE bosses and players in the waiting lobby or not.");
                 }
             } else if (args[1].equalsIgnoreCase("pve-respawn-player")) {
                 // respawm_player
@@ -141,10 +141,10 @@ public class SetSubCommand {
                             player.sendMessage(NORMAL + "Now the player wont respawn.");
                         }
                     } else {
-                        player.sendMessage(INFO+"/fm pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
+                        player.sendMessage(INFO + "/fm pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
                     }
                 } else {
-                    player.sendMessage(INFO+"/fm set pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
+                    player.sendMessage(INFO + "/fm set pve-respawn-player " + gold + "" + italic + "[on/off] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets whether the player will respawn or not.");
                 }
             } else if (args[1].equalsIgnoreCase("pve-boss-spawn")) {
                 // /fm set pve-boss-spawn [game name]
@@ -153,13 +153,13 @@ public class SetSubCommand {
                 if (args.length >= 3) {
                     String gameName = args[2];
                     if (gameName != null && !plugin.playersInGame.keySet().isEmpty() && plugin.playersInGame.containsKey(gameName)) {
-                        plugin.mainConfig.setLocationPvE("pve_boss_spawn-"+gameName, player.getLocation());
-                        player.sendMessage(NORMAL+"You have set your location as a PvE boss spawn point at "+gold+""+gameName+""+green+" game.");
+                        plugin.mainConfig.setLocationPvE("pve_boss_spawn-" + gameName, player.getLocation());
+                        player.sendMessage(NORMAL + "You have set your location as a PvE boss spawn point at " + gold + "" + gameName + "" + green + " game.");
                     } else {
-                        player.sendMessage(INFO+"/fm set pve-boss-spawn " + gold + "" + italic + "[game name] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets the location of the boss to spawn for the game.");
+                        player.sendMessage(INFO + "/fm set pve-boss-spawn " + gold + "" + italic + "[game name] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets the location of the boss to spawn for the game.");
                     }
                 } else {
-                    player.sendMessage(INFO+"/fm set pve-boss-spawn " + gold + "" + italic + "[game name] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets the location of the boss to spawn for the game.");
+                    player.sendMessage(INFO + "/fm set pve-boss-spawn " + gold + "" + italic + "[game name] " + red + "" + bold + ">- " + darkGray + "" + italic + "This sets the location of the boss to spawn for the game.");
                 }
             } else if (args[1].equalsIgnoreCase("hungry")) {
                 // hungry_during_a_game
@@ -326,9 +326,9 @@ public class SetSubCommand {
                 //     0           1         2    index
                 if (args.length >= 3) {
                     plugin.mainConfig.setStrGame("game_timer_color", args[2]);
-                    player.sendMessage(NORMAL +""+ args[2] +""+ plugin.time.getTime(plugin.mainConfig.getIntGame("game_time_seconds")));
+                    player.sendMessage(NORMAL + "" + args[2] + "" + plugin.time.getTime(plugin.mainConfig.getIntGame("game_time_seconds")));
                 } else {
-                    player.sendMessage(ERROR+"/fm set game-timer-color "+gold+""+italic+"[color] "+red+""+bold+">- "+darkGray+""+italic+"Sets the color of the timer.");
+                    player.sendMessage(ERROR + "/fm set game-timer-color " + gold + "" + italic + "[color] " + red + "" + bold + ">- " + darkGray + "" + italic + "Sets the color of the timer.");
                 }
             } else if (args[1].equalsIgnoreCase("game-spawn-point")) {
                 // subcommand "game-spawn-point"
@@ -341,7 +341,7 @@ public class SetSubCommand {
                     String givenGameName = args[2];
                     String givenNameOfLocation = args[3];
                     if (givenGameName.equals(givenNameOfLocation)) {
-                        player.sendMessage(ERROR+"The game name must not be the same as the location name.");
+                        player.sendMessage(ERROR + "The game name must not be the same as the location name.");
                         return;
                     }
                     Location playerLoc = player.getLocation();

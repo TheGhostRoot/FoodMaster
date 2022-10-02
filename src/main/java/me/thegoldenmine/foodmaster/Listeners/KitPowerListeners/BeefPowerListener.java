@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -36,7 +36,7 @@ public class BeefPowerListener implements Listener {
         ChatColor aqua = ChatColor.AQUA;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -56,7 +56,7 @@ public class BeefPowerListener implements Listener {
                 }
             }
         }
-        if (!player.getNearbyEntities( 15, 15, 15).isEmpty()) {
+        if (!player.getNearbyEntities(15, 15, 15).isEmpty()) {
             for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
                 if (entity instanceof Enderman) {
                     Enderman enderman = (Enderman) entity;
@@ -254,7 +254,7 @@ public class BeefPowerListener implements Listener {
         ChatColor italic = ChatColor.ITALIC;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }

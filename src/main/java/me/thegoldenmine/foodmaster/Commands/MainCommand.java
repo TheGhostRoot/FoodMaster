@@ -31,7 +31,7 @@ public class MainCommand implements CommandExecutor {
         ChatColor red = ChatColor.RED;
         String s42;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s42 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s42 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s42 = " FoodMaster ";
         }
@@ -244,12 +244,12 @@ public class MainCommand implements CommandExecutor {
                                                 if (uuid != null) {
                                                     Player player2 = Bukkit.getPlayer(uuid);
                                                     if (player2 != null) {
-                                                        player2.sendMessage(INFO + "The game was ended by "+ gold+""+italic+""+player.getName());
+                                                        player2.sendMessage(INFO + "The game was ended by " + gold + "" + italic + "" + player.getName());
                                                     }
                                                 }
                                             }
                                         } else {
-                                            player1.sendMessage(INFO + "The game was ended by "+ gold+""+italic+""+player.getName());
+                                            player1.sendMessage(INFO + "The game was ended by " + gold + "" + italic + "" + player.getName());
                                         }
                                         plugin.endTheGame.endThePvE(player1);
                                     } else if (plugin.playerPvE.isPlayerChooseToPlayPvE(player1)) {
@@ -261,7 +261,7 @@ public class MainCommand implements CommandExecutor {
                                                         plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                                                         if (endLoc != null) {
                                                             players.teleport(endLoc);
-                                                            players.sendMessage(INFO+"You are removed from the waiting lobby");
+                                                            players.sendMessage(INFO + "You are removed from the waiting lobby");
                                                         }
                                                     }
                                                 }
@@ -270,7 +270,7 @@ public class MainCommand implements CommandExecutor {
                                             plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                                             if (endLoc != null) {
                                                 player.teleport(endLoc);
-                                                player.sendMessage(INFO+"You are removed from the waiting lobby");
+                                                player.sendMessage(INFO + "You are removed from the waiting lobby");
                                             }
                                         }
                                     } else {
@@ -355,7 +355,7 @@ public class MainCommand implements CommandExecutor {
                                                 plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                                                 if (endLoc != null) {
                                                     players.teleport(endLoc);
-                                                    players.sendMessage(INFO+"You are removed from the waiting lobby");
+                                                    players.sendMessage(INFO + "You are removed from the waiting lobby");
                                                 }
                                             }
                                         }
@@ -364,7 +364,7 @@ public class MainCommand implements CommandExecutor {
                                     plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                                     if (endLoc != null) {
                                         player.teleport(endLoc);
-                                        player.sendMessage(INFO+"You are removed from the waiting lobby");
+                                        player.sendMessage(INFO + "You are removed from the waiting lobby");
                                     }
                                 }
                             } else {

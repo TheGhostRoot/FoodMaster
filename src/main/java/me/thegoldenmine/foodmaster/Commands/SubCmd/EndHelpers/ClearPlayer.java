@@ -26,10 +26,7 @@ public class ClearPlayer {
         ChatColor strikethrough = ChatColor.STRIKETHROUGH;
         ChatColor gold = ChatColor.GOLD;
         ChatColor bold = ChatColor.BOLD;
-        //ChatColor yellow = ChatColor.YELLOW;
-        //ChatColor green = ChatColor.GREEN;
-        ChatColor italic = ChatColor.ITALIC;
-        ChatColor aqua = ChatColor.AQUA;
+        ChatColor italic = ChatColor.ITALIC;;
         ChatColor red = ChatColor.RED;
         String ERROR;
         if (plugin.mainConfig.getStrMain("name") != null) {
@@ -37,8 +34,6 @@ public class ClearPlayer {
         } else {
             ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + " FoodMaster " + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         }
-        //String playerStats = aqua + "" + italic + "<--=={ " + gold + "" + gold + "Player stats" + aqua + "" + italic + " }==-->";
-        //String gameStats = aqua + "" + italic + "<--=={ " + gold + "" + gold + "Game stats" + aqua + "" + italic + " }==-->";
         Location endLoc = plugin.mainConfig.getLocationMain("end_location");
         UUID uuid = player.getUniqueId();
         if (plugin.game.isPlayerInGame(player)) {

@@ -23,7 +23,7 @@ public class ItemPickupAndDropListener implements Listener {
         LivingEntity livingEntity = event.getEntity();
         if (livingEntity instanceof Player) {
             Player player = (Player) livingEntity;
-            if (plugin.playerGroup.isPlayerInGroup(player) && !plugin.waitingLobby.isPlayerInWaitingLobby(player) && !plugin.game.isPlayerInGame(player) &&  !plugin.mainConfig.getBooleanMain("group_player_pickup")) {
+            if (plugin.playerGroup.isPlayerInGroup(player) && !plugin.waitingLobby.isPlayerInWaitingLobby(player) && !plugin.game.isPlayerInGame(player) && !plugin.mainConfig.getBooleanMain("group_player_pickup")) {
                 event.setCancelled(true);
             }
             if (plugin.game.isPlayerInGame(player) || plugin.waitingLobby.isPlayerInWaitingLobby(player)) {

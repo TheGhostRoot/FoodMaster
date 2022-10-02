@@ -1,6 +1,6 @@
 package me.thegoldenmine.foodmaster.Commands.SubCmd;
 
-import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,7 +76,7 @@ public class StartCommand {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -174,7 +174,7 @@ public class StartCommand {
         ChatColor red = ChatColor.RED;
         String s2;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s2 = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s2 = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s2 = " FoodMaster ";
         }

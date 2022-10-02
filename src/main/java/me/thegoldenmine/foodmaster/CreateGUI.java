@@ -13,7 +13,7 @@ public class CreateGUI {
     public Inventory guiTeam3;
     public Inventory guiTeam5;
     public Inventory guiTeam4;
-    private FoodMaster plugin;
+    private final FoodMaster plugin;
 
     public CreateGUI(FoodMaster main) {
         guiKit = Bukkit.createInventory(null, 27, ChatColor.AQUA + "" + ChatColor.BOLD + "Choose your Food");
@@ -227,11 +227,11 @@ public class CreateGUI {
     public Inventory createMain(Player player) {
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
-        Inventory mainGUI = Bukkit.createInventory(null, 18, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " "+s+" " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GREEN + "" + ChatColor.ITALIC + " Main Menu");
+        Inventory mainGUI = Bukkit.createInventory(null, 18, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " " + s + " " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GREEN + "" + ChatColor.ITALIC + " Main Menu");
 
         // 1 layer
 
@@ -280,11 +280,11 @@ public class CreateGUI {
         // ---King Of The Hill ---- Food Game -------
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
-        Inventory mainGUI = Bukkit.createInventory(null, 18, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " "+s+" " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.RED + "" + ChatColor.ITALIC + " PvP");
+        Inventory mainGUI = Bukkit.createInventory(null, 18, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " " + s + " " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.RED + "" + ChatColor.ITALIC + " PvP");
 
         // 1 layer
 
@@ -364,11 +364,11 @@ public class CreateGUI {
     public Inventory createPvE() {
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
-        Inventory mainGUI = Bukkit.createInventory(null, 27, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " "+s+" " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.RED + "" + ChatColor.ITALIC + " PvE");
+        Inventory mainGUI = Bukkit.createInventory(null, 27, ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.GOLD + "" + ChatColor.BOLD + " " + s + " " + ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-" + ChatColor.RED + "" + ChatColor.ITALIC + " PvE");
         mainGUI.setItem(0, ItemManager.glassForGUI);
         mainGUI.setItem(1, ItemManager.glassForGUI);
         mainGUI.setItem(2, ItemManager.glassForGUI);

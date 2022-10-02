@@ -26,100 +26,100 @@ public class GroupInvite {
         ChatColor italic = ChatColor.ITALIC;
         ChatColor aqua = ChatColor.AQUA;
         ChatColor red = ChatColor.RED;
-        String s;
+        String Name;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            Name = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
-            s = " FoodMaster ";
+            Name = " FoodMaster ";
         }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
+        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
+        String NORMAL = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + darkGray + "" + strikethrough + "-" + green + "" + italic + " ";
+        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + Name + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (args.length >= 3) {
             // /fm group invite playerName
             //      0      1        2      index
             //      1      2        3       num
-            Player playerInv = Bukkit.getPlayer(args[2]);
+            Player InvitedPlayer = Bukkit.getPlayer(args[2]);
             // player - sender - inviter - value
-            // playerInv - accept - invited - key
-            if (playerInv != null) {
+            // InvitedPlayer - accept - invited - key
+            if (InvitedPlayer != null) {
                 if (player != null) {
-                    UUID playerInvUniqueId = playerInv.getUniqueId();
+                    UUID playerInvUniqueId = InvitedPlayer.getUniqueId();
                     if (plugin.playerGroup.isPlayerInGroup(player) && plugin.playerGroup.getPlayersInGroupOfPlayer(player).contains(playerInvUniqueId)) {
-                        player.sendMessage(ERROR + "You are already in " + gold + "" + italic + "" + playerInv.getName() + "'s" + red + "" + italic + " group.");
+                        player.sendMessage(ERROR + "You are already in " + gold + "" + italic + "" + InvitedPlayer.getName() + "'s" + red + "" + italic + " group.");
                         return;
                     }
                     if (plugin.commandCoolDown.isPlayerInCoolDown(player)) {
                         player.sendMessage(WARN + "Slow down. You have " + gold + "" + italic + "" + plugin.commandCoolDown.getTime(player) + "" + yellow + "" + italic + " seconds left.");
-                    } else {
-                        if (plugin.groupInviteManager.isPlayerInvited(playerInv)) {
-                            player.sendMessage(WARN + "You have already invited " + gold + "" + italic + "" + playerInv.getName() + "" + yellow + "" + italic + " .");
+                        return;
+                    }
+                    if (plugin.groupInviteManager.isPlayerInvited(InvitedPlayer)) {
+                        player.sendMessage(WARN + "You have already invited " + gold + "" + italic + "" + InvitedPlayer.getName() + "" + yellow + "" + italic + " .");
+                        return;
+                    }
+                    if (InvitedPlayer.equals(player)) {
+                        player.sendMessage(ERROR + "You can't invite yourself.");
+                        return;
+                    }
+                    if (plugin.game.isPlayerInGame(player)) {
+                        player.sendMessage(ERROR + "You can't send invites during a game.");
+                        return;
+                    }
+                    if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                        player.sendMessage(ERROR + "You can't send invites while waiting in a waiting lobby.");
+                        return;
+                    }
+                    if (plugin.game.isPlayerInGame(InvitedPlayer)) {
+                        player.sendMessage(ERROR + "" + gold + "" + italic + "" + InvitedPlayer.getName() + "" + red + "" + italic + " is in-game. Players that are in the game can't be invited.");
+                        return;
+                    }
+                    if (plugin.waitingLobby.isPlayerInWaitingLobby(InvitedPlayer)) {
+                        player.sendMessage(ERROR + "" + gold + "" + italic + "" + InvitedPlayer.getName() + "" + red + "" + italic + " is in a waiting lobby. Players that are in the waiting lobby can't be invited.");
+                        return;
+                    }
+                    if (plugin.mainConfig.getIntMain("max-players_in_group") < 2) {
+                        if (player.hasPermission("foodm.staff")) {
+                            player.sendMessage(ERROR + "You have to set the " + darkGray + "" + italic + "max-players-in-group" + red + "" + italic + " to more than " + gold + "" + italic + "1" + red + "" + italic + " to invite players.");
                         } else {
-                            if (playerInv.equals(player)) {
-                                player.sendMessage(ERROR + "You can't invite yourself.");
-                            } else {
-                                if (plugin.game.isPlayerInGame(player)) {
-                                    player.sendMessage(ERROR + "You can't send invites during a game.");
-                                    return;
-                                }
-                                if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
-                                    player.sendMessage(ERROR + "You can't send invites while waiting in a waiting lobby.");
-                                    return;
-                                }
-                                if (plugin.game.isPlayerInGame(playerInv)) {
-                                    player.sendMessage(ERROR + "" + gold + "" + italic + "" + playerInv.getName() + "" + red + "" + italic + " is in-game. Players that are in the game can't be invited.");
-                                    return;
-                                }
-                                if (plugin.waitingLobby.isPlayerInWaitingLobby(playerInv)) {
-                                    player.sendMessage(ERROR + "" + gold + "" + italic + "" + playerInv.getName() + "" + red + "" + italic + " is in a waiting lobby. Players that are in the waiting lobby can't be invited.");
-                                    return;
-                                }
-                                if (plugin.mainConfig.getIntMain("max-players_in_group") < 2) {
-                                    if (player.hasPermission("foodm.staff")) {
-                                        player.sendMessage(ERROR + "You have to set the " + darkGray + "" + italic + "max-players-in-group" + red + "" + italic + " to more than " + gold + "" + italic + "1" + red + "" + italic + " to invite players.");
-                                    } else {
-                                        player.sendMessage(ERROR + "The max amount of players allowed in one group isn't set correctly.");
-                                    }
-                                    return;
-                                }
-                                UUID playerUniqueId = player.getUniqueId();
-                                String s1 = " minutes to accept the invite.";
-                                if (plugin.playerGroup.isPlayerInGroup(player)) {
-                                    if (plugin.playerGroup.getPlayersInGroupOfPlayer(player).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
-                                        player.sendMessage(WARN + "Your group has reached the player limit.");
-                                    } else {
-                                        if (plugin.invites.get(playerInvUniqueId) == null) {
-                                            Set<UUID> uuids = new HashSet<>();
-                                            uuids.add(playerUniqueId);
-                                            plugin.invites.put(playerInvUniqueId, uuids);
-                                        } else {
-                                            Set<UUID> alreadyPlayers = plugin.invites.get(playerInvUniqueId);
-                                            alreadyPlayers.add(playerUniqueId);
-                                            plugin.invites.put(playerInvUniqueId, alreadyPlayers);
-                                        }
-                                        plugin.groupInviteManager.addPlayerToCoolMap(playerInv, 5);
-                                        plugin.commandCoolDown.addPlayerToCoolMap(player, 5);
-                                        player.sendMessage(NORMAL + "You have successfully invited " + gold + "" + italic + "" + playerInv.getName() + "" + green + "" + italic + " to your group. " + gold + "" + italic + "" + playerInv.getName() + "" + green + "" + italic + " has " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(playerInv) + "" + green + "" + italic + s1);
-                                        playerInv.sendMessage(NORMAL + "You have been invited by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " in their group to play FoodMaster. You have " + gold + "" + italic + plugin.groupInviteManager.getTime(playerInv) + "" + green + "" + italic + s1+" Use this command to accept: "+gold+"/fm group accept "+player.getName());
-                                    }
-                                } else {
-                                    if (plugin.invites.get(playerInvUniqueId) == null) {
-                                        Set<UUID> uuids = new HashSet<>();
-                                        uuids.add(playerUniqueId);
-                                        plugin.invites.put(playerInvUniqueId, uuids);
-                                    } else {
-                                        Set<UUID> alreadyPlayers = plugin.invites.get(playerInvUniqueId);
-                                        alreadyPlayers.add(playerUniqueId);
-                                        plugin.invites.put(playerInvUniqueId, alreadyPlayers);
-                                    }
-                                    plugin.groupInviteManager.addPlayerToCoolMap(playerInv, 5);
-                                    plugin.commandCoolDown.addPlayerToCoolMap(player, 5);
-                                    player.sendMessage(NORMAL + "You have successfully invited " + gold + "" + italic + "" + playerInv.getName() + "" + green + "" + italic + " to your group. " + gold + "" + italic + "" + playerInv.getName() + "" + green + "" + italic + " has " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(playerInv) + "" + green + "" + italic + s1);
-                                    playerInv.sendMessage(NORMAL + "You have been invited by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " in their group to play FoodMaster. You have " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(playerInv) + "" + green + "" + italic + s1+" Use this command to accept: "+gold+"/fm group accept "+player.getName());
-                                }
-                            }
+                            player.sendMessage(ERROR + "The max amount of players allowed in one group isn't set correctly.");
                         }
+                        return;
+                    }
+                    UUID playerUniqueId = player.getUniqueId();
+                    String TimeToAcceptTheInvite = " minutes to accept the invite.";
+                    if (plugin.playerGroup.isPlayerInGroup(player)) {
+                        if (plugin.playerGroup.getPlayersInGroupOfPlayer(player).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
+                            player.sendMessage(WARN + "Your group has reached the player limit.");
+                        } else {
+                            if (plugin.invites.get(playerInvUniqueId) == null) {
+                                Set<UUID> uuids = new HashSet<>();
+                                uuids.add(playerUniqueId);
+                                plugin.invites.put(playerInvUniqueId, uuids);
+                            } else {
+                                Set<UUID> alreadyPlayers = plugin.invites.get(playerInvUniqueId);
+                                alreadyPlayers.add(playerUniqueId);
+                                plugin.invites.put(playerInvUniqueId, alreadyPlayers);
+                            }
+                            plugin.groupInviteManager.addPlayerToCoolMap(InvitedPlayer, 5);
+                            plugin.commandCoolDown.addPlayerToCoolMap(player, 5);
+                            player.sendMessage(NORMAL + "You have successfully invited " + gold + "" + italic + "" + InvitedPlayer.getName() + "" + green + "" + italic + " to your group. " + gold + "" + italic + "" + InvitedPlayer.getName() + "" + green + "" + italic + " has " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(InvitedPlayer) + "" + green + "" + italic + TimeToAcceptTheInvite);
+                            InvitedPlayer.sendMessage(NORMAL + "You have been invited by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " in their group to play FoodMaster. You have " + gold + "" + italic + plugin.groupInviteManager.getTime(InvitedPlayer) + "" + green + "" + italic + TimeToAcceptTheInvite + " Use this command to accept: " + gold + "/fm group accept " + player.getName());
+                        }
+                    } else {
+                        if (plugin.invites.get(playerInvUniqueId) == null) {
+                            Set<UUID> uuids = new HashSet<>();
+                            uuids.add(playerUniqueId);
+                            plugin.invites.put(playerInvUniqueId, uuids);
+                        } else {
+                            Set<UUID> alreadyPlayers = plugin.invites.get(playerInvUniqueId);
+                            alreadyPlayers.add(playerUniqueId);
+                            plugin.invites.put(playerInvUniqueId, alreadyPlayers);
+                        }
+                        plugin.groupInviteManager.addPlayerToCoolMap(InvitedPlayer, 5);
+                        plugin.commandCoolDown.addPlayerToCoolMap(player, 5);
+                        player.sendMessage(NORMAL + "You have successfully invited " + gold + "" + italic + "" + InvitedPlayer.getName() + "" + green + "" + italic + " to your group. " + gold + "" + italic + "" + InvitedPlayer.getName() + "" + green + "" + italic + " has " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(InvitedPlayer) + "" + green + "" + italic + TimeToAcceptTheInvite);
+                        InvitedPlayer.sendMessage(NORMAL + "You have been invited by " + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " in their group to play FoodMaster. You have " + gold + "" + italic + "" + plugin.groupInviteManager.getTime(InvitedPlayer) + "" + green + "" + italic + TimeToAcceptTheInvite + " Use this command to accept: " + gold + "/fm group accept " + player.getName());
                     }
                 }
             } else {

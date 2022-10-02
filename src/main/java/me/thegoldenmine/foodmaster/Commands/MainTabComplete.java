@@ -29,7 +29,7 @@ public class MainTabComplete implements TabCompleter {
         ChatColor red = ChatColor.RED;
         String s;
         if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " "+plugin.mainConfig.getStrMain("name")+" ";
+            s = " " + plugin.mainConfig.getStrMain("name") + " ";
         } else {
             s = " FoodMaster ";
         }
@@ -117,9 +117,9 @@ public class MainTabComplete implements TabCompleter {
                     Player players = (Player) sender;
                     if (players.hasPermission("foodm.commands") && players.hasPermission("foodm.stats")) {
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                                if (player != null && !player.equals(players) && player.hasPermission("foodm.commands")) {
-                                    UltraSubCommands.add(player.getName());
-                                }
+                            if (player != null && !player.equals(players) && player.hasPermission("foodm.commands")) {
+                                UltraSubCommands.add(player.getName());
+                            }
                         }
                     }
                 }
@@ -501,7 +501,7 @@ public class MainTabComplete implements TabCompleter {
                     return onOff(sender);
                 }
             } else if (args[0].equalsIgnoreCase("set") && args[1].equalsIgnoreCase("respawn") && args[2].equalsIgnoreCase("team-deathmatch")) {
-                    return onOff(sender);
+                return onOff(sender);
             }
         }
         return Collections.emptyList();
