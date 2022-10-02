@@ -225,7 +225,7 @@ public class StartCommand {
                 if (players != null) {
                     plugin.playersThatChoice2Teams.add(uuids);
                     if (!players.equals(player)) {
-                        players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started Food Wars with " + gold + "" + italic + "2" + green + "" + italic + " teams.");
+                        players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started "+gold+""+italic+"Team Deathmatch"+green+""+italic+" with " + gold + "" + italic + "2" + green + "" + italic + " teams.");
                     }
                     players.setGameMode(GameMode.SURVIVAL);
                     players.getInventory().clear();
@@ -266,7 +266,7 @@ public class StartCommand {
                     if (players != null) {
                         plugin.playersThatChoice3Teams.add(uuids);
                         if (!players.equals(player)) {
-                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started Food Wars with " + gold + "" + italic + "3" + green + "" + italic + " teams.");
+                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started "+gold+""+italic+"Team Deathmatch"+green+""+italic+" with " + gold + "" + italic + "3" + green + "" + italic + " teams.");
                         }
                         players.setGameMode(GameMode.SURVIVAL);
                         players.getInventory().clear();
@@ -308,7 +308,7 @@ public class StartCommand {
                     if (players != null) {
                         plugin.playersThatChoice4Teams.add(uuids);
                         if (!players.equals(player)) {
-                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started Food Wars with " + gold + "" + italic + "4" + green + "" + italic + " teams.");
+                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " has started "+gold+""+italic+"Team Deathmatch"+green+""+italic+" with " + gold + "" + italic + "4" + green + "" + italic + " teams.");
                         }
                         players.setGameMode(GameMode.SURVIVAL);
                         players.getInventory().clear();
@@ -350,7 +350,7 @@ public class StartCommand {
                     if (players != null) {
                         plugin.playersThatChoice5Teams.add(uuids);
                         if (!players.equals(player)) {
-                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " have started Food Wars with " + gold + "" + italic + "5" + green + "" + italic + " teams.");
+                            players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " have started "+gold+""+italic+"Team Deathmatch"+green+""+italic+" with " + gold + "" + italic + "5" + green + "" + italic + " teams.");
                         }
                         players.setGameMode(GameMode.SURVIVAL);
                         players.getInventory().clear();

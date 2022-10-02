@@ -48,7 +48,7 @@ public class GroupChat {
                     for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null) {
-                            players.sendMessage(NORMAL + "" + aqua + "" + bold + "Group Chat " + darkGray + "" + strikethrough + "-" + gold + "" + italic + "" + player.getName() + "" + red + "" + bold + " -> " + green + "" + italic + "" + message);
+                            players.sendMessage(NORMAL + "" + aqua + "" + bold + "Group Chat " + darkGray + "" + strikethrough + "- " + gold + "" + italic + "" + player.getName() + "" + red + "" + bold + " -> " + green + "" + italic + "" + message);
                         }
                     }
                 }

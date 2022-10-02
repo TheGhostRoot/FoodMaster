@@ -119,6 +119,8 @@ public class StartFoodGame {
                     }
                     if (!players.equals(player)) {
                         players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + aqua + "" + italic + " has started " + gold + "" + italic + "Food Game" + aqua + "" + italic + ".");
+                    } else {
+                        players.sendMessage(INFO + " You started " + gold + "" + italic + "Food Game" + aqua + "" + italic + ".");
                     }
                     players.setGameMode(GameMode.SURVIVAL);
                     players.getInventory().clear();

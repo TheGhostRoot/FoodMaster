@@ -126,6 +126,8 @@ public class StartPvESlime {
                     }
                     if (!players.equals(player)) {
                         players.sendMessage(INFO + "" + gold + "" + italic + "" + player.getName() + "" + aqua + "" + italic + " has started " + gold + "" + italic + "PvE Slime boss" + aqua + "" + italic + ".");
+                    } else {
+                        players.sendMessage(INFO + " You started " + gold + "" + italic + "PvE Slime boss" + aqua + "" + italic + ".");
                     }
                     players.setGameMode(GameMode.SURVIVAL);
                     players.getInventory().clear();

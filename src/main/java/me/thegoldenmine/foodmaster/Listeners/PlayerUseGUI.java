@@ -220,7 +220,7 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersRandomKit.remove(uuid);
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Beef Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Beef Kit.");
                     }
                     break;
                 case TROPICAL_FISH:
@@ -235,7 +235,7 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersInFishKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Fish Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Fish Kit.");
                     }
                     break;
                 case COOKIE:
@@ -250,7 +250,7 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInPotatoKit.remove(uuid);
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersInCookieKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Cookie" + green + "" + italic + " Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Cookie" + green + "" + italic + " Kit.");
                     }
                     break;
                 case MELON_SLICE:
@@ -295,7 +295,7 @@ public class PlayerUseGUI implements Listener {
                         plugin.playersInBeefKit.remove(uuid);
                         plugin.playersRandomKit.remove(uuid);
                         plugin.playersInPotatoKit.add(uuid);
-                        player.sendMessage(NORMAL + "You chose " + gold + "" + italic + "Potato" + green + "" + italic + " Kit.");
+                        player.sendMessage(NORMAL + "You choose " + gold + "" + italic + "Potato" + green + "" + italic + " Kit.");
                     }
                     break;
                 case BARRIER:

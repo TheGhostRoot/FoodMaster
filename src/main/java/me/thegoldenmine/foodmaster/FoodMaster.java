@@ -247,6 +247,7 @@ public class FoodMaster extends JavaPlugin {
     //TODO: Add potions on the map and when the player gets the potion. It will give the player effects
     //TODO: Make cooldowns custom
     //TODO: Add custom food names
+    //TODO: Add command for Reload config
     //TODO: Add cooldown option for respawn
 
     //todo TASK:
@@ -511,6 +512,34 @@ public class FoodMaster extends JavaPlugin {
             melonPowerListener = new MelonPowerListener(this);
             potatoPowerListener = new PotatoPowerListener(this);
 
+            helpMenu = new HelpMenu(this);
+
+            // CoolDowns
+            commandCoolDown = new CommandCoolDown(this);
+            groupInviteManager = new GroupInviteManager(this);
+            antiGlitchSys = new AntiGlitchSys(this);
+            gameSpawnCoolDown = new GameSpawnCoolDown(this);
+            kitsCoolDown = new KitsCoolDown(this);
+            kitPowerCoolDown = new KitPowerCoolDown(this);
+            // Groups
+            groupMain = new GroupMain(this);
+            groupInvite = new GroupInvite(this);
+            groupAccept = new GroupAccept(this);
+            groupList = new GroupList(this);
+            groupChat = new GroupChat(this);
+            groupKick = new GroupKick(this);
+
+            // MINIGAME
+            startTheGame = new StartTheGame(this);
+
+            // SubCommands
+            endTheGame = new EndTheGame(this);
+            setSubCommand = new SetSubCommand(this);
+            startCommand = new StartCommand(this);
+            kickPlayerFromGame = new KickPlayerFromGame(this);
+            resetPlayer = new ResetPlayer(this);
+            // others
+            fallDamage = new FallDamage(this);
             Objects.requireNonNull(getCommand("foodmaster")).setExecutor(new MainCommand(this));
             Objects.requireNonNull(getCommand("foodmaster")).setTabCompleter(new MainTabComplete(this));
             System.out.println("  <-> Commands Registered <->");
@@ -541,35 +570,6 @@ public class FoodMaster extends JavaPlugin {
             System.out.println(" ");
             System.out.println("  <-> Events Registered <->");
             System.out.println(" ");
-
-            helpMenu = new HelpMenu(this);
-
-            // CoolDowns
-            commandCoolDown = new CommandCoolDown(this);
-            groupInviteManager = new GroupInviteManager(this);
-            antiGlitchSys = new AntiGlitchSys(this);
-            gameSpawnCoolDown = new GameSpawnCoolDown(this);
-            kitsCoolDown = new KitsCoolDown(this);
-            kitPowerCoolDown = new KitPowerCoolDown(this);
-            // Groups
-            groupMain = new GroupMain(this);
-            groupInvite = new GroupInvite(this);
-            groupAccept = new GroupAccept(this);
-            groupList = new GroupList(this);
-            groupChat = new GroupChat(this);
-            groupKick = new GroupKick(this);
-
-            // MINIGAME
-            startTheGame = new StartTheGame(this);
-
-            // SubCommands
-            endTheGame = new EndTheGame(this);
-            setSubCommand = new SetSubCommand(this);
-            startCommand = new StartCommand(this);
-            kickPlayerFromGame = new KickPlayerFromGame(this);
-            resetPlayer = new ResetPlayer(this);
-            // others
-            fallDamage = new FallDamage(this);
             System.out.println("  <-> Others Registered <->");
             System.out.println(" ");
 
