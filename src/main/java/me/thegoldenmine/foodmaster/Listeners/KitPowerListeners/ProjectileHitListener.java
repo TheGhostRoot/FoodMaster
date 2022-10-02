@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -142,7 +142,7 @@ public class ProjectileHitListener implements Listener {
                 Player playerShooter = (Player) shooter;
                 boolean enableLivesTeamDeathmatch = plugin.mainConfig.getBooleanGame("enable_lives_team_deathmatch");
                 boolean respawnTeamDeathmatch = plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
-                if (plugin.isPlayerInGame(AttackedPlayer) && plugin.isPlayerInGame(playerShooter) && projectile instanceof Snowball) {
+                if (plugin.game.isPlayerInGame(AttackedPlayer) && plugin.game.isPlayerInGame(playerShooter) && projectile instanceof Snowball) {
                     Snowball snowball = (Snowball) projectile;
                     String s1 = "You have spawn protection for ";
                     String path = "respawn_free-for-all";
@@ -168,10 +168,10 @@ public class ProjectileHitListener implements Listener {
                                     plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                                     plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
                                     playerShooter.getInventory().remove(ItemManager.MelonKit);
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
@@ -183,53 +183,53 @@ public class ProjectileHitListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                    plugin.thePlayerIsDead(AttackedPlayer);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame(path)) {
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
                             }
-                        } else if (plugin.isPlayerPlayingFoodWars(playerShooter) && plugin.isPlayerPlayingFoodWars(AttackedPlayer)) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(playerShooter) && plugin.deathmatch.isPlayerPlayingFoodWars(AttackedPlayer)) {
                             // friendly-fire
                             boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                             boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
-                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (AttackedPlayer.getHealth() - friendlyDamage < 1 && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (AttackedPlayer.getHealth() - friendlyDamage < 1 && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(friendlyDamage);
                                     }
                                 }
-                            } else if (!plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            } else if (!plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (checkPlayerHealth) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(damage);
                                     }
@@ -253,10 +253,10 @@ public class ProjectileHitListener implements Listener {
                                     plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                                     plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
                                     playerShooter.getInventory().remove(ItemManager.MelonKit);
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
@@ -268,53 +268,53 @@ public class ProjectileHitListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                    plugin.thePlayerIsDead(AttackedPlayer);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame(path)) {
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(MegaDamage);
                                 }
                             }
-                        } else if (plugin.isPlayerPlayingFoodWars(playerShooter) && plugin.isPlayerPlayingFoodWars(AttackedPlayer)) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(playerShooter) && plugin.deathmatch.isPlayerPlayingFoodWars(AttackedPlayer)) {
                             // friendly-fire
                             boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                             boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
-                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (AttackedPlayer.getHealth() - MegaFriendlyDamage < 1 && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (AttackedPlayer.getHealth() - MegaFriendlyDamage < 1 && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(MegaFriendlyDamage);
                                     }
                                 }
-                            } else if (!plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            } else if (!plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (checkPlayerHealth && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(MegaDamage);
                                     }
@@ -322,7 +322,7 @@ public class ProjectileHitListener implements Listener {
                             }
                         }
                     }
-                } else if (plugin.isPlayerInGame(AttackedPlayer) && plugin.isPlayerInGame(playerShooter) && projectile instanceof WitherSkull) {
+                } else if (plugin.game.isPlayerInGame(AttackedPlayer) && plugin.game.isPlayerInGame(playerShooter) && projectile instanceof WitherSkull) {
                     WitherSkull snowball = (WitherSkull) projectile;
                     String s1 = "You have spawn protection for ";
                     String path = "respawn_free-for-all";
@@ -340,10 +340,10 @@ public class ProjectileHitListener implements Listener {
                                 if (checkPlayerHealth) {
                                     plugin.playersInPotatoKit.remove(playerShooter.getUniqueId());
                                     plugin.playersInFishKit.add(playerShooter.getUniqueId());
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
@@ -355,53 +355,53 @@ public class ProjectileHitListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                    plugin.thePlayerIsDead(AttackedPlayer);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame(path)) {
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
                             }
-                        } else if (plugin.isPlayerPlayingFoodWars(playerShooter) && plugin.isPlayerPlayingFoodWars(AttackedPlayer)) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(playerShooter) && plugin.deathmatch.isPlayerPlayingFoodWars(AttackedPlayer)) {
                             // friendly-fire
                             boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                             boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
-                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (AttackedPlayer.getHealth() - friendlyDamage < 1 && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (AttackedPlayer.getHealth() - friendlyDamage < 1 && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(friendlyDamage);
                                     }
                                 }
-                            } else if (!plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            } else if (!plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (checkPlayerHealth && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(damage);
                                     }
@@ -425,10 +425,10 @@ public class ProjectileHitListener implements Listener {
                                     playerShooter.getInventory().remove(ItemManager.PotatoKit);
                                     plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                                     plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(damage);
                                 }
@@ -440,53 +440,53 @@ public class ProjectileHitListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                    plugin.thePlayerIsDead(AttackedPlayer);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame(path)) {
-                                    plugin.respawnThePlayer(AttackedPlayer);
+                                    plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                     // player - killer
                                     // AttackedPlayer - dead
-                                    plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                 } else {
                                     AttackedPlayer.damage(MegaDamage);
                                 }
                             }
-                        } else if (plugin.isPlayerPlayingFoodWars(playerShooter) && plugin.isPlayerPlayingFoodWars(AttackedPlayer)) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(playerShooter) && plugin.deathmatch.isPlayerPlayingFoodWars(AttackedPlayer)) {
                             // friendly-fire
                             boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                             boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
-                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (AttackedPlayer.getHealth() - MegaFriendlyDamage < 1 && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (AttackedPlayer.getHealth() - MegaFriendlyDamage < 1 && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(MegaFriendlyDamage);
                                     }
                                 }
-                            } else if (!plugin.getPlayerTeam(AttackedPlayer).equals(plugin.getPlayerTeam(playerShooter))) {
+                            } else if (!plugin.deathmatch.getPlayerTeam(AttackedPlayer).equals(plugin.deathmatch.getPlayerTeam(playerShooter))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     AttackedPlayer.sendMessage(INFO + s1 + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + s2);
                                 } else {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
-                                        plugin.thePlayerIsDead(AttackedPlayer);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.playerDead.thePlayerIsDead(AttackedPlayer);
                                     } else if (checkPlayerHealth) {
-                                        plugin.respawnThePlayer(AttackedPlayer);
+                                        plugin.respawnPlayer.respawnThePlayer(AttackedPlayer);
                                         // player - killer
                                         // AttackedPlayer - dead
-                                        plugin.givePlayerKD(AttackedPlayer, playerShooter);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(AttackedPlayer, playerShooter);
                                     } else {
                                         AttackedPlayer.damage(MegaDamage);
                                     }

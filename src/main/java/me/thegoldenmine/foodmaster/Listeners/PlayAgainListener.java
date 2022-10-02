@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
@@ -42,7 +42,7 @@ public class PlayAgainListener implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
         boolean b = action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR);
-        if (b && player.getInventory().getItemInMainHand().equals(ItemManager.playAgain) && plugin.playAgain.containsKey(uuid) && plugin.isPlayerInGroup(player)) {
+        if (b && player.getInventory().getItemInMainHand().equals(ItemManager.playAgain) && plugin.playAgain.containsKey(uuid) && plugin.playerGroup.isPlayerInGroup(player)) {
             String name = plugin.playAgain.get(player.getUniqueId());
             switch (name) {
                 case "pve-zombie": {
@@ -52,7 +52,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -70,7 +70,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -88,7 +88,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -106,7 +106,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -124,7 +124,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -142,7 +142,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -160,7 +160,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -178,7 +178,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -196,7 +196,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -214,7 +214,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -232,7 +232,7 @@ public class PlayAgainListener implements Listener {
                         plugin.startCommand.mainStart(player, args);
                         player.spawnParticle(Particle.EXPLOSION_NORMAL, player.getLocation(), 1);
                     } else {
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playersInG = Bukkit.getPlayer(uuids);
                                 if (playersInG != null) {
@@ -248,7 +248,7 @@ public class PlayAgainListener implements Listener {
     }
 
     public void removeThePlayerFromPlayAgain(Player player) {
-        for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+        for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
             if (uuid != null) {
                 Player playerInGroup = Bukkit.getPlayer(uuid);
                 if (playerInGroup != null) {
@@ -261,7 +261,7 @@ public class PlayAgainListener implements Listener {
 
     public boolean checkIfHolding(Player player) {
         List<UUID> holding = new ArrayList<>();
-        for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+        for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
             if (uuid != null) {
                 Player playerInGroup = Bukkit.getPlayer(uuid);
                 if (playerInGroup != null && playerInGroup.getInventory().getItemInMainHand().equals(ItemManager.playAgain)) {
@@ -269,6 +269,6 @@ public class PlayAgainListener implements Listener {
                 }
             }
         }
-        return holding.containsAll(new HashSet<>(plugin.getPlayersInGroupOfPlayer(player)));
+        return holding.containsAll(new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player)));
     }
 }

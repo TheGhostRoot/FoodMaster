@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -52,7 +52,7 @@ public class FishPowerListener implements Listener {
             String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
             int hitPlayers = 0;
             final int damage = plugin.mainConfig.getIntGame("damage");
-            if (!plugin.isPlayerInGame(player)) {
+            if (!plugin.game.isPlayerInGame(player)) {
                 if (player.getInventory().contains(ItemManager.FishKit)) {
                     player.getInventory().remove(ItemManager.FishKit);
                 }
@@ -154,11 +154,11 @@ public class FishPowerListener implements Listener {
                                     plugin.playersInBeefKit.add(uuid);
                                     plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                                     plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
-                                    plugin.respawnThePlayer(playerNear);
+                                    plugin.respawnPlayer.respawnThePlayer(playerNear);
                                     player.getInventory().remove(ItemManager.FishKit);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerNear, player);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                 } else {
                                     new BukkitRunnable() {
                                         int spawned = 0;
@@ -197,20 +197,20 @@ public class FishPowerListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerNear, player);
-                                    plugin.thePlayerIsDead(playerNear);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                    plugin.playerDead.thePlayerIsDead(playerNear);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
-                                    plugin.respawnThePlayer(playerNear);
+                                    plugin.respawnPlayer.respawnThePlayer(playerNear);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerNear, player);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                 } else {
                                     playerNear.damage(damage);
                                 }
                             }
                             hitPlayers = hitPlayers + 1;
-                        } else if (plugin.isPlayerPlayingFoodWars(player) && plugin.isPlayerPlayingFoodWars(playerNear)) {
-                            if (plugin.getGroupPlayersInRedTeam(player) != null && !plugin.getGroupPlayersInRedTeam(player).isEmpty() && !plugin.getGroupPlayersInRedTeam(player).contains(playerNear.getUniqueId())) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(player) && plugin.deathmatch.isPlayerPlayingFoodWars(playerNear)) {
+                            if (plugin.deathmatch.getGroupPlayersInRedTeam(player) != null && !plugin.deathmatch.getGroupPlayersInRedTeam(player).isEmpty() && !plugin.deathmatch.getGroupPlayersInRedTeam(player).contains(playerNear.getUniqueId())) {
                                 //damage
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     playerNear.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
@@ -231,13 +231,13 @@ public class FishPowerListener implements Listener {
                                     if (checkPlayerHealth && respawnOrLives) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damage);
                                     }
@@ -245,7 +245,7 @@ public class FishPowerListener implements Listener {
                                 hitPlayers = hitPlayers + 1;
                             }
                             boolean enableLivesTeamDeathmatch = plugin.mainConfig.getBooleanGame("enable_lives_team_deathmatch");
-                            if (plugin.getGroupPlayersInBlueTeam(player) != null && !plugin.getGroupPlayersInBlueTeam(player).isEmpty() && !plugin.getGroupPlayersInBlueTeam(player).contains(playerNear.getUniqueId())) {
+                            if (plugin.deathmatch.getGroupPlayersInBlueTeam(player) != null && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).isEmpty() && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).contains(playerNear.getUniqueId())) {
                                 //damage
                                 boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                                 boolean respawnOrLives1 = checkLive1 || !plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
@@ -268,13 +268,13 @@ public class FishPowerListener implements Listener {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damage);
                                     }
@@ -282,7 +282,7 @@ public class FishPowerListener implements Listener {
                                 hitPlayers = hitPlayers + 1;
                             }
                             boolean respawnTeamDeathmatch = plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
-                            if (plugin.getGroupPlayersInCyanTeam(player) != null && !plugin.getGroupPlayersInCyanTeam(player).isEmpty() && !plugin.getGroupPlayersInCyanTeam(player).contains(playerNear.getUniqueId())) {
+                            if (plugin.deathmatch.getGroupPlayersInCyanTeam(player) != null && !plugin.deathmatch.getGroupPlayersInCyanTeam(player).isEmpty() && !plugin.deathmatch.getGroupPlayersInCyanTeam(player).contains(playerNear.getUniqueId())) {
                                 //damage
                                 boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                                 boolean respawnOrLives1 = checkLive1 || !plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
@@ -305,20 +305,20 @@ public class FishPowerListener implements Listener {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damage);
                                     }
                                 }
                                 hitPlayers = hitPlayers + 1;
                             }
-                            if (plugin.getGroupPlayersInGreenTeam(player) != null && !plugin.getGroupPlayersInGreenTeam(player).isEmpty() && !plugin.getGroupPlayersInGreenTeam(player).contains(playerNear.getUniqueId())) {
+                            if (plugin.deathmatch.getGroupPlayersInGreenTeam(player) != null && !plugin.deathmatch.getGroupPlayersInGreenTeam(player).isEmpty() && !plugin.deathmatch.getGroupPlayersInGreenTeam(player).contains(playerNear.getUniqueId())) {
                                 //damage
                                 boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                                 boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
@@ -341,20 +341,20 @@ public class FishPowerListener implements Listener {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damage);
                                     }
                                 }
                                 hitPlayers = hitPlayers + 1;
                             }
-                            if (plugin.getGroupPlayersInYellowTeam(player) != null && !plugin.getGroupPlayersInYellowTeam(player).isEmpty() && !plugin.getGroupPlayersInYellowTeam(player).contains(playerNear.getUniqueId())) {
+                            if (plugin.deathmatch.getGroupPlayersInYellowTeam(player) != null && !plugin.deathmatch.getGroupPlayersInYellowTeam(player).isEmpty() && !plugin.deathmatch.getGroupPlayersInYellowTeam(player).contains(playerNear.getUniqueId())) {
                                 //damage
                                 boolean checkLive1 = enableLivesTeamDeathmatch && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                                 boolean respawnOrLives1 = checkLive1 || !respawnTeamDeathmatch;
@@ -377,13 +377,13 @@ public class FishPowerListener implements Listener {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && respawnTeamDeathmatch) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damage);
                                     }
@@ -410,8 +410,8 @@ public class FishPowerListener implements Listener {
 
     private void spawnPart(Player player, Entity entity) {
         Location loc = entity.getLocation();
-        if (plugin.isPlayerInGroup(player)) {
-            for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+        if (plugin.playerGroup.isPlayerInGroup(player)) {
+            for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                 if (uuids != null) {
                     Player players = Bukkit.getPlayer(uuids);
                     if (players != null) {
@@ -430,8 +430,8 @@ public class FishPowerListener implements Listener {
 
     private void spawnWaterParticles(Player playerNear) {
         Location loc = playerNear.getLocation();
-        if (plugin.isPlayerInGroup(playerNear)) {
-            for (UUID uuids : plugin.getPlayersInGroupOfPlayer(playerNear)) {
+        if (plugin.playerGroup.isPlayerInGroup(playerNear)) {
+            for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(playerNear)) {
                 if (uuids != null) {
                     Player players = Bukkit.getPlayer(uuids);
                     if (players != null) {

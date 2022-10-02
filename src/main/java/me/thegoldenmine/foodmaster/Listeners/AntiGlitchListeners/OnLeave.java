@@ -22,12 +22,12 @@ public class OnLeave implements Listener {
     @EventHandler
     public synchronized void onLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (plugin.isPlayerInGroup(player)) {
-            Set<UUID> players = new HashSet<>(plugin.getPlayersInGroupOfPlayer(player));
-            boolean isPlayerStartedAgame = plugin.isPlayerInGame(player) || plugin.isPlayerInWaitingLobby(player);
+        if (plugin.playerGroup.isPlayerInGroup(player)) {
+            Set<UUID> players = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
+            boolean isPlayerStartedAgame = plugin.game.isPlayerInGame(player) || plugin.waitingLobby.isPlayerInWaitingLobby(player);
             boolean b = players.size() - 1 == 1 || players.size() - 1 == 0 ;
             if (!players.isEmpty() && b && isPlayerStartedAgame) {
-                if (plugin.isPlayerPlayingPvE(player)) {
+                if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
                     plugin.endTheGame.endThePvE(player);
                 } else {
                     for (UUID uuid : players) {
@@ -57,7 +57,7 @@ public class OnLeave implements Listener {
                         if (uuid != null) {
                             Player player11 = Bukkit.getPlayer(uuid);
                             if (player11 != null) {
-                                plugin.givePlayerWin(player11);
+                                plugin.giveOneWinToPlayer.givePlayerWin(player11);
                             }
                         }
                     }
@@ -65,17 +65,17 @@ public class OnLeave implements Listener {
                         if (uuid != null) {
                             Player player11 = Bukkit.getPlayer(uuid);
                             if (player11 != null) {
-                                plugin.givePlayerLose(player11);
+                                plugin.giveOneLoseToPlayer.givePlayerLose(player11);
                             }
                         }
                     }
                     plugin.winners.clear();
                     plugin.losses.clear();
                 }
-                plugin.PlayerLeaveFromGroup(player);
+                plugin.playerGroup.PlayerLeaveFromGroup(player);
             }
-        } else if (plugin.isPlayerInGame(player)) {
-            plugin.removePlayerFromGame(player);
+        } else if (plugin.game.isPlayerInGame(player)) {
+            plugin.game.removePlayerFromGame(player);
             Set<String> strings = new HashSet<>(plugin.playersInGame.keySet());
             for (String name : strings) {
                 if (plugin.playersInGame.get(name).size() == 1) {
@@ -88,8 +88,8 @@ public class OnLeave implements Listener {
             }
             plugin.endTheGame.endThePvE(player);
         }
-        if (plugin.isPlayerInWaitingLobby(player)) {
-            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+        if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+            plugin.waitingLobby.removePlayerFromWaitedLobby(player);
         }
         UUID uuid = player.getUniqueId();
         // kits

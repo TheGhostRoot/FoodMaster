@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,8 +39,8 @@ public class BreadPowerListener implements Listener {
                 player.setHealth(newHeathForPlayer);
             }
         }
-        if (plugin.isPlayerInGroup(player)) {
-            for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+        if (plugin.playerGroup.isPlayerInGroup(player)) {
+            for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                 if (uuids != null) {
                     Player playerInGroup = Bukkit.getPlayer(uuids);
                     if (playerInGroup != null) {
@@ -85,7 +85,7 @@ public class BreadPowerListener implements Listener {
         final int friendlyDamage = plugin.mainConfig.getIntGame("friendly_damage");
         final int damage = plugin.mainConfig.getIntGame("damage");
         if (player.getInventory().getItemInMainHand().equals(ItemManager.BreadKit)) {
-            if (!plugin.isPlayerInGame(player)) {
+            if (!plugin.game.isPlayerInGame(player)) {
                 if (player.getInventory().contains(ItemManager.BreadKit)) {
                     player.getInventory().remove(ItemManager.BreadKit);
                 }
@@ -114,7 +114,7 @@ public class BreadPowerListener implements Listener {
                                 player.setHealth(newHeathForPlayer);
                             }
                         }
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playerInGroup = Bukkit.getPlayer(uuids);
                                 if (playerInGroup != null) {
@@ -123,13 +123,13 @@ public class BreadPowerListener implements Listener {
                             }
                         }
                         player.sendMessage(INFO+"You healed yourself");
-                    } else if (plugin.isPlayerPlayingPvE(player)) {
-                        if (plugin.isPlayerInGroup(player)) {
+                    } else if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
+                        if (plugin.playerGroup.isPlayerInGroup(player)) {
                             for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
                                 if (entity instanceof Player) {
                                     Player playerNear = (Player) entity;
                                     giveHeath(playerNear);
-                                    for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                                    for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                         if (uuids != null) {
                                             Player playerInGroup = Bukkit.getPlayer(uuids);
                                             if (playerInGroup != null) {
@@ -157,8 +157,8 @@ public class BreadPowerListener implements Listener {
                                 player.setHealth(newHeathForPlayer);
                             }
                         }
-                        if (plugin.isPlayerInGroup(player)) {
-                            for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        if (plugin.playerGroup.isPlayerInGroup(player)) {
+                            for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                 if (uuids != null) {
                                     Player playerInGroup = Bukkit.getPlayer(uuids);
                                     if (playerInGroup != null) {
@@ -174,13 +174,13 @@ public class BreadPowerListener implements Listener {
                             }
                         }
                         player.sendMessage(INFO+"You healed yourself");
-                    } else if (plugin.isPlayerPlayingFoodWars(player)) {
+                    } else if (plugin.deathmatch.isPlayerPlayingFoodWars(player)) {
                         for (Entity entity : player.getNearbyEntities(15, 15, 15)) {
                             if (entity instanceof Player) {
                                 Player playerNear = (Player) entity;
-                                if (plugin.getPlayerTeam(player).equals(plugin.getPlayerTeam(playerNear))) {
+                                if (plugin.deathmatch.getPlayerTeam(player).equals(plugin.deathmatch.getPlayerTeam(playerNear))) {
                                     giveHeath(playerNear);
-                                    for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                                    for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                         if (uuids != null) {
                                             Player playerInGroup = Bukkit.getPlayer(uuids);
                                             if (playerInGroup != null) {
@@ -207,7 +207,7 @@ public class BreadPowerListener implements Listener {
                                 player.setHealth(newHeathForPlayer);
                             }
                         }
-                        for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                        for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuids != null) {
                                 Player playerInGroup = Bukkit.getPlayer(uuids);
                                 if (playerInGroup != null) {
@@ -236,8 +236,8 @@ public class BreadPowerListener implements Listener {
                             }
                         }
                     }
-                    if (plugin.isPlayerInGroup(player)) {
-                        for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                    if (plugin.playerGroup.isPlayerInGroup(player)) {
+                        for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             if (uuid != null) {
                                 Player players = Bukkit.getPlayer(uuid);
                                 if (players != null) {
@@ -328,10 +328,10 @@ public class BreadPowerListener implements Listener {
                                             player.getInventory().addItem(ItemManager.MelonKit);
                                             plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                                             plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
-                                            plugin.respawnThePlayer(playerNear);
+                                            plugin.respawnPlayer.respawnThePlayer(playerNear);
                                             // player - killer
                                             // playerNear - dead
-                                            plugin.givePlayerKD(playerNear, player);
+                                            plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                         } else {
                                             playerNear.damage(damage);
                                         }
@@ -344,54 +344,54 @@ public class BreadPowerListener implements Listener {
                                         if (checkPlayerHealth && respawnOrLives) {
                                             // player - killer
                                             // playerNear - dead
-                                            plugin.givePlayerKD(playerNear, player);
-                                            plugin.thePlayerIsDead(playerNear);
+                                            plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                            plugin.playerDead.thePlayerIsDead(playerNear);
                                         } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
-                                            plugin.respawnThePlayer(playerNear);
+                                            plugin.respawnPlayer.respawnThePlayer(playerNear);
                                             // player - killer
                                             // playerNear - dead
-                                            plugin.givePlayerKD(playerNear, player);
+                                            plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                         } else {
                                             playerNear.damage(damage);
                                         }
                                     }
                                     // plugin.isPlayerPlayingFoodWars(player) - false
-                                } else if (plugin.isPlayerPlayingFoodWars(player) && plugin.isPlayerPlayingFoodWars(playerNear)) {
+                                } else if (plugin.deathmatch.isPlayerPlayingFoodWars(player) && plugin.deathmatch.isPlayerPlayingFoodWars(playerNear)) {
                                     // friendly-fire
                                     boolean checkLive1 = plugin.mainConfig.getBooleanGame("enable_lives_team_deathmatch") && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                                     boolean respawnOrLives1 = checkLive1 || !plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
-                                    if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(player).equals(plugin.getPlayerTeam(playerNear))) {
+                                    if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(player).equals(plugin.deathmatch.getPlayerTeam(playerNear))) {
                                         if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                             playerNear.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                         } else {
                                             if (playerNear.getHealth() - friendlyDamage < 1 && respawnOrLives1) {
                                                 // player - killer
                                                 // playerNear - dead
-                                                plugin.thePlayerIsDead(playerNear);
-                                                plugin.givePlayerKD(playerNear, player);
+                                                plugin.playerDead.thePlayerIsDead(playerNear);
+                                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                             } else if (playerNear.getHealth() - friendlyDamage < 1 && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                                plugin.respawnThePlayer(playerNear);
+                                                plugin.respawnPlayer.respawnThePlayer(playerNear);
                                                 // player - killer
                                                 // playerNear - dead
-                                                plugin.givePlayerKD(playerNear, player);
+                                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                             } else {
                                                 playerNear.damage(friendlyDamage);
                                             }
                                         }
-                                    } else if (!plugin.getPlayerTeam(player).equals(plugin.getPlayerTeam(playerNear))) {
+                                    } else if (!plugin.deathmatch.getPlayerTeam(player).equals(plugin.deathmatch.getPlayerTeam(playerNear))) {
                                         if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                             playerNear.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                         } else {
                                             if (checkPlayerHealth && respawnOrLives1) {
                                                 // player - killer
                                                 // playerNear - dead
-                                                plugin.givePlayerKD(playerNear, player);
-                                                plugin.thePlayerIsDead(playerNear);
+                                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                                plugin.playerDead.thePlayerIsDead(playerNear);
                                             } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                                plugin.respawnThePlayer(playerNear);
+                                                plugin.respawnPlayer.respawnThePlayer(playerNear);
                                                 // player - killer
                                                 // playerNear - dead
-                                                plugin.givePlayerKD(playerNear, player);
+                                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                             } else {
                                                 playerNear.damage(damage);
                                             }

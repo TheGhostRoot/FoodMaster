@@ -40,7 +40,7 @@ public class TimerTik {
                 String gameName = null;
                 List<Player> removePlayersFromBossBar = new ArrayList<>();
                 for (Player players : bossBar.getPlayers()) {
-                    if (players != null && players.isOnline() && !plugin.isPlayerInGame(players) && plugin.mainConfig.getBooleanGame("show_timer_boss_bar")) {
+                    if (players != null && players.isOnline() && !plugin.game.isPlayerInGame(players) && plugin.mainConfig.getBooleanGame("show_timer_boss_bar")) {
                         removePlayersFromBossBar.add(players);
                     }
                 }
@@ -48,14 +48,14 @@ public class TimerTik {
                     bossBar.removePlayer(player);
                 }
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player != null && plugin.isPlayerInGroup(player) && plugin.isPlayerInGame(player) && !plugin.isPlayerPlayingPvE(player)) {
-                        gameName = plugin.getGameName(player);
+                    if (player != null && plugin.playerGroup.isPlayerInGroup(player) && plugin.game.isPlayerInGame(player) && !plugin.playerPvE.isPlayerPlayingPvE(player)) {
+                        gameName = plugin.game.getGameName(player);
                         if (gameName != null) {
                             if (plugin.timer.containsKey(gameName)) {
                                 int timeLeft = plugin.timer.get(gameName);   // get is null (int)
-                                String conTime = plugin.getTime(timeLeft);
+                                String conTime = plugin.time.getTime(timeLeft);
                                 if (conTime != null) {
-                                    Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.getPlayersInGroupOfPlayer(player));
+                                    Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
                                     if (timeLeft <= 0 || conTime.equals("0") || conTime.equals("-1")) {
                                         for (UUID uuid : playersInGroupOfPlayer) {
                                             if (uuid != null) {
@@ -87,7 +87,7 @@ public class TimerTik {
                                             if (uuid != null) {
                                                 Player player11 = Bukkit.getPlayer(uuid);
                                                 if (player11 != null) {
-                                                    plugin.givePlayerWin(player11);
+                                                    plugin.giveOneWinToPlayer.givePlayerWin(player11);
                                                 }
                                             }
                                         }
@@ -95,7 +95,7 @@ public class TimerTik {
                                             if (uuid != null) {
                                                 Player player11 = Bukkit.getPlayer(uuid);
                                                 if (player11 != null) {
-                                                    plugin.givePlayerLose(player11);
+                                                    plugin.giveOneLoseToPlayer.givePlayerLose(player11);
                                                 }
                                             }
                                         }

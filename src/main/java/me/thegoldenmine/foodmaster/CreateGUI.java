@@ -1,5 +1,6 @@
 package me.thegoldenmine.foodmaster;
 
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -11,9 +11,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.SlimeSplitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
@@ -61,24 +59,24 @@ public class DamageListener implements Listener {
         if (defender instanceof Player) {
             Player player = (Player) defender;
             // respawm_player
-            if (!plugin.isPlayerPlayingPvE(player) && plugin.isPlayerInWaitingLobby(player)) {
+            if (!plugin.playerPvE.isPlayerPlayingPvE(player) && plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerPlayingPvE(player)) {
+            if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
                 double healthNewDo = player.getHealth() - event.getDamage();
                 int healthNew = (int) healthNewDo;
                 if (healthNew <= 0) {
                     event.setCancelled(true);
                     if (plugin.mainConfig.getBooleanPvE("respawm_player")) {
-                        plugin.respawnThePlayer(player);
+                        plugin.respawnPlayer.respawnThePlayer(player);
                     } else {
-                        String name = plugin.getGameName(player);
-                        boolean groupDeath = plugin.stillAlive.get(name).size() == 1 && plugin.isPlayerInGroup(player);
-                        boolean soloDeath = plugin.stillAlive.get(name).size() == 1 && !plugin.isPlayerInGroup(player);
+                        String name = plugin.game.getGameName(player);
+                        boolean groupDeath = plugin.stillAlive.get(name).size() == 1 && plugin.playerGroup.isPlayerInGroup(player);
+                        boolean soloDeath = plugin.stillAlive.get(name).size() == 1 && !plugin.playerGroup.isPlayerInGroup(player);
                         if (soloDeath || groupDeath) {
                             if (groupDeath) {
                                 plugin.stillAlive.get(name).remove(player.getUniqueId());
-                                for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                                for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                     if (uuid != null) {
                                         Player player1 = Bukkit.getPlayer(uuid);
                                         if (player1 != null && !player1.equals(player)) {
@@ -97,7 +95,7 @@ public class DamageListener implements Listener {
                         } else {
                             UUID uuid = player.getUniqueId();
                             plugin.stillAlive.get(name).remove(player.getUniqueId());
-                            if (plugin.isPlayerInGroup(player)) {
+                            if (plugin.playerGroup.isPlayerInGroup(player)) {
                                 // kits
                                 plugin.playersInPotatoKit.remove(uuid);
                                 plugin.playersInBreadKit.remove(uuid);
@@ -124,7 +122,7 @@ public class DamageListener implements Listener {
                                 player.removePotionEffect(PotionEffectType.SPEED);
                                 player.getInventory().clear();
                                 player.setGameMode(GameMode.SPECTATOR);
-                                for (UUID uuid1 : plugin.getPlayersInGroupOfPlayer(player)) {
+                                for (UUID uuid1 : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                     if (uuid1 != null) {
                                         Player player1 = Bukkit.getPlayer(uuid1);
                                         if (player1 != null) {
@@ -146,10 +144,10 @@ public class DamageListener implements Listener {
             }
             double healthNewDo = player.getHealth() - event.getDamage();
             int healthNew = (int) healthNewDo;
-            if (plugin.isPlayerInWaitingLobby(player)) {
+            if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                 event.setCancelled(true);
             }
-            if (healthNew <= 0 && plugin.isPlayerInGroup(player)) {
+            if (healthNew <= 0 && plugin.playerGroup.isPlayerInGroup(player)) {
                 event.setCancelled(true);
             }
         }
@@ -171,8 +169,8 @@ public class DamageListener implements Listener {
                         Player player = Bukkit.getPlayer(playerName);
                         if (healthNew <= 0 && player != null) {
                             if (bossType.equals("BOSS")) {
-                                if (plugin.isPlayerInGroup(player) && plugin.isPlayerInGame(player) && !plugin.isPlayerInWaitingLobby(player)) {
-                                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                                if (plugin.playerGroup.isPlayerInGroup(player) && plugin.game.isPlayerInGame(player) && !plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                         if (uuid != null) {
                                             Player player1 = Bukkit.getPlayer(uuid);
                                             if (player1 != null) {
@@ -254,22 +252,22 @@ public class DamageListener implements Listener {
             Player playerAtt = (Player) attacker;
             UUID uuid = playerAtt.getUniqueId();
             Player playerDef = (Player) defender;
-            if (!plugin.isPlayerInGroup(playerAtt) && !plugin.isPlayerInGroup(playerDef) && !plugin.mainConfig.getBooleanGame("enable_pvp_outside_the_plugin")) {
+            if (!plugin.playerGroup.isPlayerInGroup(playerAtt) && !plugin.playerGroup.isPlayerInGroup(playerDef) && !plugin.mainConfig.getBooleanGame("enable_pvp_outside_the_plugin")) {
                 event.setCancelled(true);
             }
-            if (!plugin.isPlayerInWaitingLobby(playerAtt) && !plugin.isPlayerInGame(playerAtt) && plugin.isPlayerInGroup(playerAtt) && !plugin.mainConfig.getBooleanMain("group_player_hit_teammate") && !plugin.isPlayerInWaitingLobby(playerDef) && !plugin.isPlayerInGame(playerDef) && plugin.isPlayerInGroup(playerDef) && !plugin.mainConfig.getBooleanMain("group_player_hit_teammate")) {
+            if (!plugin.waitingLobby.isPlayerInWaitingLobby(playerAtt) && !plugin.game.isPlayerInGame(playerAtt) && plugin.playerGroup.isPlayerInGroup(playerAtt) && !plugin.mainConfig.getBooleanMain("group_player_hit_teammate") && !plugin.waitingLobby.isPlayerInWaitingLobby(playerDef) && !plugin.game.isPlayerInGame(playerDef) && plugin.playerGroup.isPlayerInGroup(playerDef) && !plugin.mainConfig.getBooleanMain("group_player_hit_teammate")) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerInWaitingLobby(playerAtt)) {
+            if (plugin.waitingLobby.isPlayerInWaitingLobby(playerAtt)) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerPlayingPvE(playerAtt) && plugin.isPlayerPlayingPvE(playerDef)) {
+            if (plugin.playerPvE.isPlayerPlayingPvE(playerAtt) && plugin.playerPvE.isPlayerPlayingPvE(playerDef)) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerInGame(playerAtt) && !playerAtt.getInventory().getItemInMainHand().equals(ItemManager.FishKit) && !plugin.playersInFishKit.contains(playerAtt.getUniqueId())) {
+            if (plugin.game.isPlayerInGame(playerAtt) && !playerAtt.getInventory().getItemInMainHand().equals(ItemManager.FishKit) && !plugin.playersInFishKit.contains(playerAtt.getUniqueId())) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerInGame(playerDef) && playerAtt.getInventory().getItemInMainHand().equals(ItemManager.FishKit) && plugin.playersInFishKit.contains(playerAtt.getUniqueId())) {
+            if (plugin.game.isPlayerInGame(playerDef) && playerAtt.getInventory().getItemInMainHand().equals(ItemManager.FishKit) && plugin.playersInFishKit.contains(playerAtt.getUniqueId())) {
                 final int friendlyDamage = plugin.mainConfig.getIntGame("friendly_damage");
                 UUID uniqueId = playerDef.getUniqueId();
                 boolean checkLive1 = plugin.mainConfig.getBooleanGame("enable_lives_team_deathmatch") && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
@@ -290,11 +288,11 @@ public class DamageListener implements Listener {
                             plugin.playersInBeefKit.add(uuid);
                             plugin.kitsCoolDown.playerCoolDownMap.remove(uuid);
                             plugin.kitPowerCoolDown.playerCoolDownMap.remove(uuid);
-                            plugin.respawnThePlayer(playerDef);
+                            plugin.respawnPlayer.respawnThePlayer(playerDef);
                             playerAtt.getInventory().remove(ItemManager.FishKit);
                             // player - killer
                             // playerNear - dead
-                            plugin.givePlayerKD(playerDef, playerAtt);
+                            plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
                             return;
                         }
                         playerDef.damage(damage);
@@ -318,8 +316,8 @@ public class DamageListener implements Listener {
                                 event.setCancelled(true);
                                 // player - killer
                                 // playerNear - dead
-                                plugin.givePlayerKD(playerDef, playerAtt);
-                                plugin.thePlayerIsDead(playerDef);
+                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
+                                plugin.playerDead.thePlayerIsDead(playerDef);
                                 try {
                                     playerAtt.getVelocity().normalize().multiply(-0.25).checkFinite();
                                     playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
@@ -327,10 +325,10 @@ public class DamageListener implements Listener {
                                 }
                             } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
                                 event.setCancelled(true);
-                                plugin.respawnThePlayer(playerDef);
+                                plugin.respawnPlayer.respawnThePlayer(playerDef);
                                 // player - killer
                                 // playerNear - dead
-                                plugin.givePlayerKD(playerDef, playerAtt);
+                                plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
                                 try {
                                     playerAtt.getVelocity().normalize().multiply(-0.25).checkFinite();
                                     playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
@@ -346,13 +344,13 @@ public class DamageListener implements Listener {
                             }
                         }
                     }
-                } else if (plugin.isPlayerPlayingFoodWars(playerAtt) && plugin.isPlayerPlayingFoodWars(playerDef)) {
+                } else if (plugin.deathmatch.isPlayerPlayingFoodWars(playerAtt) && plugin.deathmatch.isPlayerPlayingFoodWars(playerDef)) {
                     if (plugin.kitsCoolDown.isPlayerInCoolDown(playerAtt)) {
                         playerAtt.sendMessage(WARN + "You have " + gold + "" + italic + "" + plugin.kitsCoolDown.getTime(playerAtt) + "" + yellow + "" + italic + " seconds left.");
                         event.setCancelled(true);
                     } else {
                         plugin.kitsCoolDown.addPlayerToCoolMap(playerAtt, 1);
-                        if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(playerAtt).equals(plugin.getPlayerTeam(playerDef))) {
+                        if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(playerAtt).equals(plugin.deathmatch.getPlayerTeam(playerDef))) {
                             if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                 playerDef.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                 event.setCancelled(true);
@@ -361,8 +359,8 @@ public class DamageListener implements Listener {
                                     event.setCancelled(true);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerDef, playerAtt);
-                                    plugin.thePlayerIsDead(playerDef);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
+                                    plugin.playerDead.thePlayerIsDead(playerDef);
                                     try {
                                         playerAtt.getVelocity().normalize().multiply(-0.25).checkFinite();
                                         playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
@@ -370,10 +368,10 @@ public class DamageListener implements Listener {
                                     }
                                 } else if (playerDef.getHealth() - friendlyDamage < 2 && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
                                     event.setCancelled(true);
-                                    plugin.respawnThePlayer(playerDef);
+                                    plugin.respawnPlayer.respawnThePlayer(playerDef);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerDef, playerAtt);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
                                     try {
                                         playerAtt.getVelocity().normalize().multiply(-0.25).checkFinite();
                                         playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
@@ -388,7 +386,7 @@ public class DamageListener implements Listener {
                                     }
                                 }
                             }
-                        } else if (!plugin.getPlayerTeam(playerAtt).equals(plugin.getPlayerTeam(playerDef))) {
+                        } else if (!plugin.deathmatch.getPlayerTeam(playerAtt).equals(plugin.deathmatch.getPlayerTeam(playerDef))) {
                             if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                 playerDef.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                 event.setCancelled(true);
@@ -397,8 +395,8 @@ public class DamageListener implements Listener {
                                     event.setCancelled(true);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerDef, playerAtt);
-                                    plugin.thePlayerIsDead(playerDef);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
+                                    plugin.playerDead.thePlayerIsDead(playerDef);
                                     try {
                                         playerAtt.getVelocity().normalize().multiply(-0.25).checkFinite();
                                         playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
@@ -406,10 +404,10 @@ public class DamageListener implements Listener {
                                     }
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
                                     event.setCancelled(true);
-                                    plugin.respawnThePlayer(playerDef);
+                                    plugin.respawnPlayer.respawnThePlayer(playerDef);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerDef, playerAtt);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerDef, playerAtt);
                                     playerAtt.setVelocity(playerAtt.getVelocity().normalize().multiply(-0.25));
                                 } else {
                                     playerDef.damage(damage);
@@ -431,10 +429,10 @@ public class DamageListener implements Listener {
             ProjectileSource shooter = witherSkull.getShooter();
             if (shooter instanceof Player) {
                 Player playerAtt = (Player) shooter;
-                if (plugin.isPlayerPlayingPvE(playerAtt) && plugin.isPlayerPlayingPvE(playerDef)) {
+                if (plugin.playerPvE.isPlayerPlayingPvE(playerAtt) && plugin.playerPvE.isPlayerPlayingPvE(playerDef)) {
                     event.setCancelled(true);
                 }
-                if (plugin.isPlayerPlayingFoodWars(playerAtt) && plugin.isPlayerPlayingFoodWars(playerDef) && plugin.getPlayerTeam(playerAtt).equals(plugin.getPlayerTeam(playerDef)) && !plugin.mainConfig.getBooleanGame("friendly-fire")) {
+                if (plugin.deathmatch.isPlayerPlayingFoodWars(playerAtt) && plugin.deathmatch.isPlayerPlayingFoodWars(playerDef) && plugin.deathmatch.getPlayerTeam(playerAtt).equals(plugin.deathmatch.getPlayerTeam(playerDef)) && !plugin.mainConfig.getBooleanGame("friendly-fire")) {
                     event.setCancelled(true);
                 }
             }
@@ -444,7 +442,7 @@ public class DamageListener implements Listener {
             LivingEntity living = (LivingEntity) defender;
             NamespacedKey name = new NamespacedKey(plugin, "boss");
             PersistentDataContainer data = living.getPersistentDataContainer();
-            if (plugin.isPlayerInGame(player)) {
+            if (plugin.game.isPlayerInGame(player)) {
                 UUID uuid = player.getUniqueId();
                 if (player.getInventory().getItemInMainHand().equals(ItemManager.FishKit) && plugin.playersInFishKit.contains(uuid) && data.has(name, PersistentDataType.STRING) && living.getCustomName() != null) {
                     boolean BossOrMini = data.get(name, PersistentDataType.STRING).equals("BOSS") || data.get(name, PersistentDataType.STRING).equals("MINI");
@@ -493,12 +491,33 @@ public class DamageListener implements Listener {
         }
         if (attacker instanceof Player) {
             Player playerAtt = (Player) attacker;
-            if (!plugin.isPlayerInWaitingLobby(playerAtt) && !plugin.isPlayerInGame(playerAtt) && plugin.isPlayerInGroup(playerAtt) && plugin.mainConfig.getBooleanMain("group_player_hit_mobs")) {
+            if (!plugin.waitingLobby.isPlayerInWaitingLobby(playerAtt) && !plugin.game.isPlayerInGame(playerAtt) && plugin.playerGroup.isPlayerInGroup(playerAtt) && plugin.mainConfig.getBooleanMain("group_player_hit_mobs")) {
                 event.setCancelled(true);
             }
-            if (plugin.isPlayerInWaitingLobby(playerAtt)) {
+            if (plugin.waitingLobby.isPlayerInWaitingLobby(playerAtt)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        if (plugin.waitingLobby.isPlayerInWaitingLobby(player) || plugin.game.isPlayerInGame(player)) {
+            event.setDroppedExp(0);
+            event.getDrops().clear();
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        NamespacedKey name = new NamespacedKey(plugin, "boss");
+        NamespacedKey namePlayer = new NamespacedKey(plugin, "player");
+        PersistentDataContainer data = entity.getPersistentDataContainer();
+        if (data.has(name, PersistentDataType.STRING) && data.has(namePlayer, PersistentDataType.STRING)) {
+            event.getDrops().clear();
+            event.setDroppedExp(0);
         }
     }
 }

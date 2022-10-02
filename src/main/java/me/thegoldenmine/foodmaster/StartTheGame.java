@@ -1,5 +1,6 @@
 package me.thegoldenmine.foodmaster;
 
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -18,8 +19,8 @@ public class StartTheGame {
 
     private void removeThePlayerFromWaiting(Player player) {
         UUID uuid = player.getUniqueId();
-        if (plugin.isPlayerInWaitingLobby(player)) {
-            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+        if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+            plugin.waitingLobby.removePlayerFromWaitedLobby(player);
         }
         // kits
         plugin.playersInPotatoKit.remove(uuid);
@@ -98,9 +99,9 @@ public class StartTheGame {
         String GameName = findFreeGame();
         UUID playerUUID = player.getUniqueId();
         if (GameName == null) {
-            if (plugin.isPlayerPlayingPvE(player)) {
-                if (plugin.isPlayerInGroup(player)) {
-                    Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                     for (UUID uuid : playersInGroupOfPlayer) {
                         if (uuid != null) {
                             Player players = Bukkit.getPlayer(uuid);
@@ -120,8 +121,8 @@ public class StartTheGame {
                 }
                 return;
             }
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 for (UUID uuid : playersInGroupOfPlayer) {
                     if (uuid != null) {
                         Player players = Bukkit.getPlayer(uuid);
@@ -140,8 +141,8 @@ public class StartTheGame {
             if (namesOfGameLoc.isEmpty() || namesOfGameLoc.contains(null)) {
                 player.sendMessage(ERROR + "The " + gold + "" + italic + "" + GameName + "" + red + "" + italic + " game doesn't have any spawn points.");
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                     for (UUID uuid : playersInGroupOfPlayer) {
                         if (uuid != null) {
                             plugin.tpPlayersInGameNameLoc.put(uuid, null);
@@ -150,9 +151,9 @@ public class StartTheGame {
                 } else {
                     plugin.tpPlayersInGameNameLoc.put(player.getUniqueId(), null);
                 }
-                if (plugin.isPlayerPlayingPvE(player)) {
-                    if (plugin.isPlayerInGroup(player)) {
-                        Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+                if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
+                    if (plugin.playerGroup.isPlayerInGroup(player)) {
+                        Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                         for (UUID uuid : playersInGroupOfPlayer) {
                             if (uuid != null) {
                                 Player groupPlayer = Bukkit.getPlayer(uuid);
@@ -244,8 +245,8 @@ public class StartTheGame {
                         plugin.stillAlive.put(GameName, idk);
                     }
                 } else {
-                    if (plugin.isPlayerInGroup(player)) {
-                        Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+                    if (plugin.playerGroup.isPlayerInGroup(player)) {
+                        Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                         for (UUID uuid : playersInGroupOfPlayer) {
                             if (uuid != null) {
                                 Player groupPlayer = Bukkit.getPlayer(uuid);
@@ -302,13 +303,13 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s7 + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.getPlayersInGroupOfPlayer(player));
-            if (plugin.isPlayerInGroup(player) && !playersInGroupOfPlayer.isEmpty()) {
+            Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
+            if (plugin.playerGroup.isPlayerInGroup(player) && !playersInGroupOfPlayer.isEmpty()) {
                 for (UUID uuids : playersInGroupOfPlayer) {
                     if (uuids != null) {
                         Player playerInGroup = Bukkit.getPlayer(uuids);
                         if (playerInGroup != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                         }
                     }
                 }
@@ -345,18 +346,18 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s4 + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             assert playersInGroupOfPlayer != null;
             plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersChoiceFreeForAll.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersInFreeForAll.addAll(new HashSet<>(playersInGroupOfPlayer));
-            if (plugin.isPlayerInGroup(player) && !playersInGroupOfPlayer.isEmpty()) {
+            if (plugin.playerGroup.isPlayerInGroup(player) && !playersInGroupOfPlayer.isEmpty()) {
                 for (UUID uuids : playersInGroupOfPlayer) {
                     if (uuids != null) {
                         Player playerInGroup = Bukkit.getPlayer(uuids);
                         if (playerInGroup != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                         }
                     }
                 }
@@ -384,23 +385,23 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s6 + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             assert playersInGroupOfPlayer != null;
             plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersThatChoice2Teams.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.players2Teams.addAll(new HashSet<>(playersInGroupOfPlayer));
-            if (plugin.isPlayerInGroup(player)) {
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
                 for (UUID uuid : playersInGroupOfPlayer) {
                     if (uuid != null) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(players);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                         }
                     }
                 }
                 tpTheGroup(player);
-                plugin.giveThePlayerArmor(player);
+                plugin.playerGroup.giveThePlayerArmor(player);
             } else {
                 removeThePlayerFromWaiting(player);
                 player.sendMessage(ERROR + "You have to be in a group to play this game!");
@@ -423,23 +424,23 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             assert playersInGroupOfPlayer != null;
             plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersThatChoice3Teams.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.players3Teams.addAll(new HashSet<>(playersInGroupOfPlayer));
-            if (plugin.isPlayerInGroup(player)) {
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
                 for (UUID uuid : playersInGroupOfPlayer) {
                     if (uuid != null) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(players);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                         }
                     }
                 }
                 tpTheGroup(player);
-                plugin.giveThePlayerArmor(player);
+                plugin.playerGroup.giveThePlayerArmor(player);
             } else {
                 removeThePlayerFromWaiting(player);
                 player.sendMessage(ERROR + "You have to be in a group to play this game!");
@@ -462,23 +463,23 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             assert playersInGroupOfPlayer != null;
             plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersThatChoice4Teams.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.players4Teams.addAll(new HashSet<>(playersInGroupOfPlayer));
-            if (plugin.isPlayerInGroup(player)) {
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
                 for (UUID uuid : playersInGroupOfPlayer) {
                     if (uuid != null) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(players);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                         }
                     }
                 }
                 tpTheGroup(player);
-                plugin.giveThePlayerArmor(player);
+                plugin.playerGroup.giveThePlayerArmor(player);
             } else {
                 removeThePlayerFromWaiting(player);
                 player.sendMessage(ERROR + "You have to be in a group to play this game!");
@@ -501,23 +502,23 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
             assert playersInGroupOfPlayer != null;
             plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.playersThatChoice5Teams.removeAll(new HashSet<>(playersInGroupOfPlayer));
             plugin.players5Teams.addAll(new HashSet<>(playersInGroupOfPlayer));
-            if (plugin.isPlayerInGroup(player)) {
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
                 for (UUID uuid : playersInGroupOfPlayer) {
                     if (uuid != null) {
                         Player players = Bukkit.getPlayer(uuid);
                         if (players != null) {
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(players);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(players);
                         }
                     }
                 }
                 tpTheGroup(player);
-                plugin.giveThePlayerArmor(player);
+                plugin.playerGroup.giveThePlayerArmor(player);
             } else {
                 removeThePlayerFromWaiting(player);
                 player.sendMessage(ERROR + "You have to be in a group to play this game!");
@@ -540,8 +541,8 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 assert playersInGroupOfPlayer != null;
                 plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
                 plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
@@ -552,7 +553,7 @@ public class StartTheGame {
                         if (uuids != null) {
                             Player playerInGroup = Bukkit.getPlayer(uuids);
                             if (playerInGroup != null) {
-                                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                                plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                             }
                         }
                     }
@@ -560,21 +561,21 @@ public class StartTheGame {
             } else {
                 // the player is alone
                 UUID uuid = player.getUniqueId();
-                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                 plugin.ReadyPlayers.remove(uuid);
                 plugin.ReadySystem.remove(uuid);
                 plugin.playersChoicePvEZombie.remove(uuid);
                 plugin.playersPlayingPvEZombie.add(uuid);
             }
             tpTheGroup(player);
-            String gameName = plugin.getGameName(player);
+            String gameName = plugin.game.getGameName(player);
             String strLocation = plugin.mainConfig.getStrPvE("pve_boss_spawn-" + gameName);
             Location loc = plugin.StringToLocation(strLocation);
             if (loc != null) {
                 plugin.spawnBoss.ZombieBoss(loc, player.getName());
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
@@ -605,8 +606,8 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 assert playersInGroupOfPlayer != null;
                 plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
                 plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
@@ -617,7 +618,7 @@ public class StartTheGame {
                         if (uuids != null) {
                             Player playerInGroup = Bukkit.getPlayer(uuids);
                             if (playerInGroup != null) {
-                                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                                plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                             }
                         }
                     }
@@ -625,21 +626,21 @@ public class StartTheGame {
             } else {
                 // the player is alone
                 UUID uuid = player.getUniqueId();
-                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                 plugin.ReadyPlayers.remove(uuid);
                 plugin.ReadySystem.remove(uuid);
                 plugin.playersChoicePvESkeleton.remove(uuid);
                 plugin.playersPlayingPvESkeleton.add(uuid);
             }
             tpTheGroup(player);
-            String gameName = plugin.getGameName(player);
+            String gameName = plugin.game.getGameName(player);
             String strLocation = plugin.mainConfig.getStrPvE("pve_boss_spawn-" + gameName);
             Location loc = plugin.StringToLocation(strLocation);
             if (loc != null) {
                 plugin.spawnBoss.SkeletonBoss(loc, player.getName());
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
@@ -670,8 +671,8 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 assert playersInGroupOfPlayer != null;
                 plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
                 plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
@@ -682,7 +683,7 @@ public class StartTheGame {
                         if (uuids != null) {
                             Player playerInGroup = Bukkit.getPlayer(uuids);
                             if (playerInGroup != null) {
-                                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                                plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                             }
                         }
                     }
@@ -690,21 +691,21 @@ public class StartTheGame {
             } else {
                 // the player is alone
                 UUID uuid = player.getUniqueId();
-                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                 plugin.ReadyPlayers.remove(uuid);
                 plugin.ReadySystem.remove(uuid);
                 plugin.playersChoicePvESpider.remove(uuid);
                 plugin.playersPlayingPvESpider.add(uuid);
             }
             tpTheGroup(player);
-            String gameName = plugin.getGameName(player);
+            String gameName = plugin.game.getGameName(player);
             String strLocation = plugin.mainConfig.getStrPvE("pve_boss_spawn-" + gameName);
             Location loc = plugin.StringToLocation(strLocation);
             if (loc != null) {
                 plugin.spawnBoss.SpiderBoss(loc, player.getName());
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
@@ -735,8 +736,8 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 assert playersInGroupOfPlayer != null;
                 plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
                 plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
@@ -747,7 +748,7 @@ public class StartTheGame {
                         if (uuids != null) {
                             Player playerInGroup = Bukkit.getPlayer(uuids);
                             if (playerInGroup != null) {
-                                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                                plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                             }
                         }
                     }
@@ -755,21 +756,21 @@ public class StartTheGame {
             } else {
                 // the player is alone
                 UUID uuid = player.getUniqueId();
-                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                 plugin.ReadyPlayers.remove(uuid);
                 plugin.ReadySystem.remove(uuid);
                 plugin.playersChoicePvEEnderman.remove(uuid);
                 plugin.playersPlayingPvEEnderman.add(uuid);
             }
             tpTheGroup(player);
-            String gameName = plugin.getGameName(player);
+            String gameName = plugin.game.getGameName(player);
             String strLocation = plugin.mainConfig.getStrPvE("pve_boss_spawn-" + gameName);
             Location loc = plugin.StringToLocation(strLocation);
             if (loc != null) {
                 plugin.spawnBoss.EndermanBoss(loc, player.getName());
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {
@@ -800,8 +801,8 @@ public class StartTheGame {
         }
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         if (player != null) {
-            if (plugin.isPlayerInGroup(player)) {
-                Set<UUID> playersInGroupOfPlayer = plugin.getPlayersInGroupOfPlayer(player);
+            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                Set<UUID> playersInGroupOfPlayer = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                 assert playersInGroupOfPlayer != null;
                 plugin.ReadyPlayers.removeAll(new HashSet<>(playersInGroupOfPlayer));
                 plugin.ReadySystem.removeAll(new HashSet<>(playersInGroupOfPlayer));
@@ -812,7 +813,7 @@ public class StartTheGame {
                         if (uuids != null) {
                             Player playerInGroup = Bukkit.getPlayer(uuids);
                             if (playerInGroup != null) {
-                                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInGroup);
+                                plugin.waitingLobby.removePlayerFromWaitedLobby(playerInGroup);
                             }
                         }
                     }
@@ -820,21 +821,21 @@ public class StartTheGame {
             } else {
                 // the player is alone
                 UUID uuid = player.getUniqueId();
-                plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                 plugin.ReadyPlayers.remove(uuid);
                 plugin.ReadySystem.remove(uuid);
                 plugin.playersChoicePvESlime.remove(uuid);
                 plugin.playersPlayingPvESlime.add(uuid);
             }
             tpTheGroup(player);
-            String gameName = plugin.getGameName(player);
+            String gameName = plugin.game.getGameName(player);
             String strLocation = plugin.mainConfig.getStrPvE("pve_boss_spawn-" + gameName);
             Location loc = plugin.StringToLocation(strLocation);
             if (loc != null) {
                 plugin.spawnBoss.SlimeBoss(loc, player.getName());
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    for (UUID uuid : plugin.getPlayersInGroupOfPlayer(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                         if (uuid != null) {
                             Player groupPlayer = Bukkit.getPlayer(uuid);
                             if (groupPlayer != null) {

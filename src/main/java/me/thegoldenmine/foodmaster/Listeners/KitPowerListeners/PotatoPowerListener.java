@@ -1,9 +1,8 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
@@ -11,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 public class PotatoPowerListener implements Listener {
     private final FoodMaster plugin;
@@ -39,7 +37,7 @@ public class PotatoPowerListener implements Listener {
         }
         String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
         if (player.getInventory().getItemInMainHand().equals(ItemManager.PotatoKit)) {
-            if (!plugin.isPlayerInGame(player)) {
+            if (!plugin.game.isPlayerInGame(player)) {
                 if (player.getInventory().contains(ItemManager.PotatoKit)) {
                     player.getInventory().remove(ItemManager.PotatoKit);
                 }

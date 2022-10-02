@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -132,7 +132,7 @@ public class BeefPowerListener implements Listener {
                             } else {
                                 if (checkPlayerHealth) {
                                     plugin.FoodGameWinner.add(uuid);
-                                    Set<UUID> groupClone = plugin.getPlayersInGroupOfPlayer(player);
+                                    Set<UUID> groupClone = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
                                     for (UUID uuid8 : groupClone) {
                                         Player playerInGroup = Bukkit.getPlayer(uuid8);
                                         if (playerInGroup != null) {
@@ -158,7 +158,7 @@ public class BeefPowerListener implements Listener {
                                         if (uuid6 != null) {
                                             Player player11 = Bukkit.getPlayer(uuid6);
                                             if (player11 != null) {
-                                                plugin.givePlayerWin(player11);
+                                                plugin.giveOneWinToPlayer.givePlayerWin(player11);
                                             }
                                         }
                                     }
@@ -166,7 +166,7 @@ public class BeefPowerListener implements Listener {
                                         if (uuid5 != null) {
                                             Player player11 = Bukkit.getPlayer(uuid5);
                                             if (player11 != null) {
-                                                plugin.givePlayerLose(player11);
+                                                plugin.giveOneLoseToPlayer.givePlayerLose(player11);
                                             }
                                         }
                                     }
@@ -184,53 +184,53 @@ public class BeefPowerListener implements Listener {
                                 if (checkPlayerHealth && respawnOrLives) {
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerNear, player);
-                                    plugin.thePlayerIsDead(playerNear);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                    plugin.playerDead.thePlayerIsDead(playerNear);
                                 } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
-                                    plugin.respawnThePlayer(playerNear);
+                                    plugin.respawnPlayer.respawnThePlayer(playerNear);
                                     // player - killer
                                     // playerNear - dead
-                                    plugin.givePlayerKD(playerNear, player);
+                                    plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                 } else {
                                     playerNear.damage(damageGame);
                                 }
                             }
-                        } else if (plugin.isPlayerPlayingFoodWars(player) && plugin.isPlayerPlayingFoodWars(playerNear)) {
+                        } else if (plugin.deathmatch.isPlayerPlayingFoodWars(player) && plugin.deathmatch.isPlayerPlayingFoodWars(playerNear)) {
                             // friendly-fire
                             boolean checkLive1 = plugin.mainConfig.getBooleanGame("enable_lives_team_deathmatch") && plugin.lives.containsKey(uniqueId) && plugin.lives.get(uniqueId) == 0;
                             boolean respawnOrLives1 = checkLive1 || !plugin.mainConfig.getBooleanGame("respawn_team_deathmatch");
-                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.getPlayerTeam(player).equals(plugin.getPlayerTeam(playerNear))) {
+                            if (plugin.mainConfig.getBooleanGame("friendly-fire") && plugin.deathmatch.getPlayerTeam(player).equals(plugin.deathmatch.getPlayerTeam(playerNear))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     playerNear.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                 } else {
                                     if (playerNear.getHealth() - friendlyDamage < 1 && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (playerNear.getHealth() - friendlyDamage < 1 && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(friendlyDamage);
                                     }
                                 }
-                            } else if (!plugin.getPlayerTeam(player).equals(plugin.getPlayerTeam(playerNear))) {
+                            } else if (!plugin.deathmatch.getPlayerTeam(player).equals(plugin.deathmatch.getPlayerTeam(playerNear))) {
                                 if (!plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(uniqueId)) {
                                     playerNear.sendMessage(INFO + "You have spawn protection for " + gold + "" + italic + "" + plugin.gameSpawnCoolDown.getTime(uniqueId) + "" + aqua + "" + italic + " seconds. You won't die.");
                                 } else {
                                     if (checkPlayerHealth && respawnOrLives1) {
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
-                                        plugin.thePlayerIsDead(playerNear);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
+                                        plugin.playerDead.thePlayerIsDead(playerNear);
                                     } else if (checkPlayerHealth && plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                                        plugin.respawnThePlayer(playerNear);
+                                        plugin.respawnPlayer.respawnThePlayer(playerNear);
                                         // player - killer
                                         // playerNear - dead
-                                        plugin.givePlayerKD(playerNear, player);
+                                        plugin.giveOneKillAndDeathToPlayer.givePlayerKD(playerNear, player);
                                     } else {
                                         playerNear.damage(damageGame);
                                     }
@@ -267,7 +267,7 @@ public class BeefPowerListener implements Listener {
         Action action = event.getAction();
         Player player = event.getPlayer();
         if (player.getInventory().getItemInMainHand().equals(ItemManager.BeefKit)) {
-            if (!plugin.isPlayerInGame(player)) {
+            if (!plugin.game.isPlayerInGame(player)) {
                 if (player.getInventory().contains(ItemManager.BeefKit)) {
                     player.getInventory().remove(ItemManager.BeefKit);
                 }

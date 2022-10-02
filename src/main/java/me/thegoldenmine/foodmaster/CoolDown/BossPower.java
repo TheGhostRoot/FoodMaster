@@ -7,7 +7,10 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class BossPower {
     private final FoodMaster plugin;
@@ -191,8 +194,8 @@ public class BossPower {
                                     if (playerName != null) {
                                         Player player = Bukkit.getPlayer(playerName);
                                         if (player != null && player.getLocation().add(0, 1, 0).getBlock().getType().equals(Material.AIR)) {
-                                            if (plugin.isPlayerInGroup(player)) {
-                                                List<UUID> group = new ArrayList<>(plugin.getPlayersInGroupOfPlayer(player));
+                                            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                                                List<UUID> group = new ArrayList<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
                                                 int rand = new Random().nextInt(group.size() - 1);
                                                 UUID uuid = group.get(rand);
                                                 Player randPlayer = Bukkit.getPlayer(uuid);

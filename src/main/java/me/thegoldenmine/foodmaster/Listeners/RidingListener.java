@@ -40,7 +40,7 @@ public class RidingListener implements Listener {
             }
             if (plugin.mainConfig.getBooleanWaitLobby("ride_players") && entity instanceof Player) {
                 Player playerEntity = (Player) entity;
-                if (plugin.isPlayerInWaitingLobby(playerEntity) && plugin.isPlayerInWaitingLobby(playerRider)) {
+                if (plugin.waitingLobby.isPlayerInWaitingLobby(playerEntity) && plugin.waitingLobby.isPlayerInWaitingLobby(playerRider)) {
                     playerEntity.addPassenger(playerRider);
                 }
             }

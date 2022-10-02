@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,8 +24,8 @@ public class OpenGUI implements Listener {
                 plugin.createGUI.waitGUIkitChoose(player);
             } else if (player.getInventory().getItemInMainHand().equals(ItemManager.teams)) {
                 if (plugin.playersThatChoice2Teams.contains(player.getUniqueId())) {
-                    boolean red = plugin.getGroupPlayersInRedTeam(player) != null && !plugin.getGroupPlayersInRedTeam(player).isEmpty();
-                    boolean blue = plugin.getGroupPlayersInBlueTeam(player) != null && !plugin.getGroupPlayersInBlueTeam(player).isEmpty();
+                    boolean red = plugin.deathmatch.getGroupPlayersInRedTeam(player) != null && !plugin.deathmatch.getGroupPlayersInRedTeam(player).isEmpty();
+                    boolean blue = plugin.deathmatch.getGroupPlayersInBlueTeam(player) != null && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).isEmpty();
                     if (red && !blue) {
                         plugin.createGUI.createTeam2GUI(plugin.createGUI.guiTeam2.getItem(12), ItemManager.blue);
                     } else if (!red && blue) {
@@ -37,9 +37,9 @@ public class OpenGUI implements Listener {
                     }
                     plugin.createGUI.openTeamGUI(player, 2);
                 } else if (plugin.playersThatChoice3Teams.contains(player.getUniqueId())) {
-                    boolean red = plugin.getGroupPlayersInRedTeam(player) != null && !plugin.getGroupPlayersInRedTeam(player).isEmpty();
-                    boolean blue = plugin.getGroupPlayersInBlueTeam(player) != null && !plugin.getGroupPlayersInBlueTeam(player).isEmpty();
-                    boolean green = plugin.getGroupPlayersInGreenTeam(player) != null && !plugin.getGroupPlayersInGreenTeam(player).isEmpty();
+                    boolean red = plugin.deathmatch.getGroupPlayersInRedTeam(player) != null && !plugin.deathmatch.getGroupPlayersInRedTeam(player).isEmpty();
+                    boolean blue = plugin.deathmatch.getGroupPlayersInBlueTeam(player) != null && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).isEmpty();
+                    boolean green = plugin.deathmatch.getGroupPlayersInGreenTeam(player) != null && !plugin.deathmatch.getGroupPlayersInGreenTeam(player).isEmpty();
                     if (red && blue && green) {
                         plugin.createGUI.createTeam3GUI(plugin.createGUI.guiTeam3.getItem(13), plugin.createGUI.guiTeam3.getItem(11), plugin.createGUI.guiTeam3.getItem(12));
                     } else if (!red && blue && green) {
@@ -59,10 +59,10 @@ public class OpenGUI implements Listener {
                     }
                     plugin.createGUI.openTeamGUI(player, 3);
                 } else if (plugin.playersThatChoice4Teams.contains(player.getUniqueId())) {
-                    boolean red = plugin.getGroupPlayersInRedTeam(player) != null && !plugin.getGroupPlayersInRedTeam(player).isEmpty();
-                    boolean blue = plugin.getGroupPlayersInBlueTeam(player) != null && !plugin.getGroupPlayersInBlueTeam(player).isEmpty();
-                    boolean green = plugin.getGroupPlayersInGreenTeam(player) != null && !plugin.getGroupPlayersInGreenTeam(player).isEmpty();
-                    boolean cyan = plugin.getGroupPlayersInCyanTeam(player) != null && !plugin.getGroupPlayersInCyanTeam(player).isEmpty();
+                    boolean red = plugin.deathmatch.getGroupPlayersInRedTeam(player) != null && !plugin.deathmatch.getGroupPlayersInRedTeam(player).isEmpty();
+                    boolean blue = plugin.deathmatch.getGroupPlayersInBlueTeam(player) != null && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).isEmpty();
+                    boolean green = plugin.deathmatch.getGroupPlayersInGreenTeam(player) != null && !plugin.deathmatch.getGroupPlayersInGreenTeam(player).isEmpty();
+                    boolean cyan = plugin.deathmatch.getGroupPlayersInCyanTeam(player) != null && !plugin.deathmatch.getGroupPlayersInCyanTeam(player).isEmpty();
                     if (red && blue && green && cyan) {
                         plugin.createGUI.createTeam4GUI(plugin.createGUI.guiTeam4.getItem(14), plugin.createGUI.guiTeam4.getItem(11), plugin.createGUI.guiTeam4.getItem(13), plugin.createGUI.guiTeam4.getItem(12));
                     } else if (!red && !blue && !green && !cyan) {
@@ -98,11 +98,11 @@ public class OpenGUI implements Listener {
                     }
                     plugin.createGUI.openTeamGUI(player, 4);
                 } else if (plugin.playersThatChoice5Teams.contains(player.getUniqueId())) {
-                    boolean red = plugin.getGroupPlayersInRedTeam(player) != null && !plugin.getGroupPlayersInRedTeam(player).isEmpty();
-                    boolean blue = plugin.getGroupPlayersInBlueTeam(player) != null && !plugin.getGroupPlayersInBlueTeam(player).isEmpty();
-                    boolean green = plugin.getGroupPlayersInGreenTeam(player) != null && !plugin.getGroupPlayersInGreenTeam(player).isEmpty();
-                    boolean cyan = plugin.getGroupPlayersInCyanTeam(player) != null && !plugin.getGroupPlayersInCyanTeam(player).isEmpty();
-                    boolean yellow = plugin.getGroupPlayersInYellowTeam(player) != null && !plugin.getGroupPlayersInYellowTeam(player).isEmpty();
+                    boolean red = plugin.deathmatch.getGroupPlayersInRedTeam(player) != null && !plugin.deathmatch.getGroupPlayersInRedTeam(player).isEmpty();
+                    boolean blue = plugin.deathmatch.getGroupPlayersInBlueTeam(player) != null && !plugin.deathmatch.getGroupPlayersInBlueTeam(player).isEmpty();
+                    boolean green = plugin.deathmatch.getGroupPlayersInGreenTeam(player) != null && !plugin.deathmatch.getGroupPlayersInGreenTeam(player).isEmpty();
+                    boolean cyan = plugin.deathmatch.getGroupPlayersInCyanTeam(player) != null && !plugin.deathmatch.getGroupPlayersInCyanTeam(player).isEmpty();
+                    boolean yellow = plugin.deathmatch.getGroupPlayersInYellowTeam(player) != null && !plugin.deathmatch.getGroupPlayersInYellowTeam(player).isEmpty();
                     if (red && blue && green && cyan && yellow) {
                         plugin.createGUI.createTeam5GUI(plugin.createGUI.guiTeam5.getItem(15), plugin.createGUI.guiTeam5.getItem(11), plugin.createGUI.guiTeam5.getItem(13), plugin.createGUI.guiTeam5.getItem(12), plugin.createGUI.guiTeam5.getItem(14));
                     } else if (!red && !blue && !green && !cyan && !yellow) {

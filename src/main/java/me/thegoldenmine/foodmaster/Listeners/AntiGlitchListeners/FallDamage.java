@@ -18,13 +18,13 @@ public class FallDamage implements Listener {
         if (event.getEntity() instanceof Player && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
             Player player = (Player) event.getEntity();
             if (!plugin.mainConfig.getBooleanGame("enable_fall_damage")) {
-                if (plugin.isPlayerInWaitingLobby(player)) {
+                if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                     event.setCancelled(true);
                 }
-                if (plugin.isPlayerInGame(player)) {
+                if (plugin.game.isPlayerInGame(player)) {
                     event.setCancelled(true);
                 }
-                if (plugin.isPlayerInGroup(player)) {
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
                     event.setCancelled(true);
                 }
             }

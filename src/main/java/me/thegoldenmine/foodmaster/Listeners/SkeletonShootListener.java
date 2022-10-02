@@ -2,7 +2,9 @@ package me.thegoldenmine.foodmaster.Listeners;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;

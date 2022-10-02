@@ -1,20 +1,15 @@
 package me.thegoldenmine.foodmaster.Listeners.KitPowerListeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -30,7 +25,7 @@ public class MelonPowerListener implements Listener {
         Action action = event.getAction();
         Player player = event.getPlayer();
         if (player.getInventory().getItemInMainHand().equals(ItemManager.MelonKit)) {
-            if (!plugin.isPlayerInGame(player)) {
+            if (!plugin.game.isPlayerInGame(player)) {
                 if (player.getInventory().contains(ItemManager.MelonKit)) {
                     player.getInventory().remove(ItemManager.MelonKit);
                 }

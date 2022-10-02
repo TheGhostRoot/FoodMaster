@@ -1,7 +1,7 @@
 package me.thegoldenmine.foodmaster.Listeners;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -56,9 +56,9 @@ public class GroupLeave implements Listener {
                     player.sendMessage(ERROR + "One of the locations isn't set.");
                 }
             } else {
-                if (plugin.isPlayerInGroup(player)) {
-                    if (plugin.isPlayerInWaitingLobby(player)) {
-                        Set<UUID> group = new HashSet<>(plugin.getPlayersInGroupOfPlayer(player));
+                if (plugin.playerGroup.isPlayerInGroup(player)) {
+                    if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                        Set<UUID> group = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
                         // kits
                         UUID uuid = player.getUniqueId();
                         // tell everyone that you left the group
@@ -73,7 +73,7 @@ public class GroupLeave implements Listener {
                             for (UUID uuids : group) {
                                 if (uuids != null) {
                                     Player playersInGroup = Bukkit.getPlayer(uuids);
-                                    if (playersInGroup != null && plugin.isPlayerInWaitingLobby(playersInGroup)) {
+                                    if (playersInGroup != null && plugin.waitingLobby.isPlayerInWaitingLobby(playersInGroup)) {
                                         playersInGroup.teleport(endLoc);
                                     }
                                 }
@@ -81,12 +81,12 @@ public class GroupLeave implements Listener {
                             for (UUID uuids : group) {
                                 if (uuids != null) {
                                     Player playerInPlayer = Bukkit.getPlayer(uuids);
-                                    if (playerInPlayer != null && plugin.isPlayerInWaitingLobby(player)) {
-                                        plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(playerInPlayer);
+                                    if (playerInPlayer != null && plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                        plugin.waitingLobby.removePlayerFromWaitedLobby(playerInPlayer);
                                     }
                                 }
                             }
-                            plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                            plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                             plugin.playersInPotatoKit.removeAll(group);
                             plugin.playersInBreadKit.removeAll(group);
                             plugin.playersInMelonKit.removeAll(group);
@@ -185,18 +185,18 @@ public class GroupLeave implements Listener {
                             player.teleport(endLoc);
                         }
                         plugin.allGroups.removeIf(Set::isEmpty);
-                    } else if (plugin.isPlayerInGame(player)) {
-                        for (UUID uuidss : plugin.getPlayersInGroupOfPlayer(player)) {
+                    } else if (plugin.game.isPlayerInGame(player)) {
+                        for (UUID uuidss : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                             Player playerss = Bukkit.getPlayer(uuidss);
                             if (playerss != null && !playerss.getUniqueId().equals(player.getUniqueId())) {
                                 playerss.sendMessage(NORMAL + "" + gold + "" + italic + "" + player.getName() + "" + green + "" + italic + " just left the group.");
                             }
                         }
-                        if (plugin.getPlayersInGroupOfPlayer(player).size() == 2) {
-                            if (plugin.isPlayerPlayingPvE(player)) {
+                        if (plugin.playerGroup.getPlayersInGroupOfPlayer(player).size() == 2) {
+                            if (plugin.playerPvE.isPlayerPlayingPvE(player)) {
                                 plugin.endTheGame.endThePvE(player);
                             } else {
-                                for (UUID uuid1 : plugin.getPlayersInGroupOfPlayer(player)) {
+                                for (UUID uuid1 : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                     if (uuid1 != null) {
                                         Player playerGroup = Bukkit.getPlayer(uuid1);
                                         if (playerGroup != null) {
@@ -204,7 +204,7 @@ public class GroupLeave implements Listener {
                                         }
                                     }
                                 }
-                                for (UUID uuid1 : plugin.getPlayersInGroupOfPlayer(player)) {
+                                for (UUID uuid1 : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                     if (uuid1 != null) {
                                         plugin.inGameKills.remove(uuid1);
                                         plugin.inGameDeaths.remove(uuid1);
@@ -223,7 +223,7 @@ public class GroupLeave implements Listener {
                                     if (uuid != null) {
                                         Player player11 = Bukkit.getPlayer(uuid);
                                         if (player11 != null) {
-                                            plugin.givePlayerWin(player11);
+                                            plugin.giveOneWinToPlayer.givePlayerWin(player11);
                                         }
                                     }
                                 }
@@ -231,7 +231,7 @@ public class GroupLeave implements Listener {
                                     if (uuid != null) {
                                         Player player11 = Bukkit.getPlayer(uuid);
                                         if (player11 != null) {
-                                            plugin.givePlayerLose(player11);
+                                            plugin.giveOneLoseToPlayer.givePlayerLose(player11);
                                         }
                                     }
                                 }
@@ -239,7 +239,7 @@ public class GroupLeave implements Listener {
                                 plugin.losses.clear();
                             }
                         } else {
-                            plugin.removePlayerFromGame(player);
+                            plugin.game.removePlayerFromGame(player);
                             UUID uuid = player.getUniqueId();
                             plugin.playersInPotatoKit.remove(uuid);
                             plugin.playersInBreadKit.remove(uuid);
@@ -256,12 +256,12 @@ public class GroupLeave implements Listener {
                             plugin.playersThatChoice5Teams.remove(uuid);
                             plugin.playersThatChoice4Teams.remove(uuid);
                             plugin.playersThatChoice2Teams.remove(uuid);
-                            if (plugin.isPlayerInGroup(player)) {
-                                plugin.locOfPlayersInWaitingLobby.remove(new HashSet<>(plugin.getPlayersInGroupOfPlayer(player)));
+                            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                                plugin.locOfPlayersInWaitingLobby.remove(new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player)));
                             }
                             plugin.kickedPlayers.remove(uuid);
                             plugin.playersThatChoice3Teams.remove(uuid);
-                            String name1 = plugin.getGameName(player);
+                            String name1 = plugin.game.getGameName(player);
                             plugin.stillAlive.remove(name1);
                             plugin.ReadySystem.remove(uuid);
                             plugin.ReadyPlayers.remove(uuid);
@@ -291,8 +291,8 @@ public class GroupLeave implements Listener {
                             player.teleport(endLoc);
                         }
                     }
-                    player.sendTitle(gold + "" + italic + "You left your group", aqua + "" + italic + "" + plugin.getPlayerNamesFromGroupString(player).replaceAll("\"\"", "").replace("[", "").replace("]", ""), 2, 80, 2);
-                    plugin.PlayerLeaveFromGroup(player);
+                    player.sendTitle(gold + "" + italic + "You left your group", aqua + "" + italic + "" + plugin.playerGroup.getPlayerNamesFromGroupString(player).replaceAll("\"\"", "").replace("[", "").replace("]", ""), 2, 80, 2);
+                    plugin.playerGroup.PlayerLeaveFromGroup(player);
                 }
             }
         }

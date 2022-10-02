@@ -1,16 +1,15 @@
 package me.thegoldenmine.foodmaster.CoolDown;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.ItemManager;
-import org.bukkit.*;
+import me.thegoldenmine.foodmaster.*;
+import me.thegoldenmine.foodmaster.Items.ItemManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.entity.Cow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -58,15 +57,15 @@ public class AntiGlitchSys {
                         AttributeInstance attributeInstance = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
                         assert attributeInstance != null;
                         // kits
-                        ItemStack fish = plugin.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Fish" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
-                        ItemStack bread = plugin.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Bread" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
-                        ItemStack cookie = plugin.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Cookie" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
-                        ItemStack melon = plugin.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Melon" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
-                        ItemStack potato = plugin.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Potato" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
+                        ItemStack fish = plugin.game.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Fish" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
+                        ItemStack bread = plugin.game.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Bread" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
+                        ItemStack cookie = plugin.game.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Cookie" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
+                        ItemStack melon = plugin.game.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Melon" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
+                        ItemStack potato = plugin.game.getItemByName(player.getInventory(), ChatColor.GREEN + "" + ChatColor.MAGIC + "|" + ChatColor.GOLD + "" + ChatColor.BOLD + "Potato" + ChatColor.GREEN + "" + ChatColor.MAGIC + "|");
 
                         // others
-                        ItemStack playAgainItem = plugin.getItemByName(player.getInventory(), ItemManager.playAgain.getItemMeta().getDisplayName());
-                        ItemStack groupLeaveItem = plugin.getItemByName(player.getInventory(), ItemManager.groupLeave.getItemMeta().getDisplayName());
+                        ItemStack playAgainItem = plugin.game.getItemByName(player.getInventory(), ItemManager.playAgain.getItemMeta().getDisplayName());
+                        ItemStack groupLeaveItem = plugin.game.getItemByName(player.getInventory(), ItemManager.groupLeave.getItemMeta().getDisplayName());
                         if (playAgainItem != null && playAgainItem.getAmount() > 1) {
                             playAgainItem.setAmount(1);
                         }
@@ -109,23 +108,23 @@ public class AntiGlitchSys {
                             attributeInstance.setBaseValue(someHealth);
                             player.setHealth(someHealth);
                         }
-                        if (plugin.isPlayerInWaitingLobby(player) && !plugin.isPlayerInGame(player)) {
+                        if (plugin.waitingLobby.isPlayerInWaitingLobby(player) && !plugin.game.isPlayerInGame(player)) {
                             if (!plugin.mainConfig.getBooleanWaitLobby("hungry_while_waiting")) {
                                 player.setFoodLevel(20);
                             }
                             if (!inventory.contains(ItemManager.kitChooser) && !plugin.playersChoiceFoodGame.contains(uuid)) {
                                 inventory.addItem(ItemManager.kitChooser);
                             }
-                            if (plugin.isPlayerHaveStartedTeams(player) && !inventory.contains(ItemManager.teams) && !plugin.playersChoiceFoodGame.contains(uuid)) {
+                            if (plugin.deathmatch.isPlayerHaveStartedTeams(player) && !inventory.contains(ItemManager.teams) && !plugin.playersChoiceFoodGame.contains(uuid)) {
                                 inventory.addItem(ItemManager.teams);
                             }
-                            if (plugin.getItemByName(player.getInventory(), ReadyName) != null && inventory.contains(plugin.getItemByName(player.getInventory(), ReadyName)) && plugin.ReadyPlayers.contains(uuid)) {
+                            if (plugin.game.getItemByName(player.getInventory(), ReadyName) != null && inventory.contains(plugin.game.getItemByName(player.getInventory(), ReadyName)) && plugin.ReadyPlayers.contains(uuid)) {
                                 inventory.remove(ItemManager.isReady);
                             }
-                            if (plugin.ReadyPlayers.contains(uuid) && !inventory.contains(plugin.getItemByName(player.getInventory(), NotReadyName))) {
+                            if (plugin.ReadyPlayers.contains(uuid) && !inventory.contains(plugin.game.getItemByName(player.getInventory(), NotReadyName))) {
                                 inventory.addItem(ItemManager.notReady);
                             }
-                            if (!plugin.ReadyPlayers.contains(uuid) && !inventory.contains(plugin.getItemByName(player.getInventory(), ReadyName))) {
+                            if (!plugin.ReadyPlayers.contains(uuid) && !inventory.contains(plugin.game.getItemByName(player.getInventory(), ReadyName))) {
                                 inventory.addItem(ItemManager.isReady);
                             }
                         }
@@ -133,30 +132,30 @@ public class AntiGlitchSys {
                             player.getInventory().setItemInOffHand(null);
                             player.sendMessage(ERROR + "Nope.");
                         }
-                        if (plugin.isPlayerInGame(player) && !player.getGameMode().equals(GameMode.SURVIVAL) && player.isOnline() && !player.isDead()) {
-                            String name = plugin.getGameName(player);
+                        if (plugin.game.isPlayerInGame(player) && !player.getGameMode().equals(GameMode.SURVIVAL) && player.isOnline() && !player.isDead()) {
+                            String name = plugin.game.getGameName(player);
                             if (!plugin.stillAlive.isEmpty() && plugin.stillAlive.get(name) != null && plugin.stillAlive.get(name).contains(uuid)) {
                                 // the player is alive
                                 player.setGameMode(GameMode.SURVIVAL);
                             }
                         }
-                        if (plugin.isPlayerInGame(player) && !player.getGameMode().equals(GameMode.SPECTATOR) && player.isOnline() && !player.isDead()) {
-                            String name = plugin.getGameName(player);
+                        if (plugin.game.isPlayerInGame(player) && !player.getGameMode().equals(GameMode.SPECTATOR) && player.isOnline() && !player.isDead()) {
+                            String name = plugin.game.getGameName(player);
                             if (!plugin.stillAlive.isEmpty() && plugin.stillAlive.get(name) != null && !plugin.stillAlive.get(name).contains(uuid)) {
                                 // the player is alive
                                 player.setGameMode(GameMode.SPECTATOR);
                             }
                         }
-                        if (plugin.isPlayerInGroup(player) && !plugin.mainConfig.getBooleanMain("hungry_in_group")) {
+                        if (plugin.playerGroup.isPlayerInGroup(player) && !plugin.mainConfig.getBooleanMain("hungry_in_group")) {
                             player.setFoodLevel(20);
                         }
-                        if (plugin.isPlayerInGroup(player) && !inventory.contains(ItemManager.groupLeave) && !plugin.isPlayerInGame(player) && !plugin.isPlayerInWaitingLobby(player)) {
+                        if (plugin.playerGroup.isPlayerInGroup(player) && !inventory.contains(ItemManager.groupLeave) && !plugin.game.isPlayerInGame(player) && !plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                             inventory.setItem(8, ItemManager.groupLeave);
                         }
-                        if (!plugin.isPlayerInGroup(player) && inventory.contains(ItemManager.groupLeave)) {
+                        if (!plugin.playerGroup.isPlayerInGroup(player) && inventory.contains(ItemManager.groupLeave)) {
                             inventory.remove(ItemManager.groupLeave);
                         }
-                        if (!plugin.isPlayerInWaitingLobby(player) && !plugin.isPlayerInGame(player) && plugin.isPlayerInGroup(player) && plugin.playAgain.containsKey(uuid) && !player.getInventory().contains(ItemManager.playAgain)) {
+                        if (!plugin.waitingLobby.isPlayerInWaitingLobby(player) && !plugin.game.isPlayerInGame(player) && plugin.playerGroup.isPlayerInGroup(player) && plugin.playAgain.containsKey(uuid) && !player.getInventory().contains(ItemManager.playAgain)) {
                             player.getInventory().addItem(ItemManager.playAgain);
                         }
                         if (!plugin.playAgain.containsKey(uuid) && player.getInventory().contains(ItemManager.playAgain)) {
@@ -165,42 +164,42 @@ public class AntiGlitchSys {
                         // Ready system
                         if (plugin.ReadySystem.contains(uuid)) {
                             // From Ready to UNREADY
-                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.getItemByName(player.getInventory(), ReadyName))) {
-                                if (!plugin.isPlayerInGame(player) && plugin.isPlayerInWaitingLobby(player)) {
-                                    if (!plugin.isPlayerInGroup(player) && !plugin.isPlayerChooseToPlayPvE(player)) {
+                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), ReadyName))) {
+                                if (!plugin.game.isPlayerInGame(player) && plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                    if (!plugin.playerGroup.isPlayerInGroup(player) && !plugin.playerPvE.isPlayerChooseToPlayPvE(player)) {
                                         plugin.ReadySystem.remove(uuid);
                                         player.sendMessage(ERROR + "You are not in a group.");
                                     }
-                                    ItemStack item = plugin.getItemByName(player.getInventory(), ReadyName);
+                                    ItemStack item = plugin.game.getItemByName(player.getInventory(), ReadyName);
                                     assert item != null;
                                     inventory.remove(item);
                                     inventory.addItem(ItemManager.notReady);
                                     plugin.ReadyPlayers.add(uuid);
                                     player.sendMessage(NORMAL + "Ready");
-                                    ItemStack itemNotReady = plugin.getItemByName(player.getInventory(), NotReadyName);
+                                    ItemStack itemNotReady = plugin.game.getItemByName(player.getInventory(), NotReadyName);
                                     if (inventory.contains(ItemManager.notReady) || inventory.contains(itemNotReady)) {
                                         assert itemNotReady != null;
                                         if (itemNotReady.getItemMeta() != null && itemNotReady.getItemMeta().getLore() != null) {
                                             itemNotReady.getItemMeta().getLore().clear();
                                         }
-                                        plugin.setReadyStatus(player);
+                                        plugin.game.setReadyStatus(player);
                                     }
-                                    if (plugin.checkIfTheGroupIsReady(player)) {
-                                        if (plugin.isPlayerChooseToPlayPvE(player)) {
-                                            if (plugin.isPlayerInGroup(player)) {
-                                                for (UUID uuid1 : plugin.getPlayersInGroupOfPlayer(player)) {
+                                    if (plugin.playerGroup.checkIfTheGroupIsReady(player)) {
+                                        if (plugin.playerPvE.isPlayerChooseToPlayPvE(player)) {
+                                            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                                                for (UUID uuid1 : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                                     if (uuid1 != null) {
                                                         Player player1 = Bukkit.getPlayer(uuid1);
-                                                        if (player1 != null && !plugin.isPlayerChosenKit(player1)) {
+                                                        if (player1 != null && !plugin.playerGroup.isPlayerChosenKit(player1)) {
                                                             plugin.playersRandomKit.add(uuid1);
-                                                            plugin.randomKitGiver(player1);
+                                                            plugin.game.randomKitGiver(player1);
                                                         }
                                                     }
                                                 }
                                             } else {
-                                                if (!plugin.isPlayerChosenKit(player)) {
+                                                if (!plugin.playerGroup.isPlayerChosenKit(player)) {
                                                     plugin.playersRandomKit.add(uuid);
-                                                    plugin.randomKitGiver(player);
+                                                    plugin.game.randomKitGiver(player);
                                                 }
                                             }
                                             if (plugin.playersChoicePvEZombie.contains(uuid)) {
@@ -215,28 +214,28 @@ public class AntiGlitchSys {
                                                 plugin.startTheGame.StartPvEEnderman(player);
                                             }
                                         } else {
-                                            if (plugin.isPlayerInGroup(player)) {
-                                                for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                                            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                                                for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                                     if (uuids != null) {
                                                         Player groupPlayer = Bukkit.getPlayer(uuids);
                                                         if (groupPlayer != null && !plugin.isPlayerPlayingFoodGame(player)) {
-                                                            if (!plugin.isPlayerInTeams(groupPlayer) && !plugin.isPlayerChosenKit(groupPlayer)) {
+                                                            if (!plugin.deathmatch.isPlayerInTeams(groupPlayer) && !plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomTeam.add(groupPlayer.getUniqueId());
                                                                 plugin.playersRandomKit.add(groupPlayer.getUniqueId());
-                                                                plugin.randomKitGiver(groupPlayer);
-                                                                plugin.setPlayersRandomTeam(groupPlayer);
-                                                            } else if (!plugin.isPlayerInTeams(groupPlayer) && plugin.isPlayerChosenKit(groupPlayer)) {
+                                                                plugin.game.randomKitGiver(groupPlayer);
+                                                                plugin.deathmatch.setPlayersRandomTeam(groupPlayer);
+                                                            } else if (!plugin.deathmatch.isPlayerInTeams(groupPlayer) && plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomTeam.add(groupPlayer.getUniqueId());
-                                                                plugin.setPlayersRandomTeam(groupPlayer);
-                                                            } else if (plugin.isPlayerInTeams(groupPlayer) && !plugin.isPlayerChosenKit(groupPlayer)) {
+                                                                plugin.deathmatch.setPlayersRandomTeam(groupPlayer);
+                                                            } else if (plugin.deathmatch.isPlayerInTeams(groupPlayer) && !plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomKit.add(groupPlayer.getUniqueId());
-                                                                plugin.randomKitGiver(groupPlayer);
-                                                            } else if (!plugin.isPlayerInTeams(groupPlayer)) {
+                                                                plugin.game.randomKitGiver(groupPlayer);
+                                                            } else if (!plugin.deathmatch.isPlayerInTeams(groupPlayer)) {
                                                                 plugin.playersRandomTeam.add(groupPlayer.getUniqueId());
-                                                                plugin.setPlayersRandomTeam(groupPlayer);
-                                                            } else if (!plugin.isPlayerChosenKit(groupPlayer)) {
+                                                                plugin.deathmatch.setPlayersRandomTeam(groupPlayer);
+                                                            } else if (!plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomKit.add(groupPlayer.getUniqueId());
-                                                                plugin.randomKitGiver(groupPlayer);
+                                                                plugin.game.randomKitGiver(groupPlayer);
                                                             }
                                                         }
                                                     }
@@ -254,8 +253,8 @@ public class AntiGlitchSys {
                                                 } else if (plugin.playersChoiceFreeForAll.contains(uuid)) {
                                                     plugin.startTheGame.StartFreeForAll(player);
                                                 } else {
-                                                    if (plugin.isPlayerInWaitingLobby(player)) {
-                                                        plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                                                    if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                                        plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                                                     }
                                                     // kits
                                                     plugin.playersInPotatoKit.remove(uuid);
@@ -291,8 +290,8 @@ public class AntiGlitchSys {
                                         }
                                     }
                                 } else {
-                                    ItemStack item = plugin.getItemByName(player.getInventory(), ReadyName);
-                                    ItemStack item2 = plugin.getItemByName(player.getInventory(), NotReadyName);
+                                    ItemStack item = plugin.game.getItemByName(player.getInventory(), ReadyName);
+                                    ItemStack item2 = plugin.game.getItemByName(player.getInventory(), NotReadyName);
                                     assert item != null;
                                     inventory.remove(item);
                                     assert item2 != null;
@@ -300,32 +299,32 @@ public class AntiGlitchSys {
                                     player.sendMessage(ERROR + "You are not allowed to use this item.");
                                 }
                                 plugin.ReadySystem.remove(uuid);
-                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.getItemByName(player.getInventory(), NotReadyName))) {
+                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), NotReadyName))) {
                                 // From UNREADY To Ready
-                                if (!plugin.isPlayerInGame(player) && plugin.isPlayerInWaitingLobby(player)) {
-                                    if (!plugin.isPlayerInGroup(player) && !plugin.isPlayerChooseToPlayPvE(player)) {
+                                if (!plugin.game.isPlayerInGame(player) && plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                    if (!plugin.playerGroup.isPlayerInGroup(player) && !plugin.playerPvE.isPlayerChooseToPlayPvE(player)) {
                                         plugin.ReadySystem.remove(uuid);
                                         player.sendMessage(ERROR + "You are not in a group.");
                                         return;
                                     }
-                                    ItemStack item = plugin.getItemByName(player.getInventory(), NotReadyName);
+                                    ItemStack item = plugin.game.getItemByName(player.getInventory(), NotReadyName);
                                     assert item != null;
                                     inventory.remove(item);
                                     inventory.addItem(ItemManager.isReady);
                                     plugin.ReadyPlayers.remove(uuid);
                                     player.sendMessage(NORMAL + "Unready");
-                                    ItemStack itemByName = plugin.getItemByName(player.getInventory(), ReadyName);
+                                    ItemStack itemByName = plugin.game.getItemByName(player.getInventory(), ReadyName);
                                     if (inventory.contains(ItemManager.isReady) || inventory.contains(itemByName)) {
                                         if (itemByName.getItemMeta() != null && itemByName.getItemMeta().getLore() != null) {
                                             itemByName.getItemMeta().getLore().clear();
                                         }
-                                        plugin.setReadyStatus(player);
+                                        plugin.game.setReadyStatus(player);
                                     }
-                                    if (plugin.checkIfTheGroupIsReady(player)) {
-                                        if (plugin.isPlayerChooseToPlayPvE(player)) {
-                                            if (!plugin.isPlayerChosenKit(player)) {
+                                    if (plugin.playerGroup.checkIfTheGroupIsReady(player)) {
+                                        if (plugin.playerPvE.isPlayerChooseToPlayPvE(player)) {
+                                            if (!plugin.playerGroup.isPlayerChosenKit(player)) {
                                                 plugin.playersRandomKit.add(uuid);
-                                                plugin.randomKitGiver(player);
+                                                plugin.game.randomKitGiver(player);
                                             }
                                             if (plugin.playersChoicePvEZombie.contains(uuid)) {
                                                 plugin.startTheGame.StartPvEZombie(player);
@@ -339,22 +338,22 @@ public class AntiGlitchSys {
                                                 plugin.startTheGame.StartPvEEnderman(player);
                                             }
                                         } else {
-                                            if (plugin.isPlayerInGroup(player)) {
-                                                for (UUID uuids : plugin.getPlayersInGroupOfPlayer(player)) {
+                                            if (plugin.playerGroup.isPlayerInGroup(player)) {
+                                                for (UUID uuids : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
                                                     if (uuids != null) {
                                                         Player groupPlayer = Bukkit.getPlayer(uuids);
                                                         if (groupPlayer != null && !plugin.isPlayerPlayingFoodGame(player)) {
-                                                            if (!plugin.isPlayerInTeams(groupPlayer) && !plugin.isPlayerChosenKit(groupPlayer)) {
+                                                            if (!plugin.deathmatch.isPlayerInTeams(groupPlayer) && !plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomTeam.add(groupPlayer.getUniqueId());
                                                                 plugin.playersRandomKit.add(groupPlayer.getUniqueId());
-                                                                plugin.randomKitGiver(groupPlayer);
-                                                                plugin.setPlayersRandomTeam(groupPlayer);
-                                                            } else if (!plugin.isPlayerInTeams(groupPlayer) && plugin.isPlayerChosenKit(groupPlayer)) {
+                                                                plugin.game.randomKitGiver(groupPlayer);
+                                                                plugin.deathmatch.setPlayersRandomTeam(groupPlayer);
+                                                            } else if (!plugin.deathmatch.isPlayerInTeams(groupPlayer) && plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomTeam.add(groupPlayer.getUniqueId());
-                                                                plugin.setPlayersRandomTeam(groupPlayer);
-                                                            } else if (plugin.isPlayerInTeams(groupPlayer) && !plugin.isPlayerChosenKit(groupPlayer)) {
+                                                                plugin.deathmatch.setPlayersRandomTeam(groupPlayer);
+                                                            } else if (plugin.deathmatch.isPlayerInTeams(groupPlayer) && !plugin.playerGroup.isPlayerChosenKit(groupPlayer)) {
                                                                 plugin.playersRandomKit.add(groupPlayer.getUniqueId());
-                                                                plugin.randomKitGiver(groupPlayer);
+                                                                plugin.game.randomKitGiver(groupPlayer);
                                                             }
                                                         }
                                                     }
@@ -373,8 +372,8 @@ public class AntiGlitchSys {
                                             } else if (plugin.playersChoiceFreeForAll.contains(uuid)) {
                                                 plugin.startTheGame.StartFreeForAll(player);
                                             } else {
-                                                if (plugin.isPlayerInWaitingLobby(player)) {
-                                                    plugin.removePlayerFromWaitLobby.removePlayerFromWaitedLobby(player);
+                                                if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                                                    plugin.waitingLobby.removePlayerFromWaitedLobby(player);
                                                 }
                                                 // kits
                                                 plugin.playersInPotatoKit.remove(uuid);
@@ -410,8 +409,8 @@ public class AntiGlitchSys {
                                     }
                                 }
                             } else {
-                                ItemStack item = plugin.getItemByName(player.getInventory(), NotReadyName);
-                                ItemStack item2 = plugin.getItemByName(player.getInventory(), ReadyName);
+                                ItemStack item = plugin.game.getItemByName(player.getInventory(), NotReadyName);
+                                ItemStack item2 = plugin.game.getItemByName(player.getInventory(), ReadyName);
                                 assert item != null;
                                 inventory.remove(item);
                                 assert item2 != null;
@@ -419,53 +418,53 @@ public class AntiGlitchSys {
                             }
                             plugin.ReadySystem.remove(uuid);
                         }
-                        if (!plugin.isPlayerInWaitingLobby(player)) {
-                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.getItemByName(player.getInventory(), ReadyName))) {
+                        if (!plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), ReadyName))) {
                                 inventory.remove(ItemManager.isReady);
-                                ItemStack itemByName = plugin.getItemByName(player.getInventory(), ReadyName);
+                                ItemStack itemByName = plugin.game.getItemByName(player.getInventory(), ReadyName);
                                 if (itemByName != null) {
                                     inventory.remove(itemByName);
                                 }
-                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.getItemByName(player.getInventory(), NotReadyName))) {
+                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), NotReadyName))) {
                                 inventory.remove(ItemManager.notReady);
-                                if (plugin.getItemByName(player.getInventory(), NotReadyName) != null) {
-                                    inventory.remove(plugin.getItemByName(player.getInventory(), NotReadyName));
+                                if (plugin.game.getItemByName(player.getInventory(), NotReadyName) != null) {
+                                    inventory.remove(plugin.game.getItemByName(player.getInventory(), NotReadyName));
                                 }
                             }
                             plugin.ReadySystem.remove(uuid);
                         }
-                        if (plugin.isPlayerInGame(player)) {
+                        if (plugin.game.isPlayerInGame(player)) {
                             if (!plugin.mainConfig.getBooleanGame("hungry_during_a_game")) {
                                 player.setFoodLevel(20);
                             }
-                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.getItemByName(player.getInventory(), ReadyName))) {
+                            if (inventory.contains(ItemManager.isReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), ReadyName))) {
                                 inventory.remove(ItemManager.isReady);
-                                inventory.remove(Objects.requireNonNull(plugin.getItemByName(player.getInventory(), ReadyName)));
-                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.getItemByName(player.getInventory(), NotReadyName))) {
+                                inventory.remove(Objects.requireNonNull(plugin.game.getItemByName(player.getInventory(), ReadyName)));
+                            } else if (inventory.contains(ItemManager.notReady) || inventory.contains(plugin.game.getItemByName(player.getInventory(), NotReadyName))) {
                                 inventory.remove(ItemManager.notReady);
-                                inventory.remove(Objects.requireNonNull(plugin.getItemByName(player.getInventory(), NotReadyName)));
+                                inventory.remove(Objects.requireNonNull(plugin.game.getItemByName(player.getInventory(), NotReadyName)));
                             }
                             plugin.ReadySystem.remove(uuid);
                         }
                         plugin.ReadySystem.remove(uuid);
-                        if (inventory.contains(ItemManager.kitChooser) && !plugin.isPlayerInWaitingLobby(player) || plugin.isPlayerInGame(player)) {
+                        if (inventory.contains(ItemManager.kitChooser) && !plugin.waitingLobby.isPlayerInWaitingLobby(player) || plugin.game.isPlayerInGame(player)) {
                             inventory.remove(ItemManager.kitChooser);
-                        } else if (inventory.contains(ItemManager.teams) && !(plugin.isPlayerInWaitingLobby(player) || plugin.isPlayerInGame(player))) {
+                        } else if (inventory.contains(ItemManager.teams) && !(plugin.waitingLobby.isPlayerInWaitingLobby(player) || plugin.game.isPlayerInGame(player))) {
                             inventory.remove(ItemManager.teams);
                         }
-                        if (!plugin.isPlayerInWaitingLobby(player)) {
+                        if (!plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                             if (inventory.contains(ItemManager.kitChooser)) {
                                 inventory.remove(ItemManager.kitChooser);
                             }
-                            if (!plugin.isPlayerHaveStartedTeams(player) && inventory.contains(ItemManager.teams)) {
+                            if (!plugin.deathmatch.isPlayerHaveStartedTeams(player) && inventory.contains(ItemManager.teams)) {
                                 inventory.remove(ItemManager.teams);
                             }
                         }
-                        if (!plugin.isPlayerInGame(player) && !plugin.isPlayerInWaitingLobby(player)) {
+                        if (!plugin.game.isPlayerInGame(player) && !plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
                             if (inventory.contains(ItemManager.kitChooser)) {
                                 inventory.remove(ItemManager.kitChooser);
                             }
-                            if (!plugin.isPlayerHaveStartedTeams(player) && inventory.contains(ItemManager.teams)) {
+                            if (!plugin.deathmatch.isPlayerHaveStartedTeams(player) && inventory.contains(ItemManager.teams)) {
                                 inventory.remove(ItemManager.teams);
                             }
                             // Bread
@@ -473,7 +472,6 @@ public class AntiGlitchSys {
                                 inventory.remove(ItemManager.BreadKit);
                                 attributeInstance.setBaseValue(20);
                                 player.setHealth(20);
-                                //player.removePotionEffect(PotionEffectType.SPEED);
                             }
                             // Melon
                             if (inventory.contains(ItemManager.MelonKit) && !(plugin.playersInMelonKit.contains(uuid))) {
@@ -519,7 +517,7 @@ public class AntiGlitchSys {
                             plugin.playersInCookieKit.remove(uuid);
                             plugin.playersInBeefKit.remove(uuid);
                         }
-                        if (!plugin.isPlayerInWaitingLobby(player) && plugin.isPlayerInGame(player)) {
+                        if (!plugin.waitingLobby.isPlayerInWaitingLobby(player) && plugin.game.isPlayerInGame(player)) {
                             if (inventory.contains(ItemManager.BreadKit) && plugin.playersInBreadKit.contains(uuid) && !player.hasPotionEffect(PotionEffectType.SPEED)) {
                                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999, 2));
                             }
