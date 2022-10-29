@@ -249,11 +249,28 @@ public class FoodMaster extends JavaPlugin {
     //TODO: Add custom food names
     //TODO: Add command for Reload config
     //TODO: Add cooldown option for respawn
+    //TODO: Add more foods
+    //TODO: Make the hearts custom
+    //TODO: Make more PvP gamemodes
+    //TODO: Make more PvE gamemodes
+    //TODO: Add Ranking
+    //
+    //Ex: I  II  III  IV  V  VI
+    //
+    //TODO: Add kill message
+    //
+    //Ex: Bob killed John -> Potato
+    //    Alex killed RandomName -> Cookie
+    //
+    //TODO: Prevent players from farming ranks and stats
+    //TODO: When a player invites someone that was already invited by the player. Tell the player how much time left in the invitation.
+    //TODO: Add blaze like boss. LittleFireV2 Themed.
+    //TODO: The group kick have bugs - don't teleport the player to the end loction unless they are not in waiting lobby or in game - ( if in game or waiting lobby - teleoport to end ) ( if not in game or waiting lobby - don't teleport )
+    //TODO: Add a gamemode where players are fight on horses that can't die. Respawn with the hourse. When the player dies and not respawn then the hourse won't spawn too...
 
     //todo TASK:
 
     //todo Changes:
-    // Refactored
 
 
     @Override
@@ -299,21 +316,21 @@ public class FoodMaster extends JavaPlugin {
         // because if it is, our actionbar would not be null
         if (foodMaster != null) {
             try {
-                System.out.println("<---{ Loading Config Files }--->");
-                System.out.println(" ");
-                System.out.println("  <-> Registering Configs <->");
-                System.out.println(" ");
+                getLogger().info("<---{ Loading Config Files }--->");
+                getLogger().info(" ");
+                getLogger().info("  <-> Registering Configs <->");
+                getLogger().info(" ");
                 mainConfig = new ConfigFiles(this);
             } catch (IOException e) {
-                System.out.println("<---{ Couldn't load config files }--->");
-                System.out.println(" ");
+                getLogger().warning("<---{ Couldn't load config files }--->");
+                getLogger().info(" ");
                 throw new RuntimeException("- FoodMaster ERROR - Cannot prepare config files", e);
             }
             // playersInWaitingLobby key - String name of the lobby
             // name of the lobby + "->wait-location" , location
             // num + "-one_of_the_names"
-            System.out.println("<---{ Reading Config Data }--->");
-            System.out.println(" ");
+            getLogger().info("<---{ Reading Config Data }--->");
+            getLogger().info(" ");
             int num = mainConfig.getIntWaitLobby("number_of_wait-lobbies");
             for (int i = 1; i <= num; i++) {
                 String nameOfWaitlobby = mainConfig.getStrWaitLobby(i + "-one_of_the_names");
@@ -330,8 +347,8 @@ public class FoodMaster extends JavaPlugin {
                     locOfPlayersInWaitingLobby.put(theSet, loc);
                 }
             }
-            System.out.println("  <-> Read Waiting Lobby Data <->");
-            System.out.println(" ");
+            getLogger().info("  <-> Read Waiting Lobby Data <->");
+            getLogger().info(" ");
             int n = mainConfig.getIntGame("number_of_game_names"); // 0 - at the start
             int t = mainConfig.getIntGame("number_of_game_location_names"); // 0 - at the start
             String Game = null;
@@ -360,8 +377,8 @@ public class FoodMaster extends JavaPlugin {
                     }
                 }
             }
-            System.out.println("  <-> Read Game Data <->");
-            System.out.println(" ");
+            getLogger().info("  <-> Read Game Data <->");
+            getLogger().info(" ");
 
             // playersInGame - key - String name of the game
             for (String name : GameSpawnPoints.keySet()) {
@@ -370,8 +387,8 @@ public class FoodMaster extends JavaPlugin {
                     playersInGame.put(name, players);
                 }
             }
-            System.out.println("  <-> Read Spawn Points Data <->");
-            System.out.println(" ");
+            getLogger().info("  <-> Read Spawn Points Data <->");
+            getLogger().info(" ");
 
             ItemManager.init();
             itemManager = new ItemManager();
@@ -447,11 +464,11 @@ public class FoodMaster extends JavaPlugin {
             items.add(ItemManager.GreenBoots);
             items.add(ItemManager.beef);
             items.add(ItemManager.BeefKit);
-            System.out.println("  <-> Read Items Data <->");
-            System.out.println(" ");
+            getLogger().info("  <-> Read Items Data <->");
+            getLogger().info(" ");
 
-            System.out.println("<---{ Registering Plugin }--->");
-            System.out.println(" ");
+            getLogger().info("<---{ Registering Plugin }--->");
+            getLogger().info(" ");
 
             // others
             playerDead = new PlayerDead(this);
@@ -542,7 +559,7 @@ public class FoodMaster extends JavaPlugin {
             fallDamage = new FallDamage(this);
             Objects.requireNonNull(getCommand("foodmaster")).setExecutor(new MainCommand(this));
             Objects.requireNonNull(getCommand("foodmaster")).setTabCompleter(new MainTabComplete(this));
-            System.out.println("  <-> Commands Registered <->");
+            getLogger().info("  <-> Commands Registered <->");
             getServer().getPluginManager().registerEvents(openGUI, this);
             getServer().getPluginManager().registerEvents(groupLeave, this);
             getServer().getPluginManager().registerEvents(playerUseGUI, this);
@@ -567,27 +584,27 @@ public class FoodMaster extends JavaPlugin {
             getServer().getPluginManager().registerEvents(fishPowerListener, this);
             getServer().getPluginManager().registerEvents(melonPowerListener, this);
             getServer().getPluginManager().registerEvents(potatoPowerListener, this);
-            System.out.println(" ");
-            System.out.println("  <-> Events Registered <->");
-            System.out.println(" ");
-            System.out.println("  <-> Others Registered <->");
-            System.out.println(" ");
+            getLogger().info(" ");
+            getLogger().info("  <-> Events Registered <->");
+            getLogger().info(" ");
+            getLogger().info("  <-> Others Registered <->");
+            getLogger().info(" ");
 
             // Print the Logo and how the plugin version - 0.1 / spigot 1.17.1 java 11+ / spigot api 1.17
-            System.out.println("<---{ Logo And Plugin Info }--->");
-            System.out.println(" ");
-            System.out.println("\n" +
+            getLogger().info("<---{ Logo And Plugin Info }--->");
+            getLogger().info(" ");
+            getLogger().info("\n" +
                     "-----#########---###----------###\n" +
                     "----###---------######----######\n" +
                     "---########---###--###-###--###\n" +
                     "--###--------###----###----###\n" +
                     "-###-------###------------###\n" +
                     "###-------###------------###");
-            System.out.println(" ");
-            System.out.println(" Plugin version: 0.6");
-            System.out.println(" Spigot versions: 1.14.2 - 1.19.2");
-            System.out.println(" Spigot API version: 1.14");
-            System.out.println(" Dev message: This is compiled in JAVA 11.\n Every version above JAVA 11 can run this plugin.");
+            getLogger().info(" ");
+            getLogger().info(" Plugin version: 0.6");
+            getLogger().info(" Spigot versions: 1.14.2 - 1.19.2");
+            getLogger().info(" Spigot API version: 1.14");
+            getLogger().info(" Dev message: This is compiled in JAVA 11.\n Every version above JAVA 11 can run this plugin.");
         } else {
             getLogger().severe("Failed to setup FoodMaster!");
             getLogger().severe("Your server version is not compatible with this plugin!");
@@ -597,8 +614,8 @@ public class FoodMaster extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        System.out.println("<---{ Clearing }--->");
-        System.out.println(" ");
+        getLogger().info("<---{ Clearing }--->");
+        getLogger().info(" ");
         if (!playersInWaitingLobby.values().isEmpty() && !playersInWaitingLobby.isEmpty() && !playersInWaitingLobby.keySet().isEmpty()) {
             Location endLoc = mainConfig.getLocationMain("end_location");
             Set<Player> playerList = new HashSet<>();
@@ -673,8 +690,8 @@ public class FoodMaster extends JavaPlugin {
                 }
             }
         }
-        System.out.println("  <-> Games Are Cleared <->");
-        System.out.println(" ");
+        getLogger().info("  <-> Games Are Cleared <->");
+        getLogger().info(" ");
         // Plugin shutdown logic
         if (mainConfig != null) {
             mainConfig.saveAll();
@@ -687,8 +704,8 @@ public class FoodMaster extends JavaPlugin {
             mainConfig.reloadDeath();
             mainConfig.reloadWin();
         }
-        System.out.println("  <-> Config Reloaded <->");
-        System.out.println(" ");
+        getLogger().info("  <-> Config Reloaded <->");
+        getLogger().info(" ");
         NamespacedKey name = new NamespacedKey(this, "boss");
         NamespacedKey namePlayer = new NamespacedKey(this, "player");
         for (World world : Bukkit.getWorlds()) {
@@ -699,8 +716,8 @@ public class FoodMaster extends JavaPlugin {
                 }
             }
         }
-        System.out.println("  <-> Plugin Cleared <->");
-        System.out.println(" ");
+        getLogger().info("  <-> Plugin Cleared <->");
+        getLogger().info(" ");
     }
 
     public String LocationToString(final Location loc) {

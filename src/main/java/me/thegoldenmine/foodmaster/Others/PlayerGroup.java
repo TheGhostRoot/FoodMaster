@@ -70,7 +70,7 @@ public class PlayerGroup {
         String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
         Location endLoc = plugin.mainConfig.getLocationMain("end_location");
         if (playerLeaver == null) {
-            System.out.println(ERROR + "An unknown player wants to leave the group.");
+            plugin.getLogger().info(ERROR + "An unknown player wants to leave the group.");
             return;
         }
         if (!plugin.playerGroup.isPlayerInGroup(playerLeaver)) {

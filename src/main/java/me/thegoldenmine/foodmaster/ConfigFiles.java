@@ -39,62 +39,62 @@ public class ConfigFiles {
         LoseFile = new File(dataFolder, "losses.yml");
         PvEFile = new File(dataFolder, "pve.yml");
         if (!dataFolder.exists() && !MainFile.exists() && !GameFile.exists() && !WaitLobbyFile.exists() && !KillFile.exists() && !LoseFile.exists() && !WinFile.exists() && !PvEFile.exists()) {
-            System.out.println("<---{ Creating New Config Files }--->");
-            System.out.println(" ");
+            plugin.getLogger().info("<---{ Creating New Config Files }--->");
+            plugin.getLogger().info(" ");
             if (dataFolder.mkdir()) {
-                System.out.println("  <-> Folder Created <->");
+                plugin.getLogger().info("  <-> Folder Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create The Folder <->");
+                plugin.getLogger().warning("  <-> Couldn't Create The Folder <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (PvEFile.createNewFile()) {
-                System.out.println("  <-> PvE File Created <->");
+                plugin.getLogger().info("  <-> PvE File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create PvE File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create PvE File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (MainFile.createNewFile()) {
-                System.out.println("  <-> Main File Created <->");
+                plugin.getLogger().info("  <-> Main File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Main File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Main File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (GameFile.createNewFile()) {
-                System.out.println("  <-> Game File Created <->");
+                plugin.getLogger().info("  <-> Game File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Game File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Game File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (WaitLobbyFile.createNewFile()) {
-                System.out.println("  <-> Lobby File Created <->");
+                plugin.getLogger().info("  <-> Lobby File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Lobby File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Lobby File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (KillFile.createNewFile()) {
-                System.out.println("  <-> Kill File Created <->");
+                plugin.getLogger().info("  <-> Kill File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Kill File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Kill File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (DeathFile.createNewFile()) {
-                System.out.println("  <-> Death File Created <->");
+                plugin.getLogger().info("  <-> Death File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Death File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Death File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (WinFile.createNewFile()) {
-                System.out.println("  <-> Win File Created <->");
+                plugin.getLogger().info("  <-> Win File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Win File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Win File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             if (LoseFile.createNewFile()) {
-                System.out.println("  <-> Lose File Created <->");
+                plugin.getLogger().info("  <-> Lose File Created <->");
             } else {
-                System.out.println("  <-> Couldn't Create Lose File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Lose File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             dataMain = YamlConfiguration.loadConfiguration(MainFile);
             dataGame = YamlConfiguration.loadConfiguration(GameFile);
             dataWaitLobby = YamlConfiguration.loadConfiguration(WaitLobbyFile);
@@ -103,148 +103,140 @@ public class ConfigFiles {
             dataDeath = YamlConfiguration.loadConfiguration(DeathFile);
             dataWin = YamlConfiguration.loadConfiguration(WinFile);
             dataLose = YamlConfiguration.loadConfiguration(LoseFile);
-            System.out.println("  <-> Loaded Data <->");
-            System.out.println(" ");
+            plugin.getLogger().info("  <-> Loaded Data <->");
+            plugin.getLogger().info(" ");
             setDefaultValues();
 
-            System.out.println("  <-> Set Data <->");
-            System.out.println(" ");
+            plugin.getLogger().info("  <-> Set Data <->");
+            plugin.getLogger().info(" ");
         }
         if (!dataFolder.exists()) {
             if (dataFolder.mkdir()) {
-                System.out.println("  <-> Created A Folder <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Created A Folder <->");
             } else {
-                System.out.println("  <-> Couldn't Create The Folder <->");
+                plugin.getLogger().warning("  <-> Couldn't Create The Folder <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!KillFile.exists()) {
             if (KillFile.createNewFile()) {
-                System.out.println("  <-> Created kills.yml <->");
+                plugin.getLogger().info("  <-> Created kills.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Kill File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Kill File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataKill.load(KillFile);
-                System.out.println("  <-> Loaded kills.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded kills.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load kills.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load kills.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!PvEFile.exists()) {
             if (PvEFile.createNewFile()) {
-                System.out.println("  <-> Created pve.yml <->");
+                plugin.getLogger().info("  <-> Created pve.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create PvE File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create PvE File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataPvE.load(PvEFile);
-                System.out.println("  <-> Loaded pve.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded pve.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load pve.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load pve.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!DeathFile.exists()) {
             if (DeathFile.createNewFile()) {
-                System.out.println("  <-> Created deaths.yml <->");
+                plugin.getLogger().info("  <-> Created deaths.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Death File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Death File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataDeath.load(DeathFile);
-                System.out.println("  <-> Loaded deaths.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded deaths.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load deaths.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load deaths.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!WinFile.exists()) {
             if (WinFile.createNewFile()) {
-                System.out.println("  <-> Created wins.yml <->");
+                plugin.getLogger().info("  <-> Created wins.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Win File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Win File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataWin.load(WinFile);
-                System.out.println("  <-> Loaded wins.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded wins.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load wins.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load wins.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!LoseFile.exists()) {
             if (LoseFile.createNewFile()) {
-                System.out.println("  <-> Created losses.yml <->");
+                plugin.getLogger().info("  <-> Created losses.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Lose File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Lose File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataLose.load(LoseFile);
-                System.out.println("  <-> Loaded losses.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded losses.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load losses.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load losses.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!MainFile.exists()) {
             if (MainFile.createNewFile()) {
-                System.out.println("  <-> Created main.yml <->");
+                plugin.getLogger().info("  <-> Created main.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Main File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Main File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataMain.load(MainFile);
-                System.out.println("  <-> Loaded main.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded main.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load main.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load main.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!GameFile.exists()) {
             if (GameFile.createNewFile()) {
-                System.out.println("  <-> Created game.yml <->");
+                plugin.getLogger().info("  <-> Created game.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Game File <->");
+                plugin.getLogger().warning("  <-> Couldn't Create Game File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataGame.load(GameFile);
-                System.out.println("  <-> Loaded game.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded game.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load game.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load game.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         if (!WaitLobbyFile.exists()) {
             if (WaitLobbyFile.createNewFile()) {
-                System.out.println("  <-> Created lobby.yml <->");
+                plugin.getLogger().info("  <-> Created lobby.yml <->");
             } else {
-                System.out.println("  <-> Couldn't Create Lobby File <->");
+                plugin.getLogger().info("  <-> Couldn't Create Lobby File <->");
             }
-            System.out.println(" ");
+            plugin.getLogger().info(" ");
             try {
                 dataWaitLobby.load(WaitLobbyFile);
-                System.out.println("  <-> Loaded lobby.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().info("  <-> Loaded lobby.yml <->");
             } catch (Exception e) {
-                System.out.println("  <-> Couldn't Load lobby.yml <->");
-                System.out.println(" ");
+                plugin.getLogger().warning("  <-> Couldn't Load lobby.yml <->");
             }
+            plugin.getLogger().info(" ");
         }
         reloadPvE();
         reloadGame();

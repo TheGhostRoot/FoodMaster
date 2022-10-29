@@ -158,6 +158,12 @@ public class StartTheGame {
                             if (uuid != null) {
                                 Player groupPlayer = Bukkit.getPlayer(uuid);
                                 if (groupPlayer != null) {
+                                    if (!groupPlayer.getPassengers().isEmpty()) {
+                                        List<Entity> rmPassengers = new ArrayList<>(groupPlayer.getPassengers());
+                                        for (Entity passenger : rmPassengers) {
+                                            groupPlayer.removePassenger(passenger);
+                                        }
+                                    }
                                     UUID uniqueId = groupPlayer.getUniqueId();
                                     if (!groupPlayer.getPassengers().isEmpty()) {
                                         for (Entity player1 : groupPlayer.getPassengers()) {
@@ -226,6 +232,12 @@ public class StartTheGame {
                                     theNameOfLoc = list1.get(theIndex2);
                                 }
                             }
+                            if (!player.getPassengers().isEmpty()) {
+                                List<Entity> rmPassengers = new ArrayList<>(player.getPassengers());
+                                for (Entity passenger : rmPassengers) {
+                                    player.removePassenger(passenger);
+                                }
+                            }
                             //  && !plugin.tpPlayersInGameNameLoc.containsValue(theNameOfLoc)
                             if (plugin.gameSpawnCoolDown.isPlayerNotInCoolDownSpawn(playerUUID) && !plugin.kickedPlayers.contains(playerUUID)) {
                                 Location theLocation = plugin.mainConfig.getLocationGame(GameName + "->" + theNameOfLoc + "-spawn-point");
@@ -251,6 +263,12 @@ public class StartTheGame {
                             if (uuid != null) {
                                 Player groupPlayer = Bukkit.getPlayer(uuid);
                                 if (groupPlayer != null) {
+                                    if (!groupPlayer.getPassengers().isEmpty()) {
+                                        List<Entity> rmPassengers = new ArrayList<>(groupPlayer.getPassengers());
+                                        for (Entity passenger : rmPassengers) {
+                                            groupPlayer.removePassenger(passenger);
+                                        }
+                                    }
                                     UUID uniqueId = groupPlayer.getUniqueId();
                                     if (plugin.tpPlayersInGameNameLoc.containsValue(null)) {
                                         int max = namesOfGameLoc.size() - 1;
