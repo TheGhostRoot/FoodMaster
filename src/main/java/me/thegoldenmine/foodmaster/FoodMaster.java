@@ -1,8 +1,6 @@
 package me.thegoldenmine.foodmaster;
 
 import me.thegoldenmine.foodmaster.Commands.GroupCmd.*;
-import me.thegoldenmine.foodmaster.Commands.MainCommand;
-import me.thegoldenmine.foodmaster.Commands.MainTabComplete;
 import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.ClearPlayer;
 import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.EndPvP;
 import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.PlayerWithTheMostKills;
@@ -16,6 +14,10 @@ import me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners.*;
 import me.thegoldenmine.foodmaster.Listeners.*;
 import me.thegoldenmine.foodmaster.Listeners.KitPowerListeners.*;
 import me.thegoldenmine.foodmaster.Others.*;
+import me.thegoldenmine.foodmaster.command.MainCommand;
+import me.thegoldenmine.foodmaster.command.MainTabComplete;
+import me.thegoldenmine.foodmaster.command.Messenger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -70,6 +72,7 @@ public class FoodMaster extends JavaPlugin {
     public PlayAgainListener playAgainListener;
     public HashMap<UUID, Integer> lives = new HashMap<>();
     public TimerTik timerTik;
+    private Messenger messenger;
     // win/lose
     public Set<UUID> winners = Collections.synchronizedSet(new HashSet<>());
     public Set<UUID> losses = Collections.synchronizedSet(new HashSet<>());
@@ -482,6 +485,7 @@ public class FoodMaster extends JavaPlugin {
             playerGroup = new PlayerGroup(this);
             waitingLobby = new WaitingLobby(this);
             game = new Game(this);
+            messenger = new Messenger(this);
 
             // idk
             createGUI = new CreateGUI(this);
@@ -755,4 +759,8 @@ public class FoodMaster extends JavaPlugin {
     public Set<String> getWaitLobbyNames() {
         return playersInWaitingLobby.keySet();
     }
+
+    public Messenger getMessenger() {
+		return messenger;
+	}
 }

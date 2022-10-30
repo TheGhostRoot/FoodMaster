@@ -661,4 +661,14 @@ public class ConfigFiles {
     public synchronized void reloadPvE() {
         dataPvE = YamlConfiguration.loadConfiguration(PvEFile);
     }
+
+    public String getPluginName() {
+    	String pluginName = getStrMain("name");
+
+		if (pluginName == null || pluginName.isBlank()) {
+			pluginName = "FoodMaster";
+		}
+
+		return pluginName;
+    }
 }

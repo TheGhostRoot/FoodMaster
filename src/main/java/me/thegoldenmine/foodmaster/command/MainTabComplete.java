@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster.Commands;
+package me.thegoldenmine.foodmaster.command;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.Bukkit;
