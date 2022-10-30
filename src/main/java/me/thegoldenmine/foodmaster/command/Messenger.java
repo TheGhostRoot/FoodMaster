@@ -13,6 +13,9 @@ public class Messenger {
 	public static final String NORMAL_STYLE = "" + GREEN + BOLD;
 	public static final String NORMAL_GENERAL = "" + GREEN + ITALIC;
 
+	public static final String NORMAL_STYLE_2 = "" + LIGHT_PURPLE + BOLD;
+	public static final String NORMAL_GENERAL_2 = "" + LIGHT_PURPLE + ITALIC;
+
 	public static final String INFO_STYLE = "" + AQUA + BOLD;
 	public static final String INFO_GENERAL = "" + AQUA + ITALIC;
 

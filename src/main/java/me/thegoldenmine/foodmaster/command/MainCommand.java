@@ -2,7 +2,6 @@ package me.thegoldenmine.foodmaster.command;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.Bukkit;
-import static org.bukkit.ChatColor.*;
 import static me.thegoldenmine.foodmaster.command.Messenger.*;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -33,13 +32,13 @@ public class MainCommand implements CommandExecutor {
 
 		if (!player.hasPermission("foodm.commands")) {
 			messenger.warn(player,
-					s + RED + "" + ITALIC + "foodm.commands " + YELLOW + "" + ITALIC + "permission to play this game.");
+					s + ERROR_GENERAL + "foodm.commands " + WARN_GENERAL + "permission to play this game.");
 			return true;
 		}
 
 		// the player have permission to play the game
 		String s1 = "permission.";
-		String message1 = s + RED + "" + ITALIC + "foodm.help " + YELLOW + "" + ITALIC + s1;
+		String message1 = s + ERROR_GENERAL + "foodm.help " + WARN_GENERAL + s1;
 		if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
 			// Help menu
 			if (player.hasPermission("foodm.help")) {
@@ -51,13 +50,13 @@ public class MainCommand implements CommandExecutor {
 			if (player.hasPermission("foodm.group.help")) {
 				plugin.helpMenu.helpGroupMenu(player);
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.group.help " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.group.help " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("gui")) {
 			if (player.hasPermission("foodm.gui")) {
 				player.openInventory(plugin.createGUI.createMain(player));
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.gui " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.gui " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("stats")) {
 			if (player.hasPermission("foodm.stats")) {
@@ -68,7 +67,7 @@ public class MainCommand implements CommandExecutor {
 				String s2 = "  Deaths: ";
 				String s3 = "  Kills: ";
 				String s4 = "   K/D: ";
-				String message = AQUA + "" + BOLD + "<--=={ " + GOLD + "" + ITALIC + "Game Stats " + AQUA + "" + BOLD
+				String message = INFO_STYLE + "<--=={ " + MAIN_GENERAL + "Game Stats " + INFO_STYLE
 						+ "}==-->";
 				if (args.length > 1) {
 					String playerName = args[1];
@@ -88,11 +87,11 @@ public class MainCommand implements CommandExecutor {
 							String last11 = list11[2];
 							String finalString11 = first11 + middle11 + last11;
 							messenger.normal(player,
-									AQUA + "" + BOLD + "<--=={ " + GOLD + "" + ITALIC + "" + givenPlayer.getName()
-											+ "'s" + GOLD + "" + BOLD + " Stats " + AQUA + "" + BOLD + "}==-->");
-							messenger.normal(player, RED + "" + ITALIC + s3 + kills12);
-							messenger.normal(player, RED + "" + ITALIC + s2 + death12);
-							messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + s4 + finalString11);
+									INFO_STYLE + "<--=={ " + MAIN_GENERAL + "" + givenPlayer.getName()
+											+ "'s" + MAIN_STYLE + " Stats " + INFO_STYLE + "}==-->");
+							messenger.normal(player, ERROR_GENERAL + s3 + kills12);
+							messenger.normal(player, ERROR_GENERAL + s2 + death12);
+							messenger.normal(player, NORMAL_GENERAL_2 + s4 + finalString11);
 							String win = String.valueOf(plugin.mainConfig.getIntWin(theUUID));
 							String lose = String.valueOf(plugin.mainConfig.getIntLose(theUUID));
 							int win1 = plugin.mainConfig.getIntWin(theUUID);
@@ -104,9 +103,9 @@ public class MainCommand implements CommandExecutor {
 							String three = list[2];
 							String wl = one + two + three;
 							messenger.normal(player, "");
-							messenger.normal(player, GREEN + "" + ITALIC + "  Wins: " + win);
-							messenger.normal(player, RED + "" + ITALIC + "  Losses: " + lose);
-							messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + "   W/L: " + wl);
+							messenger.normal(player, NORMAL_GENERAL + "  Wins: " + win);
+							messenger.normal(player, ERROR_GENERAL + "  Losses: " + lose);
+							messenger.normal(player, NORMAL_GENERAL_2 + "   W/L: " + wl);
 							if (plugin.game.isPlayerInGame(givenPlayer)) {
 								if (!plugin.inGameKills.containsKey(uuid1)) {
 									plugin.inGameKills.put(uuid1, 0);
@@ -125,11 +124,11 @@ public class MainCommand implements CommandExecutor {
 								String last1 = list1[2];
 								String finalString1 = first1 + middle1 + last1;
 								messenger.normal(player, message);
-								messenger.normal(player, RED + "" + ITALIC + s3 + kills);
-								messenger.normal(player, RED + "" + ITALIC + s2 + death);
-								messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + s4 + finalString1);
+								messenger.normal(player, ERROR_GENERAL + s3 + kills);
+								messenger.normal(player, ERROR_GENERAL + s2 + death);
+								messenger.normal(player, NORMAL_GENERAL_2 + s4 + finalString1);
 							}
-							messenger.normal(player, AQUA + "" + BOLD + "<--====-----====-->");
+							messenger.normal(player, INFO_STYLE + "<--====-----====-->");
 						}
 					} else {
 						messenger.error(player, "This player is not found.");
@@ -146,11 +145,10 @@ public class MainCommand implements CommandExecutor {
 					String middle11 = list11[1];
 					String last11 = list11[2];
 					String finalString11 = first11 + middle11 + last11;
-					messenger.normal(player, AQUA + "" + BOLD + "<--=={ " + GOLD + "" + BOLD + "Your Stats " + AQUA + ""
-							+ BOLD + "}==-->");
-					messenger.normal(player, RED + "" + ITALIC + s3 + kills12);
-					messenger.normal(player, RED + "" + ITALIC + s2 + death12);
-					messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + s4 + finalString11);
+					messenger.normal(player, INFO_STYLE + "<--=={ " + MAIN_STYLE + "Your Stats " + INFO_STYLE + "}==-->");
+					messenger.normal(player, ERROR_GENERAL + s3 + kills12);
+					messenger.normal(player, ERROR_GENERAL + s2 + death12);
+					messenger.normal(player, NORMAL_GENERAL_2 + s4 + finalString11);
 					String win = String.valueOf(plugin.mainConfig.getIntWin(theUUID));
 					String lose = String.valueOf(plugin.mainConfig.getIntLose(theUUID));
 					int win1 = plugin.mainConfig.getIntWin(theUUID);
@@ -162,9 +160,9 @@ public class MainCommand implements CommandExecutor {
 					String three = listw[2];
 					String wl = one + two + three;
 					messenger.normal(player, "");
-					messenger.normal(player, GREEN + "" + ITALIC + "  Wins: " + win);
-					messenger.normal(player, RED + "" + ITALIC + "  Losses: " + lose);
-					messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + "   W/L: " + wl);
+					messenger.normal(player, NORMAL_GENERAL + "  Wins: " + win);
+					messenger.normal(player, ERROR_GENERAL + "  Losses: " + lose);
+					messenger.normal(player, NORMAL_GENERAL_2 + "   W/L: " + wl);
 					if (plugin.game.isPlayerInGame(player)) {
 						if (!plugin.inGameKills.containsKey(uuid)) {
 							plugin.inGameKills.put(uuid, 0);
@@ -183,14 +181,14 @@ public class MainCommand implements CommandExecutor {
 						String last1 = list1[2];
 						String finalString1 = first1 + middle1 + last1;
 						messenger.normal(player, message);
-						messenger.normal(player, RED + "" + ITALIC + s3 + kills);
-						messenger.normal(player, RED + "" + ITALIC + s2 + death);
-						messenger.normal(player, LIGHT_PURPLE + "" + ITALIC + s4 + finalString1);
+						messenger.normal(player, ERROR_GENERAL + s3 + kills);
+						messenger.normal(player, ERROR_GENERAL + s2 + death);
+						messenger.normal(player, NORMAL_GENERAL_2 + s4 + finalString1);
 					}
-					messenger.normal(player, AQUA + "" + BOLD + "<--====-----====-->");
+					messenger.normal(player, INFO_STYLE + "<--====-----====-->");
 				}
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.stats " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.stats " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("set")) {
 			// Sets the values of the minigame
@@ -203,7 +201,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.set " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.set " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("default") && args[1].equalsIgnoreCase("confirm")) {
 			// Sets the config to default
@@ -211,7 +209,7 @@ public class MainCommand implements CommandExecutor {
 				plugin.mainConfig.setDefaultValues();
 				messenger.normal(player, "The config values have been set to default.");
 			} else {
-				messenger.warn(player, "You need " + RED + "" + ITALIC + "foodm.default " + YELLOW + "" + ITALIC
+				messenger.warn(player, "You need " + ERROR_GENERAL + "foodm.default " + WARN_GENERAL
 						+ "permission to do this.");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("start")) {
@@ -223,8 +221,8 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, "You are not the chosen one. You don't have " + RED + "" + ITALIC
-						+ "foodm.start " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, "You are not the chosen one. You don't have " + ERROR_GENERAL
+						+ "foodm.start " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("end")) {
 			// It ends the fight
@@ -243,14 +241,14 @@ public class MainCommand implements CommandExecutor {
 										if (uuid != null) {
 											Player player2 = Bukkit.getPlayer(uuid);
 											if (player2 != null) {
-												messenger.info(player2, "The game was ended by " + GOLD + "" + ITALIC
+												messenger.info(player2, "The game was ended by " + MAIN_GENERAL
 														+ "" + player.getName());
 											}
 										}
 									}
 								} else {
 									messenger.info(player1,
-											"The game was ended by " + GOLD + "" + ITALIC + "" + player.getName());
+											"The game was ended by " + MAIN_GENERAL + "" + player.getName());
 								}
 								plugin.endTheGame.endThePvE(player1);
 							} else if (plugin.playerPvE.isPlayerChooseToPlayPvE(player1)) {
@@ -318,20 +316,18 @@ public class MainCommand implements CommandExecutor {
 										}
 										plugin.winners.clear();
 										plugin.losses.clear();
-										messenger.normal(player, "" + GOLD + "" + ITALIC + "" + player.getName() + ""
-												+ GREEN + "" + ITALIC + " just ended your game.");
+										messenger.normal(player, "" + MAIN_GENERAL + "" + player.getName() + ""
+												+ NORMAL_GENERAL + " just ended your game.");
 									} else {
-										messenger.warn(player, "" + RED + "" + ITALIC + "" + player1.getName() + ""
-												+ YELLOW + "" + ITALIC + " is not in game.");
+										messenger.warn(player, "" + ERROR_GENERAL + "" + player1.getName() + ""
+												+ WARN_GENERAL + " is not in game.");
 									}
 								} else {
-									messenger.warn(player, "" + RED + "" + ITALIC + "" + player1.getName() + "" + YELLOW
-											+ "" + ITALIC + " is not in a group.");
+									messenger.warn(player, "" + ERROR_GENERAL + "" + player1.getName() + "" + WARN_GENERAL + " is not in a group.");
 								}
 							}
 						} else {
-							messenger.warn(player, "" + RED + "" + ITALIC + "" + player1.getName() + "" + YELLOW + ""
-									+ ITALIC + " is not Online.");
+							messenger.warn(player, "" + ERROR_GENERAL + "" + player1.getName() + "" + WARN_GENERAL + " is not Online.");
 						}
 					} else {
 						messenger.error(player, "This player can't be found.");
@@ -344,13 +340,13 @@ public class MainCommand implements CommandExecutor {
 									Player player2 = Bukkit.getPlayer(uuid);
 									if (player2 != null) {
 										messenger.info(player2,
-												"The game was ended by " + GOLD + "" + ITALIC + "" + player.getName());
+												"The game was ended by " + MAIN_GENERAL + "" + player.getName());
 									}
 								}
 							}
 						} else {
 							messenger.info(player,
-									"The game was ended by " + GOLD + "" + ITALIC + "" + player.getName());
+									"The game was ended by " + MAIN_GENERAL + "" + player.getName());
 						}
 						plugin.endTheGame.endThePvE(player);
 					} else if (plugin.playerPvE.isPlayerChooseToPlayPvE(player)) {
@@ -421,8 +417,7 @@ public class MainCommand implements CommandExecutor {
 					}
 				}
 			} else {
-				messenger.warn(player, "You can't end the game. You need " + RED + "" + ITALIC + "foodm.end " + YELLOW
-						+ "" + ITALIC + "permission to do this.");
+				messenger.warn(player, "You can't end the game. You need " + ERROR_GENERAL + "foodm.end " + WARN_GENERAL + "permission to do this.");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("kick")) {
 			// it kicks players from the game/waiting lobby
@@ -433,8 +428,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, "You can't kick players without " + RED + "" + ITALIC + "foodm.kick " + YELLOW
-						+ "" + ITALIC + s1);
+				messenger.warn(player, "You can't kick players without " + ERROR_GENERAL + "foodm.kick " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("group")) {
 			if (player.hasPermission("foodm.group")) {
@@ -444,14 +438,13 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpGroupMenu(player);
 				}
 			} else {
-				messenger.warn(player, "You can't use groups without " + RED + "" + ITALIC + "foodm.group " + YELLOW
-						+ "" + ITALIC + s1);
+				messenger.warn(player, "You can't use groups without " + ERROR_GENERAL + "foodm.group " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("rejoin")) {
 			if (player.hasPermission("foodm.rejoin")) {
 				plugin.rejoin.rejoinCommand(player);
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.rejoin " + YELLOW + "" + ITALIC + s1);
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.rejoin " + WARN_GENERAL + s1);
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("reset")) {
 			if (player.hasPermission("foodm.reset")) {
@@ -469,7 +462,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.resetPlayer.resetPlayer(player);
 				}
 			} else {
-				messenger.warn(player, s + RED + "" + ITALIC + "foodm.reset " + YELLOW + "" + ITALIC + "permission");
+				messenger.warn(player, s + ERROR_GENERAL + "foodm.reset " + WARN_GENERAL + "permission");
 			}
 		} else {
 			// help menu
