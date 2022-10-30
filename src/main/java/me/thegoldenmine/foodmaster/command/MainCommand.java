@@ -28,35 +28,31 @@ public class MainCommand implements CommandExecutor {
 
 		// the sender is Player
 		Player player = (Player) sender;
-		String s = "You don't have ";
 
 		if (!player.hasPermission("foodm.commands")) {
-			messenger.warn(player,
-					s + ERROR_GENERAL + "foodm.commands " + WARN_GENERAL + "permission to play this game.");
+			messenger.warnPermission(player, "foodm.commands");
 			return true;
 		}
 
 		// the player have permission to play the game
-		String s1 = "permission.";
-		String message1 = s + ERROR_GENERAL + "foodm.help " + WARN_GENERAL + s1;
 		if (args.length >= 1 && args[0].equalsIgnoreCase("help")) {
 			// Help menu
 			if (player.hasPermission("foodm.help")) {
 				plugin.helpMenu.helpAll(player);
 			} else {
-				messenger.warn(player, message1);
+				messenger.warnPermission(player, "foodm.help");
 			}
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("group") && args[1].equalsIgnoreCase("help")) {
 			if (player.hasPermission("foodm.group.help")) {
 				plugin.helpMenu.helpGroupMenu(player);
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.group.help " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.group.help");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("gui")) {
 			if (player.hasPermission("foodm.gui")) {
 				player.openInventory(plugin.createGUI.createMain(player));
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.gui " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.gui");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("stats")) {
 			if (player.hasPermission("foodm.stats")) {
@@ -188,7 +184,7 @@ public class MainCommand implements CommandExecutor {
 					messenger.normal(player, INFO_STYLE + "<--====-----====-->");
 				}
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.stats " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.stats");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("set")) {
 			// Sets the values of the minigame
@@ -201,7 +197,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.set " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.set");
 			}
 		} else if (args.length >= 2 && args[0].equalsIgnoreCase("default") && args[1].equalsIgnoreCase("confirm")) {
 			// Sets the config to default
@@ -221,8 +217,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, "You are not the chosen one. You don't have " + ERROR_GENERAL
-						+ "foodm.start " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.start");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("end")) {
 			// It ends the fight
@@ -428,7 +423,7 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpAll(player);
 				}
 			} else {
-				messenger.warn(player, "You can't kick players without " + ERROR_GENERAL + "foodm.kick " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.kick");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("group")) {
 			if (player.hasPermission("foodm.group")) {
@@ -438,13 +433,14 @@ public class MainCommand implements CommandExecutor {
 					plugin.helpMenu.helpGroupMenu(player);
 				}
 			} else {
-				messenger.warn(player, "You can't use groups without " + ERROR_GENERAL + "foodm.group " + WARN_GENERAL + s1);
+				messenger.warn(player, "You can't use groups.");
+				messenger.warnPermission(player, "foodm.group");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("rejoin")) {
 			if (player.hasPermission("foodm.rejoin")) {
 				plugin.rejoin.rejoinCommand(player);
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.rejoin " + WARN_GENERAL + s1);
+				messenger.warnPermission(player, "foodm.rejoin");
 			}
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("reset")) {
 			if (player.hasPermission("foodm.reset")) {
@@ -462,14 +458,14 @@ public class MainCommand implements CommandExecutor {
 					plugin.resetPlayer.resetPlayer(player);
 				}
 			} else {
-				messenger.warn(player, s + ERROR_GENERAL + "foodm.reset " + WARN_GENERAL + "permission");
+				messenger.warnPermission(player, "foodm.reset");
 			}
 		} else {
 			// help menu
 			if (player.hasPermission("foodm.help")) {
 				plugin.helpMenu.helpAll(player);
 			} else {
-				messenger.warn(player, message1);
+				messenger.warnPermission(player, "foodm.help");
 			}
 		}
 

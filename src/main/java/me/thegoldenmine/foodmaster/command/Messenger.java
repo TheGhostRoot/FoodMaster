@@ -57,4 +57,13 @@ public class Messenger {
 	public void error(Player player, String msg) {
 		player.sendMessage(prefixError + msg);
 	}
+
+	public String getYouDontHavePermissionMessage(String permission) {
+		String format = "You don't have " + ERROR_GENERAL + "\"%s\"" + WARN_GENERAL + " permission";
+		return String.format(format, permission);
+	}
+
+	public void warnPermission(Player player, String permission) {
+		warn(player, getYouDontHavePermissionMessage(permission));
+	}
 }
