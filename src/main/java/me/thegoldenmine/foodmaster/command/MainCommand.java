@@ -1,8 +1,9 @@
 package me.thegoldenmine.foodmaster.command;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
+import me.thegoldenmine.foodmaster.Messenger;
 import org.bukkit.Bukkit;
-import static me.thegoldenmine.foodmaster.command.Messenger.*;
+import static me.thegoldenmine.foodmaster.Messenger.*;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

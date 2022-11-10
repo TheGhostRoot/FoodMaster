@@ -1,8 +1,8 @@
 package me.thegoldenmine.foodmaster.command;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
+import me.thegoldenmine.foodmaster.Messenger;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -19,23 +19,7 @@ public class MainTabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        ChatColor darkGray = ChatColor.DARK_GRAY;
-        ChatColor strikethrough = ChatColor.STRIKETHROUGH;
-        ChatColor gold = ChatColor.GOLD;
-        ChatColor bold = ChatColor.BOLD;
-        ChatColor yellow = ChatColor.YELLOW;
-        ChatColor italic = ChatColor.ITALIC;
-        ChatColor aqua = ChatColor.AQUA;
-        ChatColor red = ChatColor.RED;
-        String s;
-        if (plugin.mainConfig.getStrMain("name") != null) {
-            s = " " + plugin.mainConfig.getStrMain("name") + " ";
-        } else {
-            s = " FoodMaster ";
-        }
-        String WARN = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + yellow + "" + bold + "WARN " + darkGray + "" + strikethrough + "-" + yellow + "" + italic + " ";
-        String INFO = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + aqua + "" + bold + "INFO " + darkGray + "" + strikethrough + "-" + aqua + "" + italic + " ";
-        String ERROR = darkGray + "" + strikethrough + "-" + gold + "" + bold + s + red + "" + bold + "ERROR " + darkGray + "" + strikethrough + "-" + red + "" + italic + " ";
+        Messenger messenger = plugin.getMessenger();
         if (args.length == 1) {
             List<String> SubCommands = new ArrayList<>();
             if (sender instanceof Player) {
@@ -182,7 +166,7 @@ public class MainTabComplete implements TabCompleter {
                         }
                         if (players.isEmpty()) {
                             Player player = (Player) sender;
-                            player.sendMessage(WARN + "There are no players playing.");
+                            messenger.warn(player, "There are no players playing.");
                             players.add("FM - There are no players playing.");
                         }
                     }
@@ -209,7 +193,7 @@ public class MainTabComplete implements TabCompleter {
                                 }
                             }
                         } else {
-                            player.sendMessage(WARN + "You are not in a group, but you can join one.");
+                            messenger.warn(player, "You are not in a group, but you can join one.");
                         }
                     }
                     return listOfPlayers;
@@ -394,15 +378,15 @@ public class MainTabComplete implements TabCompleter {
                         // value - list of senders of the invite
                         UUID uniqueId = player.getUniqueId();
                         if (plugin.invites.get(uniqueId) == null) {
-                            player.sendMessage(INFO + "No one invited you.");
+                            messenger.info(player, "No one invited you.");
                         } else {
                             if (plugin.invites.get(uniqueId).isEmpty()) {
-                                player.sendMessage(INFO + "There are no invites.");
+                                messenger.info(player, "There are no invites.");
                             } else {
                                 Set<UUID> uuids1 = plugin.invites.get(uniqueId);
                                 if (uuids1.isEmpty()) {
                                     playersThatInvitedThePlayer.add("FM - No one invited you.");
-                                    player.sendMessage(INFO + "No one invited you.");
+                                    messenger.info(player, "No one invited you.");
                                 }
                                 for (UUID uuid : uuids1) {
                                     if (uuid != null) {

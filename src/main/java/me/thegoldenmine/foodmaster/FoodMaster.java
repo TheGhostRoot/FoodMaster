@@ -1,13 +1,15 @@
 package me.thegoldenmine.foodmaster;
 
-import me.thegoldenmine.foodmaster.Commands.GroupCmd.*;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.ClearPlayer;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.EndPvP;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.PlayerWithTheMostKills;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.TeamWithTheMostKills;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.EndHelpers.Teams.*;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.*;
-import me.thegoldenmine.foodmaster.Commands.SubCmd.Start.*;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import me.thegoldenmine.foodmaster.command.GroupCmd.*;
+import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.ClearPlayer;
+import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.EndPvP;
+import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.PlayerWithTheMostKills;
+import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.TeamWithTheMostKills;
+import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.Teams.*;
+import me.thegoldenmine.foodmaster.command.SubCmd.*;
+import me.thegoldenmine.foodmaster.command.SubCmd.Start.*;
 import me.thegoldenmine.foodmaster.CoolDown.*;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners.*;
@@ -16,7 +18,6 @@ import me.thegoldenmine.foodmaster.Listeners.KitPowerListeners.*;
 import me.thegoldenmine.foodmaster.Others.*;
 import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
-import me.thegoldenmine.foodmaster.command.Messenger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,6 +32,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class FoodMaster extends JavaPlugin {
@@ -276,12 +280,21 @@ public class FoodMaster extends JavaPlugin {
     //todo Changes:
 
 
+    public static String version = "N/A";
+
+    public static Constructor<?> packetDataSerializer;
+    public static Method addEnum;
+    public static Object MAIN_HAND;
+    public static Method getHandle;
+    public static Field playerConnection;
+    public static Method sendPacket;
+    public static Constructor<?> packetPlayOutCustomPayload;
+
     @Override
     public void onEnable() {
         // Try to create the config
         // 1.14.2-R0.1-SNAPSHOT
         // 1.14-R0.1-SNAPSHOT
-        String version = "N/A";
 
         try {
 
@@ -300,6 +313,10 @@ public class FoodMaster extends JavaPlugin {
                 foodMaster = this;
             }
 
+            case "v1_12_R1":
+                case "v1_13_R1":
+                case "v1_13_R2":
+
              */
             switch (version) {
                 case "v1_18_R1":
@@ -308,8 +325,8 @@ public class FoodMaster extends JavaPlugin {
                 case "v1_16_R3":
                 case "v1_16_R2":
                 case "v1_16_R1":
-                case "v1_15_R1":
                 case "v1_14_R1":
+                case "v1_15_R1":
                 case "v1_17_R1":
                     foodMaster = this;
                     break;
@@ -332,6 +349,7 @@ public class FoodMaster extends JavaPlugin {
             // playersInWaitingLobby key - String name of the lobby
             // name of the lobby + "->wait-location" , location
             // num + "-one_of_the_names"
+            initRef();
             getLogger().info("<---{ Reading Config Data }--->");
             getLogger().info(" ");
             int num = mainConfig.getIntWaitLobby("number_of_wait-lobbies");
@@ -763,4 +781,35 @@ public class FoodMaster extends JavaPlugin {
     public Messenger getMessenger() {
 		return messenger;
 	}
+
+    private static void initRef() {
+        try {
+            Class<?> packetDataSer = Class.forName("net.minecraft.server." + version + ".PacketDataSerializer");
+
+            packetDataSerializer = packetDataSer.getConstructor(ByteBuf.class);
+            addEnum = packetDataSer.getMethod("a", Enum.class);
+            MAIN_HAND = Class.forName("net.minecraft.server." + version + ".EnumHand").getField("MAIN_HAND").get(null);
+            getHandle = Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftPlayer").getMethod("getHandle");
+            playerConnection = Class.forName("net.minecraft.server." + version + ".EntityPlayer").getField("playerConnection");
+            sendPacket = Class.forName("net.minecraft.server." + version + ".PlayerConnection").getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet"));
+            packetPlayOutCustomPayload = Class.forName("net.minecraft.server." + version + ".PacketPlayOutCustomPayload").getConstructor(String.class, packetDataSer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void playerOpenBook(Player player, ItemStack book) {
+        ItemStack previous = player.getItemInHand();
+        player.setItemInHand(book);
+
+        try {
+            Object packetdataserializer = packetDataSerializer.newInstance(Unpooled.buffer());
+            addEnum.invoke(packetdataserializer, MAIN_HAND);
+            sendPacket.invoke(playerConnection.get(getHandle.invoke(player)), packetPlayOutCustomPayload.newInstance("MC|BOpen", packetdataserializer));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        player.setItemInHand(previous);
+    }
 }
