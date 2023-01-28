@@ -2,7 +2,6 @@ package me.thegoldenmine.foodmaster;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import me.thegoldenmine.foodmaster.command.GroupCmd.*;
 import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.ClearPlayer;
 import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.EndPvP;
 import me.thegoldenmine.foodmaster.command.SubCmd.EndHelpers.PlayerWithTheMostKills;
@@ -13,12 +12,15 @@ import me.thegoldenmine.foodmaster.command.SubCmd.Start.*;
 import me.thegoldenmine.foodmaster.CoolDown.*;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners.*;
+
 import me.thegoldenmine.foodmaster.Listeners.*;
 import me.thegoldenmine.foodmaster.Listeners.KitPowerListeners.*;
 import me.thegoldenmine.foodmaster.Others.*;
 import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
 
+import me.thegoldenmine.foodmaster.group.GroupManager;
+import me.thegoldenmine.foodmaster.group.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -156,6 +158,7 @@ public class FoodMaster extends JavaPlugin {
     public GroupList groupList;
     public GroupChat groupChat;
     public GroupKick groupKick;
+    public GroupManager groupManager;
 
     // The name of the waiting lobby / All the players in the waiting lobby
     public HashMap<String, Set<UUID>> playersInWaitingLobby = new HashMap<>();
@@ -247,8 +250,6 @@ public class FoodMaster extends JavaPlugin {
 
     private FoodMaster foodMaster;
 
-    //todo BUG FIX:
-
     //todo UPDATE:
     //TODO: Add Open/close Group: Others can join your group.
     //TODO: Add potions on the map and when the player gets the potion. It will give the player effects
@@ -274,8 +275,6 @@ public class FoodMaster extends JavaPlugin {
     //TODO: Add blaze like boss. LittleFireV2 Themed.
     //TODO: The group kick have bugs - don't teleport the player to the end loction unless they are not in waiting lobby or in game - ( if in game or waiting lobby - teleoport to end ) ( if not in game or waiting lobby - don't teleport )
     //TODO: Add a gamemode where players are fight on horses that can't die. Respawn with the hourse. When the player dies and not respawn then the hourse won't spawn too...
-
-    //todo TASK:
 
     //todo Changes:
 
@@ -540,6 +539,7 @@ public class FoodMaster extends JavaPlugin {
             spawnBoss = new SpawnBoss(this);
             bossPower = new BossPower(this);
             beefPowerListener = new BeefPowerListener(this);
+            groupManager = new GroupManager(this);
             skeletonShootListener = new SkeletonShootListener(this);
             endermanTpListener = new EndermanTpListener(this);
             cowPower = new CowPower(this);
@@ -732,10 +732,11 @@ public class FoodMaster extends JavaPlugin {
         NamespacedKey namePlayer = new NamespacedKey(this, "player");
         for (World world : Bukkit.getWorlds()) {
             for (LivingEntity entity : world.getLivingEntities()) {
-                PersistentDataContainer data = entity.getPersistentDataContainer();
-                if (data.has(name, PersistentDataType.STRING) && data.has(namePlayer, PersistentDataType.STRING)) {
+                //TODO: reserch it how to fix it in minecraft 1.12.2
+                //PersistentDataContainer data = entity.getPersistentDataContainer();
+                //if (data.has(name, PersistentDataType.STRING) && data.has(namePlayer, PersistentDataType.STRING)) {
                     entity.setHealth(0);
-                }
+                //}
             }
         }
         getLogger().info("  <-> Plugin Cleared <->");

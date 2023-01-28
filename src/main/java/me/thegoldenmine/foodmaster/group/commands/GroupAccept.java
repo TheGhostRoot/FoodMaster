@@ -1,7 +1,8 @@
-package me.thegoldenmine.foodmaster.command.GroupCmd;
+package me.thegoldenmine.foodmaster.group.commands;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
+import me.thegoldenmine.foodmaster.group.GroupManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class GroupAccept {
-    private final FoodMaster plugin;
+    private FoodMaster plugin;
 
     public GroupAccept(FoodMaster plugin) {
         this.plugin = plugin;
@@ -19,6 +20,9 @@ public class GroupAccept {
 
     public void acceptGroupInvite(Player invited, String[] args) {
         // the invited player is the sender of the command/invitation
+
+        GroupManager groupManager = new GroupManager(plugin);
+
         ChatColor darkGray = ChatColor.DARK_GRAY;
         ChatColor strikethrough = ChatColor.STRIKETHROUGH;
         ChatColor gold = ChatColor.GOLD;
@@ -43,40 +47,13 @@ public class GroupAccept {
             if (!invited.equals(inviter)) {
                 if (inviter != null) {
                     UUID uuid = invited.getUniqueId();
-                    if (!inviter.isOnline()) {
-                        invited.sendMessage(ERROR + "" + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + " is not online.");
-                        return;
-                    }
-                    if (!invited.isOnline()) {
-                        inviter.sendMessage(ERROR + "" + gold + "" + italic + "" + invited.getName() + "" + red + "" + italic + " is not online.");
-                        return;
-                    }
-                    if (plugin.game.isPlayerInGame(inviter)) {
-                        invited.sendMessage(ERROR + "" + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + " is in-game so you can't join the group.");
-                        return;
-                    }
-                    if (plugin.waitingLobby.isPlayerInWaitingLobby(inviter)) {
-                        invited.sendMessage(ERROR + "" + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + " is in the waiting lobby so you can't join the group.");
-                        return;
-                    }
-                    String s1 = "'s group.";
-                    if (plugin.game.isPlayerInGame(invited)) {
-                        invited.sendMessage(ERROR + "You are in-game so you can't join " + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + s1);
-                        return;
-                    }
-                    if (plugin.waitingLobby.isPlayerInWaitingLobby(invited)) {
-                        invited.sendMessage(ERROR + "You are in the waiting lobby so you can't join " + gold + "" + italic + "" + inviter.getName() + "" + red + "" + italic + s1);
-                        return;
-                    }
-                    if (plugin.invites.get(uuid) == null) {
-                        return;
-                    }
-                    String AlreadyInMessage = "You are already in ";
+                    if (!groupManager.canJoin(invited, inviter)) { return; }
+                    groupManager.joinGroup(invited, inviter);
                     if (plugin.playerGroup.isPlayerInGroup(inviter) && plugin.playerGroup.isPlayerInGroup(invited)) {
                         // THEY BOTH ARE IN GROUP
                         // invited will join
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(invited).contains(inviter.getUniqueId())) {
-                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + s1);
+                            invited.sendMessage(INFO + "You are already in " + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + "'s group");
                         } else {
                             plugin.playerGroup.PlayerLeaveFromGroup(invited);
                             // key - invited
@@ -101,7 +78,7 @@ public class GroupAccept {
                         // The invited have a group
                         // The inviter is alone
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(invited).contains(inviter.getUniqueId())) {
-                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
+                            invited.sendMessage(INFO + "You are already in " + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + "'s group.");
                         } else {
                             Set<UUID> Group = new HashSet<>();
                             plugin.playerGroup.PlayerLeaveFromGroup(invited);
@@ -130,7 +107,7 @@ public class GroupAccept {
                         // the invited is alone
                         // invited joins the inviter's group
                         if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).contains(uuid)) {
-                            invited.sendMessage(INFO + AlreadyInMessage + gold + "" + italic + "" + inviter.getName() + "'s" + aqua + "" + italic + " group.");
+                            invited.sendMessage(INFO + "You are already in " + gold + "" + italic + "" + inviter.getName() + "" + aqua + "" + italic + "'s group.");
                         } else {
                             if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
                                 inviter.sendMessage(WARN + "Your group has reached the player limit.");
@@ -187,7 +164,7 @@ public class GroupAccept {
                         invited.sendTitle(gold + "" + italic + "You are now in a group with", aqua + "" + italic + "" + inviter.getName(), 1, 80, 1);
                     }
                     // invited players joins the inviter's group
-                    Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(invited));
+                    Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(inviter));
                     for (UUID uuid1 : playersInGroupOfPlayer) {
                         if (uuid1 != null && plugin.playAgain.containsKey(uuid1)) {
                             String game = plugin.playAgain.get(uuid1);

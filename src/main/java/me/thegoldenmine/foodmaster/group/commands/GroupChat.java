@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster.command.GroupCmd;
+package me.thegoldenmine.foodmaster.group.commands;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import org.bukkit.Bukkit;

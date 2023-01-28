@@ -52,8 +52,8 @@ public class Messenger {
 		player.sendMessage(prefixWarn + msg);
 	}
 
-	public void error(Player player, String msg) {
-		player.sendMessage(prefixError + msg);
+	public void error(Player sendMessageToPlayer, String msg) {
+		sendMessageToPlayer.sendMessage(prefixError + msg);
 	}
 
 	public String getYouDontHavePermissionMessage(String permission) {

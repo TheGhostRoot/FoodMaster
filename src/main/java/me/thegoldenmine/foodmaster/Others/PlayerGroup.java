@@ -331,7 +331,7 @@ public class PlayerGroup {
                 return;
             }
             if (plugin.playerGroup.isPlayerInGroup(playerJoiner) && plugin.playerGroup.getPlayersInGroupOfPlayer(playerJoiner).contains(uniqueId)) {
-                plugin.playerGroup.getPlayersInGroupOfPlayer(playerJoiner).remove(uniqueId);
+                plugin.playerGroup.getPlayersInGroupOfPlayer(playerJoiner).remove(playerJoiner.getUniqueId());
                 String ok = plugin.playerGroup.getPlayerNamesFromGroupString(inviter).replace("[", "").replace("]", "").replace("\"\"", "");
                 String okJ = plugin.playerGroup.getPlayerNamesFromGroupString(playerJoiner).replace("[", "").replace("]", "").replace("\"\"", "");
                 playerJoiner.sendMessage(NORMAL + "You have left the group of " + gold + "" + italic + "" + okJ + "" + green + "" + italic + " players and joined the group of " + gold + "" + italic + "" + ok + "" + green + "" + italic + " players.");
