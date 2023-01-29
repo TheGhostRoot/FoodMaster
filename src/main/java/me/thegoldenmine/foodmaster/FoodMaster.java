@@ -29,6 +29,7 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -214,6 +215,10 @@ public class FoodMaster extends JavaPlugin {
     // cows
     public CowPower cowPower;
     public List<Cow> allCows = new ArrayList<>();
+
+
+    public HashMap<UUID, Team> playerTeams = new HashMap<>();
+    public HashMap<UUID, Food> playerFood = new HashMap<>();
 
     // riding
 
@@ -581,7 +586,6 @@ public class FoodMaster extends JavaPlugin {
             Objects.requireNonNull(getCommand("foodmaster")).setTabCompleter(new MainTabComplete(this));
             getLogger().info("  <-> Commands Registered <->");
             getServer().getPluginManager().registerEvents(openGUI, this);
-            getServer().getPluginManager().registerEvents(groupLeave, this);
             getServer().getPluginManager().registerEvents(playerUseGUI, this);
             getServer().getPluginManager().registerEvents(onLeave, this);
             getServer().getPluginManager().registerEvents(readyListener, this);
@@ -798,8 +802,8 @@ public class FoodMaster extends JavaPlugin {
     }
 
     public void playerOpenBook(Player player, ItemStack book) {
-        ItemStack previous = player.getItemInHand();
-        player.setItemInHand(book);
+        ItemStack previous = player.getInventory().getItemInMainHand();
+        player.getInventory().setItemInMainHand(book);
 
         try {
             Object packetdataserializer = packetDataSerializer.newInstance(Unpooled.buffer());
@@ -809,6 +813,39 @@ public class FoodMaster extends JavaPlugin {
             e.printStackTrace();
         }
 
-        player.setItemInHand(previous);
+        player.getInventory().setItemInMainHand(previous);
+    }
+
+    public void clearPlayer(Player player) {
+        // TODO optimize this method when time comes
+        waitingLobby.removePlayerFromWaitedLobby(player);
+        PlayerInventory inventory = player.getInventory();
+        if (inventory.getHelmet() != null) {
+            inventory.setHelmet(null);
+        }
+        if (inventory.getChestplate() != null) {
+            inventory.setChestplate(null);
+        }
+        if (inventory.getLeggings() != null) {
+            inventory.setLeggings(null);
+        }
+        if (inventory.getBoots() != null) {
+            inventory.setBoots(null);
+        }
+        UUID uuid = player.getUniqueId();
+        playerFood.remove(uuid);
+        playerTeams.remove(uuid);
+        if (playerGroup.isPlayerInGroup(player)) {
+            locOfPlayersInWaitingLobby.remove(new HashSet<>(playerGroup.getPlayersInGroupOfPlayer(player)));
+        }
+        kickedPlayers.remove(uuid);
+        playersThatChoice3Teams.remove(uuid);
+        String name1 = game.getGameName(player);
+        stillAlive.remove(name1);
+        ReadySystem.remove(uuid);
+        ReadyPlayers.remove(uuid);
+        playersInFreeForAll.remove(uuid);
+        lives.remove(uuid);
+        playersChoiceFreeForAll.remove(uuid);
     }
 }

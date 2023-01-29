@@ -3,11 +3,12 @@ package me.thegoldenmine.foodmaster.group;
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import me.thegoldenmine.foodmaster.Messenger;
-import me.thegoldenmine.foodmaster.Others.PlayerGroup;
 import me.thegoldenmine.foodmaster.group.commands.*;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import static org.bukkit.ChatColor.*;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,10 +20,7 @@ public class GroupManager {
     FoodMaster plugin;
     private final Messenger messenger;
 
-    private final GroupAccept groupAccept;
-    private final GroupLeave groupLeave;
     private final GroupKick groupKick;
-    private final GroupInvite groupInvite;
     private final GroupList groupList;
     private final GroupChat groupChat;
 
@@ -30,33 +28,122 @@ public class GroupManager {
         plugin = main;
         messenger = new Messenger(plugin);
 
-        groupAccept = new GroupAccept(plugin);
-        groupLeave = new GroupLeave(plugin);
         groupKick = new GroupKick(plugin);
-        groupInvite = new GroupInvite(plugin);
         groupList = new GroupList(plugin);
         groupChat = new GroupChat(plugin);
     }
 
     public void acceptCommand(Player player, String[] args) {
         Player inviter = Bukkit.getPlayer(args[2]);
-        groupAccept.acceptGroupInvite(player, inviter);
+        if (!canJoin(player, inviter)) {
+            return;
+        }
+        joinGroup(player, inviter);
     }
 
     public void leaveCommand(Player player) {
-        groupLeave.leaveFromGroup(player);
+        if (plugin.game.isPlayerInGame(player)) {
+            player.sendMessage("You cannot leave the group while in-game.");
+            return;
+        }
+
+        if (plugin.waitingLobby.isPlayerInWaitingLobby(player)) {
+            Location endLoc = plugin.mainConfig.getLocationMain("end_location");
+            if (endLoc == null) {
+                player.sendMessage("End location is not set. Unable to leave group.");
+            } else {
+                player.teleport(endLoc);
+                leaveGroup(player);
+                plugin.clearPlayer(player);
+            }
+        } else {
+            leaveGroup(player);
+        }
     }
 
     public void kickCommand(Player player) {
 
     }
 
-    public void inviteCommand(Player player) {
-
+    public void inviteCommand(Player player, String[] args) {
+        if (args.length >= 3) {
+            // /fm group invite playerName
+            //      0      1        2      index
+            //      1      2        3       num
+            // player - sender - inviter - value
+            // invited - accept - invited - key
+            Player invited = Bukkit.getPlayer(args[2]);
+            if (invited == null) {
+                messenger.error(player, "This player is invalid!");
+                return;
+            }
+            if (!canInvite(invited, player)) { return; }
+            invitePlayer(player, invited);
+        } else {
+            messenger.info(player, Messenger.COMMAND_GENERAL + "/fm group invite " + Messenger.MAIN_GENERAL + "[player name] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Invites the player whose name you have entered. The player that you invite will have 5 minutes to accept the invite.");
+        }
     }
 
     public void listCommand(Player player) {
 
+    }
+
+    public boolean canInvite(Player invited, Player inviter) {
+        UUID invitedUUID = invited.getUniqueId();
+        if (isPlayerInGroup(inviter) && getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
+            messenger.warn(inviter, "Your group has reached the player limit.");
+            return false;
+        }
+        if (isPlayerInGroup(inviter) && getPlayersInGroupOfPlayer(inviter).contains(invitedUUID)) {
+            messenger.error(inviter, "You are in the same group.");
+            return false;
+        }
+        if (plugin.commandCoolDown.isPlayerInCoolDown(inviter)) {
+            messenger.warn(inviter, "Slow down. You have " + Messenger.MAIN_GENERAL + plugin.commandCoolDown.getTime(inviter) + Messenger.WARN_GENERAL + " seconds left.");
+            return false;
+        }
+        if (plugin.groupInviteManager.isPlayerInvited(invited)) {
+            messenger.warn(inviter, "You have already invited " + Messenger.MAIN_GENERAL + invited.getName() + Messenger.WARN_GENERAL + " .");
+            return false;
+        }
+        if (invited.equals(inviter)) {
+            messenger.error(inviter, "You can't invite yourself.");
+            return false;
+        }
+        if (plugin.game.isPlayerInGame(inviter) || plugin.waitingLobby.isPlayerInWaitingLobby(inviter)) {
+            messenger.error(inviter, "You can't send invites while in game or waiting in a lobby.");
+            return false;
+        }
+        if (plugin.game.isPlayerInGame(invited) || plugin.waitingLobby.isPlayerInWaitingLobby(invited)) {
+            messenger.error(inviter, Messenger.MAIN_GENERAL + ""+ invited.getName() + Messenger.ERROR_GENERAL + " is in-game or in a waiting lobby. Players that are in the game or waiting in a lobby can't be invited.");
+            return false;
+        }
+        if (plugin.mainConfig.getIntMain("max-players_in_group") < 2) {
+            if (inviter.hasPermission("foodm.staff")) {
+                messenger.error(inviter, "You have to set the " + Messenger.MAIN_GENERAL + "max-players-in-group" + Messenger.ERROR_GENERAL + " to more than " + Messenger.MAIN_GENERAL + "1" + Messenger.ERROR_GENERAL + " to invite players.");
+            } else {
+                messenger.error(inviter, "The max amount of players allowed in one group isn't set correctly.");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public void invitePlayer(Player inviter, Player invited) {
+        UUID invitedUUID = invited.getUniqueId();
+        UUID inviterUUID = inviter.getUniqueId();
+        Set<UUID> uuids;
+        if (plugin.invites.get(invitedUUID) == null) {
+            uuids = new HashSet<>();
+        } else {
+            uuids = plugin.invites.get(invitedUUID);
+        }
+        uuids.add(inviterUUID);
+        plugin.invites.put(invitedUUID, uuids);
+        plugin.groupInviteManager.addPlayerToCoolMap(invited, 5);
+        plugin.commandCoolDown.addPlayerToCoolMap(inviter, 5);
+        messenger.normal(inviter, "You have successfully invited " + Messenger.MAIN_GENERAL + invited.getName() + Messenger.NORMAL_GENERAL + " to your group. " + Messenger.MAIN_GENERAL + invited.getName() + Messenger.NORMAL_GENERAL + " has " + Messenger.MAIN_GENERAL + plugin.groupInviteManager.getTime(invited) + Messenger.NORMAL_GENERAL + " minutes to accept the invite.");
+        messenger.normal(invited, "You have been invited by " + Messenger.MAIN_GENERAL + inviter.getName() + Messenger.NORMAL_GENERAL + " in their group to play FoodMaster. You have " + Messenger.MAIN_GENERAL + plugin.groupInviteManager.getTime(invited) + Messenger.NORMAL_GENERAL + " minutes to accept the invite." + " Use this command to accept: " + GOLD + "/fm group accept " + inviter.getName());
     }
 
     public boolean canJoin(Player invited, Player inviter) {

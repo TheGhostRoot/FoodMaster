@@ -18,7 +18,7 @@ public class GroupMain {
         if (player != null) {
             if (args.length >= 2) {
                 if (args[1].equalsIgnoreCase("invite")) {
-                    plugin.groupInvite.PlayerGroupInvite(player, args);
+                    groupManager.inviteCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("accept")) {
                     groupManager.acceptCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("leave")) {

@@ -8,6 +8,9 @@ public class Messenger {
 	public static final String MAIN_STYLE = "" + GOLD + BOLD;
 	public static final String MAIN_GENERAL = "" + GOLD + ITALIC;
 
+	public static final String COMMAND_GENERAL = "" + DARK_PURPLE + ITALIC;
+	public static final String COMMAND_DIS = "" + DARK_GRAY + ITALIC;
+
 	public static final String NORMAL_STYLE = "" + GREEN + BOLD;
 	public static final String NORMAL_GENERAL = "" + GREEN + ITALIC;
 
