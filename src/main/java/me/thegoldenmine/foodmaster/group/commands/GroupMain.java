@@ -1,13 +1,16 @@
 package me.thegoldenmine.foodmaster.group.commands;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
+import me.thegoldenmine.foodmaster.group.GroupManager;
 import org.bukkit.entity.Player;
 
 public class GroupMain {
-    public FoodMaster plugin;
+    private final FoodMaster plugin;
+    private final GroupManager groupManager;
 
-    public GroupMain(FoodMaster plugin) {
-        this.plugin = plugin;
+    public GroupMain(FoodMaster main) {
+        plugin = main;
+        groupManager = new GroupManager(plugin);
     }
 
     public void GroupMain(Player player, String[] args) {
@@ -17,9 +20,9 @@ public class GroupMain {
                 if (args[1].equalsIgnoreCase("invite")) {
                     plugin.groupInvite.PlayerGroupInvite(player, args);
                 } else if (args[1].equalsIgnoreCase("accept")) {
-                    plugin.groupAccept.acceptGroupInvite(player, args);
+                    groupManager.acceptCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("leave")) {
-                    plugin.playerGroup.PlayerLeaveFromGroup(player);
+                    groupManager.leaveCommand(player);
                 } else if (args[1].equalsIgnoreCase("list")) {
                     plugin.groupList.getGroupPlayers(player);
                 } else if (args[1].equalsIgnoreCase("kick")) {

@@ -3,117 +3,178 @@ package me.thegoldenmine.foodmaster.group;
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import me.thegoldenmine.foodmaster.Messenger;
-import static org.bukkit.ChatColor.*;
-
+import me.thegoldenmine.foodmaster.Others.PlayerGroup;
+import me.thegoldenmine.foodmaster.group.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GroupManager {
 
     FoodMaster plugin;
     private final Messenger messenger;
 
+    private final GroupAccept groupAccept;
+    private final GroupLeave groupLeave;
+    private final GroupKick groupKick;
+    private final GroupInvite groupInvite;
+    private final GroupList groupList;
+    private final GroupChat groupChat;
+
     public GroupManager(FoodMaster main) {
         plugin = main;
         messenger = new Messenger(plugin);
+
+        groupAccept = new GroupAccept(plugin);
+        groupLeave = new GroupLeave(plugin);
+        groupKick = new GroupKick(plugin);
+        groupInvite = new GroupInvite(plugin);
+        groupList = new GroupList(plugin);
+        groupChat = new GroupChat(plugin);
+    }
+
+    public void acceptCommand(Player player, String[] args) {
+        Player inviter = Bukkit.getPlayer(args[2]);
+        groupAccept.acceptGroupInvite(player, inviter);
+    }
+
+    public void leaveCommand(Player player) {
+        groupLeave.leaveFromGroup(player);
+    }
+
+    public void kickCommand(Player player) {
+
+    }
+
+    public void inviteCommand(Player player) {
+
+    }
+
+    public void listCommand(Player player) {
+
     }
 
     public boolean canJoin(Player invited, Player inviter) {
-        // Inviter checkers
-        if (!inviter.isOnline()) {
-            messenger.error(invited, inviter.getName() + "is not online.");
-            return false;
-        } else if (plugin.game.isPlayerInGame(inviter)) {
-            messenger.error(invited, inviter.getName() + " is in-game so you can't join the group.");
-            return false;
-        } else if (plugin.waitingLobby.isPlayerInWaitingLobby(inviter)) {
-            messenger.error(invited, inviter.getName() + " is in the waiting lobby so you can't join the group.");
+        if (invited.equals(inviter)) {
+            messenger.error(inviter, "You can't invite yourself.");
             return false;
         }
-
-        // invited checkers
-         else if (!invited.isOnline()) {
-             messenger.error(inviter, invited.getName() + "is not online.");
-             return false;
-        } else if (plugin.game.isPlayerInGame(invited)) {
-            messenger.error(inviter, "You are in-game so you can't join "+ Messenger.MAIN_GENERAL + inviter.getName() + Messenger.ERROR_GENERAL +"'s group.");
+        // Check if players are online and not in game or waiting lobby
+        if (!inviter.isOnline() || plugin.game.isPlayerInGame(inviter) || plugin.waitingLobby.isPlayerInWaitingLobby(inviter) ||
+                !invited.isOnline() || plugin.game.isPlayerInGame(invited) || plugin.waitingLobby.isPlayerInWaitingLobby(invited)) {
+            messenger.error(inviter, "Players are not online or in the game or waiting lobby.");
             return false;
-        } else if (plugin.waitingLobby.isPlayerInWaitingLobby(invited)) {
-            messenger.error(inviter, "You are in the waiting lobby so you can't join " + Messenger.MAIN_GENERAL + inviter.getName() + Messenger.ERROR_GENERAL + "'s group.");
-            return false;
-        } else return plugin.invites.get(invited.getUniqueId()) != null;
-
+        }
+        return plugin.invites.get(invited.getUniqueId()) != null && !plugin.invites.get(invited.getUniqueId()).isEmpty();
     }
 
-    public void update_The_PlayAgain_For_The_Group(Player player) {
-        Set<UUID> playersInGroupOfPlayer = new HashSet<>(plugin.playerGroup.getPlayersInGroupOfPlayer(player));
-        for (UUID uuid1 : playersInGroupOfPlayer) {
-            if (uuid1 != null && plugin.playAgain.containsKey(uuid1)) {
-                String game = plugin.playAgain.get(uuid1);
-                for (UUID uuid3 : playersInGroupOfPlayer) {
-                    if (uuid3 != null) {
-                        plugin.playAgain.put(uuid3, game);
-                    }
-                }
-                break;
-            }
-        }
+    public synchronized void update_The_PlayAgain_For_The_Group(Player player) {
+        Set<UUID> playersInGroupOfPlayer = getPlayersInGroupOfPlayer(player);
+        playersInGroupOfPlayer.stream()
+                .filter(uuid -> plugin.playAgain.containsKey(uuid))
+                .map(plugin.playAgain::get)
+                .findFirst()
+                .ifPresent(game -> playersInGroupOfPlayer.forEach(uuid -> plugin.playAgain.put(uuid, game)));
     }
 
     public void player_Leave_Group_Send_Messages(Player playerLeaver) {
-        for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(playerLeaver)) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null && !player.equals(playerLeaver)) {
-                messenger.info(player, playerLeaver.getName() + Messenger.NORMAL_GENERAL + " has left the group.");
-            }
-        }
+        getPlayersInGroupOfPlayer(playerLeaver)
+                .stream()
+                .filter(uuid -> !uuid.equals(playerLeaver.getUniqueId()))
+                .map(Bukkit::getPlayer)
+                .forEach(p -> messenger.info(p, playerLeaver.getName() + Messenger.NORMAL_GENERAL + " has left the group."));
     }
 
-    private void leaveFromGroup(Player player) {
+    public synchronized void leaveGroup(Player player) {
         player_Leave_Group_Send_Messages(player);
-        plugin.playerGroup.getPlayersInGroupOfPlayer(player).remove(player.getUniqueId());
+        getPlayersInGroupOfPlayer(player).remove(player.getUniqueId());
+        messenger.normal(player, "You have left the group of " + Messenger.MAIN_GENERAL + getPlayerNamesFromGroupString(player) + Messenger.NORMAL_GENERAL+ " players");
     }
 
-    private void join_Group_And_Remove_Invite(Player joiner, Player inviter) {
-        leaveFromGroup(joiner);
+    private synchronized void join_Group_And_Remove_Invite(Player joiner, Player inviter) {
+        leaveGroup(joiner);
+        Set<UUID> inviterGroup = getPlayersInGroupOfPlayer(inviter);
         UUID joinerUUID = joiner.getUniqueId();
-        plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).add(joinerUUID);
         remove_Invite(inviter.getUniqueId(), joinerUUID);
+        inviterGroup.add(joinerUUID);
         update_The_PlayAgain_For_The_Group(inviter);
-        String inviterPlayers = plugin.playerGroup.getPlayerNamesFromGroupString(inviter).replace("[", "").replace("]", "").replace("\"\"", "");
-        String joinerPlayers = plugin.playerGroup.getPlayerNamesFromGroupString(joiner).replace("[", "").replace("]", "").replace("\"\"", "");
+        String inviterPlayers = getPlayerNamesFromGroupString(inviter);
+        String joinerPlayers = getPlayerNamesFromGroupString(joiner);
         Join_Group_Message(joiner, inviter);
-        messenger.normal(joiner, "You have left the group of " + Messenger.MAIN_GENERAL + joinerPlayers + Messenger.NORMAL_GENERAL+ " players and joined the group of " + Messenger.MAIN_GENERAL + inviterPlayers + Messenger.NORMAL_GENERAL + " players.");
-        if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
+        if (inviterGroup.size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
             messenger.warn(inviter, "You have reached the max player limit in your group");
             messenger.warn(joiner, inviter.getName() + Messenger.WARN_GENERAL + " has reached the max player limit in the group.");
         }
     }
 
-    public void Join_Group_Message(Player playerJoiner, Player inviter) {
-        for (UUID players : plugin.playerGroup.getPlayersInGroupOfPlayer(inviter)) {
-            Player playersInGroup = Bukkit.getPlayer(players);
-            if (playersInGroup != null && playersInGroup != playerJoiner) {
-                messenger.info(playersInGroup, playerJoiner.getName() + Messenger.INFO_GENERAL +" has joined the group.");
+    public String getPlayerNamesFromGroupString(Player player) {
+        if (player == null || !isPlayerInGroup(player)) {
+            return "";
+        }
+
+        Set<UUID> group = getPlayersInGroupOfPlayer(player);
+        return group.stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .map(Player::getName)
+                .collect(Collectors.toSet())
+                .toString()
+                .replace("[", "")
+                .replace("]", "")
+                .replace("\"\"", "");
+    }
+
+    public synchronized void clear_Player_Invites(Player player) {
+        if (player != null) {
+            UUID uuid = player.getUniqueId();
+            Set<UUID> inviters = plugin.invites.get(uuid);
+            if (inviters != null) {
+                inviters.clear();
             }
+            plugin.invites.values().forEach(uuidList -> {
+                if(uuidList!=null)
+                    uuidList.removeIf(uuid::equals);
+            });
         }
     }
 
-    private void remove_Invite(UUID inviterUUID, UUID joinerUUID) {
+    public void Join_Group_Message(Player playerJoiner, Player inviter) {
+        Set<UUID> playersInGroup = getPlayersInGroupOfPlayer(inviter);
+        if (playersInGroup != null) {
+            playersInGroup.stream()
+                    .map(Bukkit::getPlayer)
+                    .filter(p -> p != playerJoiner)
+                    .forEach(p -> messenger.info(p, playerJoiner.getName() + Messenger.INFO_GENERAL +" has joined the group."));
+        }
+    }
+
+    private synchronized void remove_Invite(UUID inviterUUID, UUID joinerUUID) {
         plugin.groupInviteManager.playerCoolDownMap.remove(joinerUUID);
         plugin.invites.get(joinerUUID).remove(inviterUUID);
     }
 
-    private void create_Group_And_Remove_Player_Invite(UUID inviterUUID, UUID joinerUUID) {
+    private synchronized void create_Group_And_Remove_Player_Invite(UUID inviterUUID, UUID joinerUUID) {
         Set<UUID> Group = new HashSet<>();
         Group.add(joinerUUID);
         Group.add(inviterUUID);
         plugin.allGroups.add(Group);
         remove_Invite(inviterUUID, joinerUUID);
+    }
+
+    public boolean isPlayerInGroup(Player player) {
+        return plugin.allGroups.stream().anyMatch(group -> group.contains(player.getUniqueId()));
+    }
+
+    public Set<UUID> getPlayersInGroupOfPlayer(Player player) {
+        return plugin.allGroups.stream()
+                .filter(group -> group.contains(player.getUniqueId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public void joinGroup(Player joiner, Player inviter) {
@@ -123,21 +184,21 @@ public class GroupManager {
             messenger.info(joiner, "You have no invites");
             return;
         }
-        boolean isJoinerInGroup = plugin.playerGroup.isPlayerInGroup(joiner);
-        boolean isInviterInGroup = plugin.playerGroup.isPlayerInGroup(inviter);
+        boolean isJoinerInGroup = isPlayerInGroup(joiner);
+        boolean isInviterInGroup = isPlayerInGroup(inviter);
         if (!isJoinerInGroup && !isInviterInGroup) {
             // Just create a new group
             create_Group_And_Remove_Player_Invite(inviterUUID, joinerUUID);
             messenger.normal(joiner, "You are now in a group with " + Messenger.MAIN_GENERAL + inviter.getName() + Messenger.NORMAL_GENERAL + " .");
             messenger.normal(inviter, "You are now in a group with " + Messenger.MAIN_GENERAL + joiner.getName() + Messenger.NORMAL_GENERAL + " .");
-            if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
+            if (getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
                 messenger.warn(inviter, "Your group has reached the player limit.");
             }
 
         } else if (isJoinerInGroup && isInviterInGroup) {
             // They are both in group
             // joiner must leave and join the inviter's group
-            Set<UUID> inviterGroup = plugin.playerGroup.getPlayersInGroupOfPlayer(inviter);
+            Set<UUID> inviterGroup = getPlayersInGroupOfPlayer(inviter);
             if (inviterGroup.contains(joinerUUID)) {
                 messenger.info(inviter, "You are in the same group.");
                 return;
@@ -151,14 +212,14 @@ public class GroupManager {
 
         } else if (isJoinerInGroup) {
             // Joiner must leave the group. The inviter is alone
-            leaveFromGroup(joiner);
+            leaveGroup(joiner);
             create_Group_And_Remove_Player_Invite(inviterUUID, joinerUUID);
             messenger.normal(inviter, "You're now in a group with " + Messenger.MAIN_GENERAL + joiner.getName() + Messenger.NORMAL_GENERAL + " .");
             update_The_PlayAgain_For_The_Group(inviter);
 
         } else {
             // Joiner is alone must join the inviter's group
-            if (plugin.playerGroup.getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
+            if (getPlayersInGroupOfPlayer(inviter).size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
                 messenger.warn(inviter, "You have reached the max player limit in your group");
                 messenger.warn(joiner, inviter.getName() + Messenger.WARN_GENERAL + " has reached the max player limit in the group.");
                 return;

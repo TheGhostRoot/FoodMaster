@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerGroup {
     private final FoodMaster plugin;
@@ -18,34 +19,31 @@ public class PlayerGroup {
     }
 
     public boolean isPlayerInGroup(Player player) {
-        for (Set<UUID> group : plugin.allGroups) {
-            if (group.contains(player.getUniqueId())) {
-                return true;
-            }
-        }
-        return false;
+        return plugin.allGroups.stream().anyMatch(group -> group.contains(player.getUniqueId()));
     }
 
     public Set<UUID> getPlayersInGroupOfPlayer(Player player) {
-        for (Set<UUID> group : plugin.allGroups) {
-            if (group.contains(player.getUniqueId())) {
-                return group;
-            }
-        }
-        return null;
+        return plugin.allGroups.stream()
+                .filter(group -> group.contains(player.getUniqueId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getPlayerNamesFromGroupString(Player player) {
-        Set<String> names = new HashSet<>();
-        if (player != null && plugin.playerGroup.isPlayerInGroup(player)) {
-            for (UUID uuid : Objects.requireNonNull(plugin.playerGroup.getPlayersInGroupOfPlayer(player))) {
-                Player players = Bukkit.getPlayer(uuid);
-                if (players != null) {
-                    names.add(players.getName());
-                }
-            }
+        if (player == null || !plugin.playerGroup.isPlayerInGroup(player)) {
+            return "";
         }
-        return names.toString().replace("[", "").replace("]", "").replace("\"\"", "");
+
+        Set<UUID> group = plugin.playerGroup.getPlayersInGroupOfPlayer(player);
+        return group.stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .map(Player::getName)
+                .collect(Collectors.toSet())
+                .toString()
+                .replace("[", "")
+                .replace("]", "")
+                .replace("\"\"", "");
     }
 
     public synchronized void PlayerLeaveFromGroup(Player playerLeaver) {
@@ -488,19 +486,13 @@ public class PlayerGroup {
         if (player != null) {
             UUID uuid = player.getUniqueId();
             Set<UUID> inviters = plugin.invites.get(uuid);
-            if (inviters != null && !inviters.isEmpty()) {
+            if (inviters != null) {
                 inviters.clear();
-                plugin.invites.put(uuid, inviters);
             }
-            for (UUID uuidKey : plugin.invites.keySet()) {
-                if (uuidKey != null) {
-                    Set<UUID> uuidList = plugin.invites.get(uuidKey);
-                    if (uuidList != null && !uuidList.isEmpty()) {
-                        uuidList.remove(uuid);
-                        plugin.invites.put(uuidKey, uuidList);
-                    }
-                }
-            }
+            plugin.invites.values().forEach(uuidList -> {
+                if(uuidList!=null)
+                    uuidList.removeIf(uuid::equals);
+            });
         }
     }
 
