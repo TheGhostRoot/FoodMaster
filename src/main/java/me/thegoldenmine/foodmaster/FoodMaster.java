@@ -43,7 +43,6 @@ public class FoodMaster extends JavaPlugin {
     public CreateGUI createGUI;
     public OpenGUI openGUI;
     public PlayerUseGUI playerUseGUI;
-    public GroupLeave groupLeave;
     public OnLeave onLeave;
     public EndermanTpListener endermanTpListener;
     public AntiGlitchSys antiGlitchSys;

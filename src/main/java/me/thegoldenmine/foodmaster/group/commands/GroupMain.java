@@ -26,7 +26,7 @@ public class GroupMain {
                 } else if (args[1].equalsIgnoreCase("list")) {
                     plugin.groupList.getGroupPlayers(player);
                 } else if (args[1].equalsIgnoreCase("kick")) {
-                    plugin.groupKick.PlayerKickGroup(player, args);
+                    groupManager.kickCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("chat")) {
                     plugin.groupChat.groupChat(player, args);
                 } else if (args[1].equalsIgnoreCase("help")) {

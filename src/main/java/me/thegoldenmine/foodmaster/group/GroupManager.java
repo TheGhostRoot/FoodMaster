@@ -9,10 +9,8 @@ import static org.bukkit.ChatColor.*;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GroupManager {
@@ -20,17 +18,9 @@ public class GroupManager {
     FoodMaster plugin;
     private final Messenger messenger;
 
-    private final GroupKick groupKick;
-    private final GroupList groupList;
-    private final GroupChat groupChat;
-
     public GroupManager(FoodMaster main) {
         plugin = main;
         messenger = new Messenger(plugin);
-
-        groupKick = new GroupKick(plugin);
-        groupList = new GroupList(plugin);
-        groupChat = new GroupChat(plugin);
     }
 
     public void acceptCommand(Player player, String[] args) {
@@ -61,8 +51,99 @@ public class GroupManager {
         }
     }
 
-    public void kickCommand(Player player) {
+    private boolean canKick(Player player, Player player_to_kick) {
+        UUID player_to_kick_UUID = player_to_kick.getUniqueId();
+        UUID playerUUID = player.getUniqueId();
+        if (player_to_kick_UUID.equals(playerUUID)) {
+            messenger.error(player, "You can't kick yourself.");
+            return false;
+        }
+        if (!isPlayerInGroup(player)) {
+            messenger.error(player, "You have to be in a group.");
+            return false;
+        }
+        if (!isPlayerInGroup(player_to_kick)) {
+            messenger.error(player, Messenger.MAIN_GENERAL + player_to_kick.getName() + Messenger.ERROR_GENERAL + " is not in group.");
+            return false;
+        }
+        if (!getPlayersInGroupOfPlayer(player_to_kick).contains(playerUUID)) {
+            messenger.error(player, Messenger.MAIN_GENERAL + player_to_kick.getName() + Messenger.ERROR_GENERAL + " is not in your group.");
+            return false;
+        }
+        if (!player_to_kick.isOnline()) {
+            messenger.error(player, Messenger.MAIN_GENERAL + player_to_kick.getName() + Messenger.ERROR_GENERAL + " is not Online!");
+            return false;
+        }
+        if (plugin.game.isPlayerInGame(player) || plugin.game.isPlayerInGame(player_to_kick) || plugin.waitingLobby.isPlayerInWaitingLobby(player) || plugin.waitingLobby.isPlayerInWaitingLobby(player_to_kick)) {
+            messenger.error(player, "You can't kick players from your group while you are in a game or waiting lobby");
+            return false;
+        }
+        return true;
+    }
 
+    private void remove_small_groups() {
+        List<Set<UUID>> removeListG = new ArrayList<>();
+        for (Set<UUID> group : plugin.allGroups) {
+            if (group.size() < 2) {
+                UUID uuid = group.stream().findFirst().orElse(null);
+                if (uuid != null) {
+                    Player players = Bukkit.getPlayer(uuid);
+                    if (players != null) {
+                        group.remove(players.getUniqueId());
+                        messenger.info(players, "You have been removed from the group, because there is no one else in the group.");
+                    }
+                }
+                removeListG.add(group);
+            }
+        }
+        removeListG.forEach(plugin.allGroups::remove);
+        plugin.allGroups.removeIf(Set::isEmpty);
+    }
+
+    private void tell_players_that_a_player_was_kicked(Player player, String reason) {
+        Set<UUID> playersInGroup = getPlayersInGroupOfPlayer(player);
+        String message = reason != null ?
+                Messenger.MAIN_GENERAL + player.getName() + Messenger.NORMAL_GENERAL + " has been kicked from the group. Reason: " + Messenger.WARN_GENERAL + reason :
+                Messenger.MAIN_GENERAL + player.getName() + Messenger.NORMAL_GENERAL + " has been kicked from the group.";
+        for (UUID uuid : playersInGroup) {
+            Player players = Bukkit.getPlayer(uuid);
+            if (players != null && !players.equals(player)) {
+                messenger.normal(players, message);
+            }
+        }
+    }
+
+    private void tell_the_player_that_the_player_was_kick(String reason, Player player, Player playerKick) {
+        String playersList = getPlayerNamesFromGroupString(playerKick);
+        String messageToPlayer = "You have kicked " + Messenger.MAIN_GENERAL + playerKick.getName() + Messenger.NORMAL_GENERAL + " from your group";
+        String messageToPlayerKick = "You have been kicked from the group of " + Messenger.MAIN_GENERAL + playersList + Messenger.NORMAL_GENERAL + " players by " + Messenger.MAIN_GENERAL + player.getName() + Messenger.NORMAL_GENERAL + " .";
+        if (reason != null) {
+            messageToPlayer += ". Reason: " + Messenger.WARN_GENERAL + reason;
+            messageToPlayerKick += ". Reason: " + Messenger.WARN_GENERAL + reason;
+        }
+        messenger.normal(player, messageToPlayer);
+        messenger.normal(playerKick, messageToPlayerKick);
+        playerKick.sendTitle(Messenger.MAIN_GENERAL + "You were kicked from your group by", Messenger.ERROR_STYLE + player.getName(), 2, 80, 2);
+        player.sendTitle(Messenger.MAIN_GENERAL + "You just kicked", Messenger.INFO_GENERAL + playerKick.getName(), 2, 80, 2);
+    }
+
+    public void kickCommand(Player player, String[] args) {
+        if (args.length >= 3) {
+            Player player_to_kick = Bukkit.getPlayer(args[2]);
+            if (player_to_kick == null) {
+                messenger.error(player, "This player is invalid.");
+                return;
+            }
+            if (!canKick(player, player_to_kick)) { return; }
+            getPlayersInGroupOfPlayer(player).remove(player_to_kick.getUniqueId());
+            remove_small_groups();
+            String reason = null;
+            if (args.length >= 4) {
+                reason = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
+            }
+            tell_players_that_a_player_was_kicked(player, reason);
+            tell_the_player_that_the_player_was_kick(reason, player, player_to_kick);
+        }
     }
 
     public void inviteCommand(Player player, String[] args) {
@@ -190,8 +271,6 @@ public class GroupManager {
         remove_Invite(inviter.getUniqueId(), joinerUUID);
         inviterGroup.add(joinerUUID);
         update_The_PlayAgain_For_The_Group(inviter);
-        String inviterPlayers = getPlayerNamesFromGroupString(inviter);
-        String joinerPlayers = getPlayerNamesFromGroupString(joiner);
         Join_Group_Message(joiner, inviter);
         if (inviterGroup.size() >= plugin.mainConfig.getIntMain("max-players_in_group")) {
             messenger.warn(inviter, "You have reached the max player limit in your group");
