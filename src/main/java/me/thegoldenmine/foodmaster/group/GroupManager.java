@@ -3,7 +3,6 @@ package me.thegoldenmine.foodmaster.group;
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
 import me.thegoldenmine.foodmaster.Messenger;
-import me.thegoldenmine.foodmaster.group.commands.*;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 
@@ -29,6 +28,31 @@ public class GroupManager {
             return;
         }
         joinGroup(player, inviter);
+    }
+
+    public void chatCommand(Player player, String[] args) {
+        StringBuilder message = new StringBuilder();
+        if (args.length >= 3) {
+            for (int i = 2; i < args.length; i++) {
+                message.append(" ").append(args[i]);
+            }
+            if (!plugin.playerGroup.isPlayerInGroup(player)) {
+                messenger.error(player, "You need to be in a group to send messages.");
+                return;
+            }
+            if (message.length() == 0) {
+                messenger.error(player, "You should write a message.");
+                return;
+            }
+            for (UUID uuid : plugin.playerGroup.getPlayersInGroupOfPlayer(player)) {
+                Player players = Bukkit.getPlayer(uuid);
+                if (players != null) {
+                    messenger.normal(players, Messenger.INFO_STYLE + "Group Chat "+ Messenger.DASH + "- " + Messenger.MAIN_GENERAL + player.getName() + Messenger.ERROR_STYLE + " -> " + Messenger.NORMAL_GENERAL + message);
+                }
+            }
+        } else {
+            messenger.info(player, Messenger.COMMAND_GENERAL + "/fm group chat " + Messenger.MAIN_GENERAL + "[message] " + Messenger.ERROR_STYLE + " >- " + Messenger.COMMAND_DIS + " Chat with your group.");
+        }
     }
 
     public void leaveCommand(Player player) {
@@ -81,7 +105,7 @@ public class GroupManager {
         return true;
     }
 
-    private void remove_small_groups() {
+    public synchronized void remove_small_groups() {
         List<Set<UUID>> removeListG = new ArrayList<>();
         for (Set<UUID> group : plugin.allGroups) {
             if (group.size() < 2) {
@@ -166,7 +190,18 @@ public class GroupManager {
     }
 
     public void listCommand(Player player) {
-
+        if (!isPlayerInGroup(player)) {
+            messenger.warn(player, "You are not in a group, but you can join one.");
+            return;
+        }
+        final Set<UUID> playerGroup = getPlayersInGroupOfPlayer(player);
+        if (playerGroup.size() < 2) {
+            plugin.allGroups.remove(playerGroup);
+            messenger.info(player, "You have been removed from the group, because there is no one else in the group.");
+        } else {
+            String names = getPlayerNamesFromGroupString(player);
+            messenger.normal(player, "The players in this group are " + Messenger.MAIN_GENERAL + names);
+        }
     }
 
     public boolean canInvite(Player invited, Player inviter) {

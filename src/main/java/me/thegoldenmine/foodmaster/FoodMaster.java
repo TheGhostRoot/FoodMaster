@@ -19,8 +19,8 @@ import me.thegoldenmine.foodmaster.Others.*;
 import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
 
+import me.thegoldenmine.foodmaster.group.GroupMain;
 import me.thegoldenmine.foodmaster.group.GroupManager;
-import me.thegoldenmine.foodmaster.group.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;

@@ -1,7 +1,6 @@
-package me.thegoldenmine.foodmaster.group.commands;
+package me.thegoldenmine.foodmaster.group;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
-import me.thegoldenmine.foodmaster.group.GroupManager;
 import org.bukkit.entity.Player;
 
 public class GroupMain {
@@ -24,11 +23,11 @@ public class GroupMain {
                 } else if (args[1].equalsIgnoreCase("leave")) {
                     groupManager.leaveCommand(player);
                 } else if (args[1].equalsIgnoreCase("list")) {
-                    plugin.groupList.getGroupPlayers(player);
+                    groupManager.listCommand(player);
                 } else if (args[1].equalsIgnoreCase("kick")) {
                     groupManager.kickCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("chat")) {
-                    plugin.groupChat.groupChat(player, args);
+                    groupManager.chatCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("help")) {
                     plugin.helpMenu.helpGroupMenu(player);
                 }
