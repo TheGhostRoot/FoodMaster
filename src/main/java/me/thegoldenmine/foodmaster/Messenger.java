@@ -5,6 +5,8 @@ import static org.bukkit.ChatColor.*;
 import org.bukkit.entity.Player;
 
 public class Messenger {
+	private final FoodMaster plugin;
+
 	public static final String MAIN_STYLE = "" + GOLD + BOLD;
 	public static final String MAIN_GENERAL = "" + GOLD + ITALIC;
 
@@ -33,8 +35,14 @@ public class Messenger {
 	private final String prefixNormal;
 	private final String prefixError;
 
-	public Messenger(FoodMaster plugin) {
-		String pluginName = plugin.mainConfig.getPluginName();
+	public String pluginName;
+
+	public static final String STATS_ARROW_OPEN = "" + INFO_STYLE + "<--=={ ";
+	public static final String STATS_ARROW_CLOSE = "" + INFO_STYLE + "}==-->";
+
+	public Messenger(FoodMaster main) {
+		plugin = main;
+		pluginName = plugin.mainConfig.getPluginName();
 		String prefix = DASH + " " + MAIN_STYLE + pluginName + " ";
 
 		prefixNormal = prefix + DASH + NORMAL_GENERAL + " ";
@@ -49,6 +57,10 @@ public class Messenger {
 
 	public void normal(Player player, String msg) {
 		player.sendMessage(prefixNormal + msg);
+	}
+
+	public void no_prefix(Player player, String msg) {
+		player.sendMessage(msg);
 	}
 
 	public void warn(Player player, String msg) {

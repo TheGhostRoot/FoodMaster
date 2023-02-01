@@ -1,6 +1,7 @@
 package me.thegoldenmine.foodmaster.command;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
+import me.thegoldenmine.foodmaster.GroupManager;
 import me.thegoldenmine.foodmaster.Messenger;
 import org.bukkit.Bukkit;
 import static me.thegoldenmine.foodmaster.Messenger.*;
@@ -14,9 +15,11 @@ import java.util.UUID;
 
 public class MainCommand implements CommandExecutor {
 	private final FoodMaster plugin;
+	private final GroupManager groupManager;
 
 	public MainCommand(FoodMaster plugin) {
 		this.plugin = plugin;
+		groupManager = new GroupManager(plugin);
 	}
 
 	@Override
@@ -193,7 +196,7 @@ public class MainCommand implements CommandExecutor {
 				// /fm set idk
 				// 1 2
 				if (args.length > 1) {
-					plugin.setSubCommand.setGameOptions(args, player);
+					plugin.setSubCommand.setCommand(player, args);
 				} else {
 					plugin.helpMenu.helpAll(player);
 				}
@@ -429,7 +432,7 @@ public class MainCommand implements CommandExecutor {
 		} else if (args.length >= 1 && args[0].equalsIgnoreCase("group")) {
 			if (player.hasPermission("foodm.group")) {
 				if (args.length > 1) {
-					plugin.groupMain.GroupMain(player, args);
+					plugin.groupManager.GroupMain(player, args);
 				} else {
 					plugin.helpMenu.helpGroupMenu(player);
 				}
@@ -450,13 +453,11 @@ public class MainCommand implements CommandExecutor {
 				// 0 1 index
 				if (args.length > 1) {
 					if (player.hasPermission("foodm.staff")) {
-						plugin.resetPlayer.resetPlayer(player, args);
+						plugin.resetPlayer.reset_player_command(player, args);
 					} else {
 						messenger.warn(player,
 								"You are not a staff member and you are not allowed to use this command!");
 					}
-				} else {
-					plugin.resetPlayer.resetPlayer(player);
 				}
 			} else {
 				messenger.warnPermission(player, "foodm.reset");

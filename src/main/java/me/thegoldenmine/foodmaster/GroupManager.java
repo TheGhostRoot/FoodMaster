@@ -1,13 +1,17 @@
-package me.thegoldenmine.foodmaster.group;
+package me.thegoldenmine.foodmaster;
 
-import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Items.ItemManager;
-import me.thegoldenmine.foodmaster.Messenger;
 import org.bukkit.Bukkit;
 import static org.bukkit.ChatColor.*;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,10 +20,37 @@ public class GroupManager {
 
     FoodMaster plugin;
     private final Messenger messenger;
+    private final Utils utils;
 
     public GroupManager(FoodMaster main) {
         plugin = main;
         messenger = new Messenger(plugin);
+        utils = new Utils(plugin);
+    }
+
+    public void GroupMain(Player player, String[] args) {
+        // The player is the sender of the command
+        if (player != null) {
+            if (args.length >= 2) {
+                if (args[1].equalsIgnoreCase("invite")) {
+                    inviteCommand(player, args);
+                } else if (args[1].equalsIgnoreCase("accept")) {
+                    acceptCommand(player, args);
+                } else if (args[1].equalsIgnoreCase("leave")) {
+                    leaveCommand(player);
+                } else if (args[1].equalsIgnoreCase("list")) {
+                    listCommand(player);
+                } else if (args[1].equalsIgnoreCase("kick")) {
+                    kickCommand(player, args);
+                } else if (args[1].equalsIgnoreCase("chat")) {
+                    chatCommand(player, args);
+                } else if (args[1].equalsIgnoreCase("help")) {
+                    plugin.helpMenu.helpGroupMenu(player);
+                }
+            } else {
+                plugin.helpMenu.helpGroupMenu(player);
+            }
+        }
     }
 
     public void acceptCommand(Player player, String[] args) {
@@ -68,7 +99,7 @@ public class GroupManager {
             } else {
                 player.teleport(endLoc);
                 leaveGroup(player);
-                plugin.clearPlayer(player);
+                utils.clearPlayerChose(player);
             }
         } else {
             leaveGroup(player);
@@ -434,5 +465,25 @@ public class GroupManager {
             joiner.getInventory().setItem(8, ItemManager.groupLeave);
         }
         plugin.allGroups.removeIf(Set::isEmpty);
+    }
+
+    public void helpGroupMenu(Player player) {
+        ItemStack item = new ItemStack(Material.WRITTEN_BOOK, 1);
+        ItemMeta meta = item.getItemMeta();
+        BookMeta bookMeta = (BookMeta) meta;
+        assert meta != null;
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group invite " + Messenger.MAIN_GENERAL + "[player name] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Invites the player whose name you have entered. The player that you invite will have 5 minutes to accept the invite.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group accept " + Messenger.MAIN_GENERAL + "[player name] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You have to accept the invite of the player that you have specified.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group leave " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You will leave the group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group help " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Shows this menu.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group chat " + Messenger.MAIN_GENERAL + "[message] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Chat with your group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group kick " + Messenger.MAIN_GENERAL + "[player] [optional: reason] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Kicks specified player from your group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group list " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You can see the group members.");
+        bookMeta.setAuthor(player.getName());
+        bookMeta.setTitle(messenger.pluginName);
+        item.setItemMeta(meta);
+        plugin.playerOpenBook(player, item);
     }
 }

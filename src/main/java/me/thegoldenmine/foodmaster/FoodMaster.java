@@ -19,8 +19,6 @@ import me.thegoldenmine.foodmaster.Others.*;
 import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
 
-import me.thegoldenmine.foodmaster.group.GroupMain;
-import me.thegoldenmine.foodmaster.group.GroupManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -150,12 +148,6 @@ public class FoodMaster extends JavaPlugin {
     public ResetPlayer resetPlayer;
 
     // GROUP SUB COMMANDS
-    public GroupMain groupMain;
-    public GroupInvite groupInvite;
-    public GroupAccept groupAccept;
-    public GroupList groupList;
-    public GroupChat groupChat;
-    public GroupKick groupKick;
     public GroupManager groupManager;
 
     // The name of the waiting lobby / All the players in the waiting lobby
@@ -277,6 +269,8 @@ public class FoodMaster extends JavaPlugin {
     //TODO: Add blaze like boss. LittleFireV2 Themed.
     //TODO: The group kick have bugs - don't teleport the player to the end loction unless they are not in waiting lobby or in game - ( if in game or waiting lobby - teleoport to end ) ( if not in game or waiting lobby - don't teleport )
     //TODO: Add a gamemode where players are fight on horses that can't die. Respawn with the hourse. When the player dies and not respawn then the hourse won't spawn too...
+
+    // TODO explain everything in comments
 
     //todo Changes:
 
@@ -563,12 +557,7 @@ public class FoodMaster extends JavaPlugin {
             kitsCoolDown = new KitsCoolDown(this);
             kitPowerCoolDown = new KitPowerCoolDown(this);
             // Groups
-            groupMain = new GroupMain(this);
-            groupInvite = new GroupInvite(this);
-            groupAccept = new GroupAccept(this);
-            groupList = new GroupList(this);
-            groupChat = new GroupChat(this);
-            groupKick = new GroupKick(this);
+            groupManager = new GroupManager(this);
 
             // MINIGAME
             startTheGame = new StartTheGame(this);
@@ -815,36 +804,4 @@ public class FoodMaster extends JavaPlugin {
         player.getInventory().setItemInMainHand(previous);
     }
 
-    public void clearPlayer(Player player) {
-        // TODO optimize this method when time comes
-        waitingLobby.removePlayerFromWaitedLobby(player);
-        PlayerInventory inventory = player.getInventory();
-        if (inventory.getHelmet() != null) {
-            inventory.setHelmet(null);
-        }
-        if (inventory.getChestplate() != null) {
-            inventory.setChestplate(null);
-        }
-        if (inventory.getLeggings() != null) {
-            inventory.setLeggings(null);
-        }
-        if (inventory.getBoots() != null) {
-            inventory.setBoots(null);
-        }
-        UUID uuid = player.getUniqueId();
-        playerFood.remove(uuid);
-        playerTeams.remove(uuid);
-        if (playerGroup.isPlayerInGroup(player)) {
-            locOfPlayersInWaitingLobby.remove(new HashSet<>(playerGroup.getPlayersInGroupOfPlayer(player)));
-        }
-        kickedPlayers.remove(uuid);
-        playersThatChoice3Teams.remove(uuid);
-        String name1 = game.getGameName(player);
-        stillAlive.remove(name1);
-        ReadySystem.remove(uuid);
-        ReadyPlayers.remove(uuid);
-        playersInFreeForAll.remove(uuid);
-        lives.remove(uuid);
-        playersChoiceFreeForAll.remove(uuid);
-    }
 }
