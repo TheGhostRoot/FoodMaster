@@ -27,7 +27,6 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -142,7 +141,7 @@ public class FoodMaster extends JavaPlugin {
     // Sub commands
     public EndTheGame endTheGame;
     public HelpMenu helpMenu;
-    public SetSubCommand setSubCommand;
+    public SetCommand setCommand;
     public StartCommand startCommand;
     public KickPlayerFromGame kickPlayerFromGame;
     public ResetPlayer resetPlayer;
@@ -271,6 +270,7 @@ public class FoodMaster extends JavaPlugin {
     //TODO: Add a gamemode where players are fight on horses that can't die. Respawn with the hourse. When the player dies and not respawn then the hourse won't spawn too...
 
     // TODO explain everything in comments
+    // TODO make the games with different gamemode like: one game have lives, other have no respawn, third have respawn and no lives
 
     //todo Changes:
 
@@ -564,7 +564,7 @@ public class FoodMaster extends JavaPlugin {
 
             // SubCommands
             endTheGame = new EndTheGame(this);
-            setSubCommand = new SetSubCommand(this);
+            setCommand = new SetCommand(this);
             startCommand = new StartCommand(this);
             kickPlayerFromGame = new KickPlayerFromGame(this);
             resetPlayer = new ResetPlayer(this);

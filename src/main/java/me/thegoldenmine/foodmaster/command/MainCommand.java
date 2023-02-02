@@ -196,7 +196,7 @@ public class MainCommand implements CommandExecutor {
 				// /fm set idk
 				// 1 2
 				if (args.length > 1) {
-					plugin.setSubCommand.setCommand(player, args);
+					plugin.setCommand.setCommand(player, args);
 				} else {
 					plugin.helpMenu.helpAll(player);
 				}

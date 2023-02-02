@@ -148,7 +148,7 @@ public class CommandManager {
             case "set":
                 if (player.hasPermission("foodm.set")) {
                     if (args.length > 1) {
-                        plugin.setSubCommand.setCommand(player, args);
+                        plugin.setCommand.setCommand(player, args);
                     } else {
                         helpMenu(player);
                     }
