@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster.command.SubCmd;
+package me.thegoldenmine.foodmaster.command.SubCmd.refactored;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Messenger;
@@ -23,41 +23,10 @@ public class SetCommand {
     private void set_timer_settings(Player player, String[] args) {
         switch (args[1].toLowerCase()) {
             case "game-time":
-                if (args.length < 3) {
-                    messenger.error(player, Messenger.COMMAND_GENERAL + "/fm set game-time " + Messenger.MAIN_GENERAL
-                            + "<seconds> " + Messenger.WARN_GENERAL + ".");
-                    return;
-                }
-                try {
-                    String timeStr = args[2];
-                    int time;
-                    time = Integer.parseInt(timeStr);
-                    int oldTime = plugin.mainConfig.getIntGame("game_time_seconds");
-                    plugin.mainConfig.setIntGame("game_time_seconds", time);
-                    for (String name : plugin.timer.keySet()) {
-                        if (name != null && plugin.timer.get(name) == oldTime) {
-                            plugin.timer.put(name, time);
-                        }
-                    }
-                    messenger.normal(player, "You have set game time to " + Messenger.MAIN_GENERAL + time +
-                            Messenger.NORMAL_GENERAL + " seconds. " + Messenger.MAIN_GENERAL + plugin.time.getTime(time));
-                } catch (NumberFormatException e) {
-                    messenger.error(player, "You can only enter numbers.");
-                }
+                set_time(player, args);
                 break;
             case "show-timer-above-inventory":
-                if (args.length < 3) {
-                    messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
-                            Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
-                    return;
-                }
-                boolean mode = args[2].equalsIgnoreCase("on");
-                plugin.mainConfig.setBooleanGame("show_timer_above_inventory", mode);
-                if (mode) {
-                    messenger.normal(player, "The timer should appear above the inventory.");
-                } else {
-                    messenger.normal(player, "The timer should not be above the inventory anymore.");
-                }
+                set_show_timer_action(player, args);
                 break;
             case "show-timer-boss-bar":
                 if (args.length < 3) {
@@ -85,6 +54,45 @@ public class SetCommand {
                 break;
             default:
                 return;
+        }
+    }
+
+    private void set_show_timer_action(Player player, String[] args) {
+        if (args.length < 3) {
+            messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
+                    Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
+            return;
+        }
+        boolean mode = args[2].equalsIgnoreCase("on");
+        plugin.mainConfig.setBooleanGame("show_timer_above_inventory", mode);
+        if (mode) {
+            messenger.normal(player, "The timer should appear above the inventory.");
+        } else {
+            messenger.normal(player, "The timer should not be above the inventory anymore.");
+        }
+    }
+
+    private void set_time(Player player, String[] args) {
+        if (args.length < 3) {
+            messenger.error(player, Messenger.COMMAND_GENERAL + "/fm set game-time " + Messenger.MAIN_GENERAL
+                    + "<seconds> " + Messenger.WARN_GENERAL + ".");
+            return;
+        }
+        try {
+            String timeStr = args[2];
+            int time;
+            time = Integer.parseInt(timeStr);
+            int oldTime = plugin.mainConfig.getIntGame("game_time_seconds");
+            plugin.mainConfig.setIntGame("game_time_seconds", time);
+            for (String name : plugin.timer.keySet()) {
+                if (name != null && plugin.timer.get(name) == oldTime) {
+                    plugin.timer.put(name, time);
+                }
+            }
+            messenger.normal(player, "You have set game time to " + Messenger.MAIN_GENERAL + time +
+                    Messenger.NORMAL_GENERAL + " seconds. " + Messenger.MAIN_GENERAL + plugin.time.getTime(time));
+        } catch (NumberFormatException e) {
+            messenger.error(player, "You can only enter numbers.");
         }
     }
 
@@ -382,62 +390,16 @@ public class SetCommand {
     private void set_group_settings(Player player, String[] args) {
         switch (args[1].toLowerCase()) {
             case "max-players-in-group":
-                if (args.length < 3) {
-                    messenger.error(player, "/fm set max-players-in-group " + Messenger.MAIN_GENERAL
-                            + "[number] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS
-                            + "You can set the max number of players allowed in one group.");
-                    return;
-                }
-                try {
-                    int players = Integer.parseInt(args[2]);
-                    plugin.mainConfig.setIntMain("max-players_in_group", players);
-                    messenger.normal(player, "You have set the max players allowed in one group to " +
-                            Messenger.MAIN_GENERAL + players + Messenger.NORMAL_GENERAL + " .");
-                } catch (NumberFormatException e) {
-                    messenger.error(player, "You must provide a number. No letters are allowed!");
-                }
+                set_max_player_in_group(player, args);
                 break;
             case "group-player-break-blocks":
-                if (args.length == 2) {
-                    messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
-                            Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
-                    return;
-                }
-                boolean mode = args[2].equalsIgnoreCase("on");
-                plugin.mainConfig.setBooleanMain("group_player_break_blocks", mode);
-                if (mode) {
-                    messenger.normal(player, "Players in groups can now break blocks before the game starts.");
-                } else {
-                    messenger.normal(player, "Players in groups cannot break blocks anymore.");
-                }
+                set_group_break_blocks(player, args);
                 break;
             case "group-player-place-blocks":
-                if (args.length == 2) {
-                    messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
-                            Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
-                    return;
-                }
-                boolean mode1 = args[2].equalsIgnoreCase("on");
-                plugin.mainConfig.setBooleanMain("group_player_place_blocks", mode1);
-                if (mode1) {
-                    messenger.normal(player, "Players in groups can now place blocks before the game starts.");
-                } else {
-                    messenger.normal(player, "Players in groups cannot place blocks anymore.");
-                }
+                set_group_place_blocks(player, args);
                 break;
             case "group-player-hit-teammate":
-                if (args.length == 2) {
-                    messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
-                            Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
-                    return;
-                }
-                boolean mode2 = args[2].equalsIgnoreCase("on");
-                plugin.mainConfig.setBooleanMain("group_player_hit_teammate", mode2);
-                if (mode2) {
-                    messenger.normal(player, "Players in groups can now attack their teammates.");
-                } else {
-                    messenger.normal(player, "Players in groups cannot attack their teammates anymore.");
-                }
+                set_group_hit_teamamte(player, args);
                 break;
             case "group-player-pickup":
                 if (args.length == 2) {
@@ -472,6 +434,68 @@ public class SetCommand {
         }
     }
 
+    private void set_group_hit_teamamte(Player player, String[] args) {
+        if (args.length == 2) {
+            messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
+                    Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
+            return;
+        }
+        boolean mode2 = args[2].equalsIgnoreCase("on");
+        plugin.mainConfig.setBooleanMain("group_player_hit_teammate", mode2);
+        if (mode2) {
+            messenger.normal(player, "Players in groups can now attack their teammates.");
+        } else {
+            messenger.normal(player, "Players in groups cannot attack their teammates anymore.");
+        }
+    }
+
+    private void set_group_place_blocks(Player player, String[] args) {
+        if (args.length == 2) {
+            messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
+                    Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
+            return;
+        }
+        boolean mode1 = args[2].equalsIgnoreCase("on");
+        plugin.mainConfig.setBooleanMain("group_player_place_blocks", mode1);
+        if (mode1) {
+            messenger.normal(player, "Players in groups can now place blocks before the game starts.");
+        } else {
+            messenger.normal(player, "Players in groups cannot place blocks anymore.");
+        }
+    }
+
+    private void set_group_break_blocks(Player player, String[] args) {
+        if (args.length == 2) {
+            messenger.error(player, "You have to specify " + Messenger.NORMAL_STYLE + "ON" +
+                    Messenger.ERROR_GENERAL + " or " + Messenger.ERROR_STYLE + "OFF");
+            return;
+        }
+        boolean mode = args[2].equalsIgnoreCase("on");
+        plugin.mainConfig.setBooleanMain("group_player_break_blocks", mode);
+        if (mode) {
+            messenger.normal(player, "Players in groups can now break blocks before the game starts.");
+        } else {
+            messenger.normal(player, "Players in groups cannot break blocks anymore.");
+        }
+    }
+
+    private void set_max_player_in_group(Player player, String[] args) {
+        if (args.length < 3) {
+            messenger.error(player, "/fm set max-players-in-group " + Messenger.MAIN_GENERAL
+                    + "[number] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS
+                    + "You can set the max number of players allowed in one group.");
+            return;
+        }
+        try {
+            int players = Integer.parseInt(args[2]);
+            plugin.mainConfig.setIntMain("max-players_in_group", players);
+            messenger.normal(player, "You have set the max players allowed in one group to " +
+                    Messenger.MAIN_GENERAL + players + Messenger.NORMAL_GENERAL + " .");
+        } catch (NumberFormatException e) {
+            messenger.error(player, "You must provide a number. No letters are allowed!");
+        }
+    }
+
     private void set_friendly_damage(Player player, String[] args) {
         if (args.length < 3) {
             messenger.error(player, "You have to specify the amount of friendly fire damage with a number.");
@@ -500,38 +524,46 @@ public class SetCommand {
         boolean mode = args[3].equalsIgnoreCase("on");
         String game = args[2].toLowerCase();
         if (mode) {
-            if (game.equals("free-for-all")) {
-                plugin.mainConfig.setBooleanGame("enable_lives_free-for-all", true);
-                if (plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
-                    messenger.normal(player, "Players now have limited lives. The amount of lives is " +Messenger.MAIN_GENERAL +plugin.mainConfig.getIntGame("lives"));
-                } else {
-                    plugin.mainConfig.setBooleanGame("respawn_free-for-all", true);
-                    messenger.normal(player, "Respawn has been turned on automatically.");
-                }
+            set_lives_to_on(player, game);
+        } else {
+            set_lives_to_off(player, game);
+        }
+    }
+
+    private void set_lives_to_off(Player player, String game) {
+        if (game.equals("free-for-all")) {
+            plugin.mainConfig.setBooleanGame("enable_lives_free-for-all", false);
+            if (plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
+                messenger.normal(player, "Players will now respawn until the game ends.");
             } else {
-                plugin.mainConfig.setBooleanGame("enable_lives_team_deathmatch", true);
-                if (plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                    messenger.normal(player, "Players now have limited lives. The amount of lives is " + Messenger.MAIN_GENERAL + plugin.mainConfig.getIntGame("lives"));
-                } else {
-                    plugin.mainConfig.setBooleanGame("respawn_team_deathmatch", true);
-                    messenger.normal(player, "Respawn has been turned on automatically.");
-                }
+                messenger.normal(player, "Players will no longer respawn.");
+            }
+        } else  {
+            plugin.mainConfig.setBooleanGame("enable_lives_team_deathmatch", false);
+            if (plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
+                messenger.normal(player, "Players will now respawn until the game ends.");
+            } else {
+                messenger.normal(player, "Players will no longer respawn.");
+            }
+        }
+    }
+
+    private void set_lives_to_on(Player player, String game) {
+        if (game.equals("free-for-all")) {
+            plugin.mainConfig.setBooleanGame("enable_lives_free-for-all", true);
+            if (plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
+                messenger.normal(player, "Players now have limited lives. The amount of lives is " +Messenger.MAIN_GENERAL +plugin.mainConfig.getIntGame("lives"));
+            } else {
+                plugin.mainConfig.setBooleanGame("respawn_free-for-all", true);
+                messenger.normal(player, "Respawn has been turned on automatically.");
             }
         } else {
-            if (game.equals("free-for-all")) {
-                plugin.mainConfig.setBooleanGame("enable_lives_free-for-all", false);
-                if (plugin.mainConfig.getBooleanGame("respawn_free-for-all")) {
-                    messenger.normal(player, "Players will now respawn until the game ends.");
-                } else {
-                    messenger.normal(player, "Players will no longer respawn.");
-                }
-            } else  {
-                plugin.mainConfig.setBooleanGame("enable_lives_team_deathmatch", false);
-                if (plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
-                    messenger.normal(player, "Players will now respawn until the game ends.");
-                } else {
-                    messenger.normal(player, "Players will no longer respawn.");
-                }
+            plugin.mainConfig.setBooleanGame("enable_lives_team_deathmatch", true);
+            if (plugin.mainConfig.getBooleanGame("respawn_team_deathmatch")) {
+                messenger.normal(player, "Players now have limited lives. The amount of lives is " + Messenger.MAIN_GENERAL + plugin.mainConfig.getIntGame("lives"));
+            } else {
+                plugin.mainConfig.setBooleanGame("respawn_team_deathmatch", true);
+                messenger.normal(player, "Respawn has been turned on automatically.");
             }
         }
     }

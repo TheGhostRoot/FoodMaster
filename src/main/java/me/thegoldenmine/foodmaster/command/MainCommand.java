@@ -453,7 +453,7 @@ public class MainCommand implements CommandExecutor {
 				// 0 1 index
 				if (args.length > 1) {
 					if (player.hasPermission("foodm.staff")) {
-						plugin.resetPlayer.reset_player_command(player, args);
+						plugin.resetPlayerCommand.reset_player_command(player, args);
 					} else {
 						messenger.warn(player,
 								"You are not a staff member and you are not allowed to use this command!");

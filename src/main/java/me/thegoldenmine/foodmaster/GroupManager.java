@@ -45,12 +45,36 @@ public class GroupManager {
                 } else if (args[1].equalsIgnoreCase("chat")) {
                     chatCommand(player, args);
                 } else if (args[1].equalsIgnoreCase("help")) {
-                    plugin.helpMenu.helpGroupMenu(player);
+                    helpGroup(player);
                 }
             } else {
-                plugin.helpMenu.helpGroupMenu(player);
+                helpGroup(player);
             }
         }
+    }
+
+    public void helpGroup(Player player) {
+        ItemStack item = new ItemStack(Material.WRITTEN_BOOK, 1);
+        ItemMeta meta = item.getItemMeta();
+        BookMeta bookMeta = (BookMeta) meta;
+        assert meta != null;
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        bookMeta.addPage(Messenger.COMMAND_GENERAL+ "/fm group invite " + Messenger.MAIN_GENERAL + "[player name] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Invites the player whose name you have entered. The player that you invite will have 5 minutes to accept the invite.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group accept " + Messenger.MAIN_GENERAL + "[player name] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You have to accept the invite of the player that you have specified.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group leave " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You will leave the group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group help " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Shows this menu.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group chat " + Messenger.MAIN_GENERAL + "[message] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Chat with your group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group kick " + Messenger.MAIN_GENERAL + "[player] [optional: reason] " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "Kicks specified player from your group.");
+        bookMeta.addPage(Messenger.COMMAND_GENERAL + "/fm group list " + Messenger.ERROR_STYLE + ">- " + Messenger.COMMAND_DIS + "You can see the group members.");
+        bookMeta.setAuthor(player.getName());
+        if (plugin.mainConfig.getStrMain("name") != null) {
+            bookMeta.setTitle(plugin.mainConfig.getStrMain("name"));
+        } else {
+            bookMeta.setTitle("FoodMaster");
+        }
+        item.setItemMeta(meta);
+        plugin.playerOpenBook(player, item);
     }
 
     public void acceptCommand(Player player, String[] args) {

@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster.command.SubCmd;
+package me.thegoldenmine.foodmaster.command.SubCmd.refactored;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.GroupManager;
@@ -13,13 +13,13 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
 
-public class ResetPlayer {
+public class ResetPlayerCommand {
     private final FoodMaster plugin;
     private final GroupManager groupManager;
     private final Messenger messenger;
     private final Utils utils;
 
-    public ResetPlayer(FoodMaster main) {
+    public ResetPlayerCommand(FoodMaster main) {
         plugin = main;
         groupManager = new GroupManager(plugin);
         messenger = new Messenger(plugin);
@@ -120,23 +120,21 @@ public class ResetPlayer {
 
     public void reset_player_command(Player player, String[] args) {
         Player resetPlayer = args.length > 1 ? Bukkit.getPlayer(args[1]) : player;
-        if (player != null) {
-            if (resetPlayer == null) {
-                messenger.error(player, "Player is invalid.");
-                return;
-            }
-            remove_from_game_or_waiting_lobby(player);
-            remove_from_group(player);
-            remove_all_foodmaster_items(player);
-            UUID uuid = player.getUniqueId();
-            remove_from_maps(uuid);
-            resetStats(uuid);
-            resetPlayer.setGameMode(GameMode.SURVIVAL);
-            if (resetPlayer == player) {
-                messenger.warn(resetPlayer, "Your stats are reset.");
-            } else {
-                messenger.warn(resetPlayer, "Your stats are reset by "+ Messenger.MAIN_GENERAL + player.getName());
-            }
+        if (resetPlayer == null) {
+            messenger.error(player, "Player is invalid.");
+            return;
+        }
+        remove_from_game_or_waiting_lobby(player);
+        remove_from_group(player);
+        remove_all_foodmaster_items(player);
+        UUID uuid = player.getUniqueId();
+        remove_from_maps(uuid);
+        resetStats(uuid);
+        resetPlayer.setGameMode(GameMode.SURVIVAL);
+        if (resetPlayer == player) {
+            messenger.warn(resetPlayer, "Your stats are reset.");
+        } else {
+            messenger.warn(resetPlayer, "Your stats are reset by " + Messenger.MAIN_GENERAL + player.getName());
         }
     }
 }

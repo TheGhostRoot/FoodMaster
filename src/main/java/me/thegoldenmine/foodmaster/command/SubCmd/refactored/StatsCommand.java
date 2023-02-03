@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster.command.SubCmd;
+package me.thegoldenmine.foodmaster.command.SubCmd.refactored;
 
 import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.Messenger;

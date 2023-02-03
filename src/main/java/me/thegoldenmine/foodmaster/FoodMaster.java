@@ -19,6 +19,8 @@ import me.thegoldenmine.foodmaster.Others.*;
 import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
 
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.ResetPlayerCommand;
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.SetCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -144,7 +146,7 @@ public class FoodMaster extends JavaPlugin {
     public SetCommand setCommand;
     public StartCommand startCommand;
     public KickPlayerFromGame kickPlayerFromGame;
-    public ResetPlayer resetPlayer;
+    public ResetPlayerCommand resetPlayerCommand;
 
     // GROUP SUB COMMANDS
     public GroupManager groupManager;
@@ -567,7 +569,7 @@ public class FoodMaster extends JavaPlugin {
             setCommand = new SetCommand(this);
             startCommand = new StartCommand(this);
             kickPlayerFromGame = new KickPlayerFromGame(this);
-            resetPlayer = new ResetPlayer(this);
+            resetPlayerCommand = new ResetPlayerCommand(this);
             // others
             fallDamage = new FallDamage(this);
             Objects.requireNonNull(getCommand("foodmaster")).setExecutor(new MainCommand(this));

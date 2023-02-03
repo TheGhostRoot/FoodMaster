@@ -4,7 +4,11 @@ import me.thegoldenmine.foodmaster.FoodMaster;
 import me.thegoldenmine.foodmaster.GroupManager;
 import me.thegoldenmine.foodmaster.Messenger;
 import me.thegoldenmine.foodmaster.Utils;
-import me.thegoldenmine.foodmaster.command.SubCmd.StatsCommand;
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.RejoinCommand;
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.StatsCommand;
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.EndGameCommand;
+import me.thegoldenmine.foodmaster.command.SubCmd.refactored.KickPlayerCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +25,11 @@ public class CommandManager {
     private final GroupManager groupManager;
     private final Messenger messenger;
     private final Utils utils;
+    // commands
     private final StatsCommand statsCommand;
+    private final KickPlayerCommand kickPlayerCommand;
+    private final EndGameCommand endGameCommand;
+    private final RejoinCommand rejoinCommand;
 
     public CommandManager(FoodMaster main) {
         // helpers
@@ -32,6 +40,9 @@ public class CommandManager {
 
         // commands
         statsCommand = new StatsCommand(plugin);
+        kickPlayerCommand = new KickPlayerCommand(plugin);
+        endGameCommand = new EndGameCommand(plugin);
+        rejoinCommand = new RejoinCommand(plugin);
     }
 
 
@@ -105,6 +116,7 @@ public class CommandManager {
     public void Command(Player player, String[] args) {
         // TODO make every command in a different class
         // TODO refactor it as much as possible
+        if (player == null) { return; }
         if (args.length < 1 && player.hasPermission("foodm.help")) {
             // Add appropriate error message
             helpMenu(player);
@@ -181,14 +193,27 @@ public class CommandManager {
                 }
                 break;
             case "end":
-                // TODO make this command when the game class is done
+                if (player.hasPermission("foodm.end")) {
+                    if (args.length > 1) {
+                        Player player_to_end = Bukkit.getPlayer(args[1]);
+                        if (player_to_end == null) {
+                            messenger.error(player, "Invalid player to end game");
+                            return;
+                        }
+                        endGameCommand.end_the_game_for_one_player(player_to_end);
+                    } else {
+                        endGameCommand.end_the_game(player);
+                    }
+                } else {
+                    messenger.warnPermission(player, "foodm.end");
+                }
                 break;
             case "kick":
                 if (player.hasPermission("foodm.kick")) {
                     if (args.length > 1) {
-                        plugin.kickPlayerFromGame.kickPlayerFromGame(args, player);
+                        kickPlayerCommand.kickPlayer(player, args);
                     } else {
-                        plugin.helpMenu.helpAll(player);
+                        helpMenu(player);
                     }
                 } else {
                     messenger.warnPermission(player, "foodm.kick");
@@ -196,14 +221,14 @@ public class CommandManager {
                 break;
             case "rejoin":
                 if (player.hasPermission("foodm.rejoin")) {
-                    plugin.rejoin.rejoinCommand(player);
+                    rejoinCommand.rejoin(player);
                 } else {
                     messenger.warnPermission(player, "foodm.rejoin");
                 }
                 break;
             case "reset":
                 if (player.hasPermission("foodm.reset")) {
-                    plugin.resetPlayer.reset_player_command(player, args);
+                    plugin.resetPlayerCommand.reset_player_command(player, args);
                 } else {
                     messenger.warnPermission(player, "foodm.reset");
                 }
