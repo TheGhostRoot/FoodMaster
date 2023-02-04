@@ -1,4 +1,4 @@
-package me.thegoldenmine.foodmaster;
+package me.thegoldenmine.foodmaster.enums;
 
 public enum Boss {
     ZOMBIE, SKELETON, ENDERMAN, SLIME, SPIDER;

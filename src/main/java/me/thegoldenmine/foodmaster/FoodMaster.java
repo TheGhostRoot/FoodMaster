@@ -16,11 +16,12 @@ import me.thegoldenmine.foodmaster.Listeners.AntiGlitchListeners.*;
 import me.thegoldenmine.foodmaster.Listeners.*;
 import me.thegoldenmine.foodmaster.Listeners.KitPowerListeners.*;
 import me.thegoldenmine.foodmaster.Others.*;
-import me.thegoldenmine.foodmaster.command.MainCommand;
 import me.thegoldenmine.foodmaster.command.MainTabComplete;
 
 import me.thegoldenmine.foodmaster.command.SubCmd.refactored.ResetPlayerCommand;
 import me.thegoldenmine.foodmaster.command.SubCmd.refactored.SetCommand;
+import me.thegoldenmine.foodmaster.enums.Food;
+import me.thegoldenmine.foodmaster.enums.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -142,17 +143,12 @@ public class FoodMaster extends JavaPlugin {
 
     // Sub commands
     public EndTheGame endTheGame;
-    public HelpMenu helpMenu;
     public SetCommand setCommand;
     public StartCommand startCommand;
-    public KickPlayerFromGame kickPlayerFromGame;
     public ResetPlayerCommand resetPlayerCommand;
 
     // GROUP SUB COMMANDS
     public GroupManager groupManager;
-
-    // The name of the waiting lobby / All the players in the waiting lobby
-    public HashMap<String, Set<UUID>> playersInWaitingLobby = new HashMap<>();
 
     // players uuid | location of waiting lobby
     public HashMap<Set<UUID>, Location> locOfPlayersInWaitingLobby = new HashMap<>();
@@ -765,10 +761,6 @@ public class FoodMaster extends JavaPlugin {
 
     public boolean isPlayerPlayingFoodGame(Player player) {
         return playersInFoodGame.contains(player.getUniqueId());
-    }
-
-    public Set<String> getWaitLobbyNames() {
-        return playersInWaitingLobby.keySet();
     }
 
     public Messenger getMessenger() {
