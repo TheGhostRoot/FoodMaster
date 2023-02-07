@@ -269,6 +269,7 @@ public class FoodMaster extends JavaPlugin {
 
     // TODO explain everything in comments
     // TODO make the games with different gamemode like: one game have lives, other have no respawn, third have respawn and no lives
+    // TODO add support for JDA
 
     //todo Changes:
 
